@@ -1,11 +1,10 @@
-import BlogList from "../../components/BlogList";
+import BlogList from "@/components/BlogList";
+import { Suspense } from "react";
 
-export const metadata = {
-  title: "Blog",
-  description:
-    "Articles on industrial engineering, textile quality, and modern web development.",
-};
-
-export default function BlogIndexPage() {
-  return <BlogList />;
+export default function BlogPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <BlogList />
+    </Suspense>
+  );
 }

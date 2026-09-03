@@ -1,8 +1,5 @@
 "use client";
 
-import Link from "next/link";
-import { useMemo, useRef, useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
 import {
   AnimatePresence,
   LayoutGroup,
@@ -11,6 +8,9 @@ import {
   useReducedMotion,
 } from "framer-motion";
 import { ArrowLeft, ArrowRight, CalendarDays, Clock } from "lucide-react";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import posts from "../data/posts.json";
 
 const tabs = [
@@ -42,11 +42,11 @@ function categoryTone(cat) {
   }
 }
 
-export default function BlogList() {
+function BlogListContent() {
   const searchParams = useSearchParams();
   const initialCategory = searchParams.get("cat") || "All";
   const [active, setActive] = useState(
-    tabs.map((t) => t.key).includes(initialCategory) ? initialCategory : "All"
+    tabs.map((t) => t.key).includes(initialCategory) ? initialCategory : "All",
   );
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
@@ -65,9 +65,9 @@ export default function BlogList() {
   const sorted = useMemo(
     () =>
       [...posts].sort(
-        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
       ),
-    []
+    [],
   );
 
   const filtered = useMemo(() => {
@@ -162,7 +162,9 @@ export default function BlogList() {
                   },
                   {
                     label: "Topics",
-                    value: new Set(posts.map((p) => p.category)).size.toString(),
+                    value: new Set(
+                      posts.map((p) => p.category),
+                    ).size.toString(),
                   },
                   {
                     label: "Avg. read",
@@ -230,7 +232,7 @@ export default function BlogList() {
                           <div className="absolute left-3 top-3">
                             <span
                               className={`rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] ring-1 ring-inset ${categoryTone(
-                                post.category
+                                post.category,
                               )}`}
                             >
                               {post.category}
@@ -282,5 +284,15 @@ export default function BlogList() {
         </div>
       </div>
     </section>
+  );
+}
+
+export default function BlogList() {
+  return (
+    <Suspense
+      fallback={<div className="p-8 text-center">Loading posts...</div>}
+    >
+      <BlogListContent />
+    </Suspense>
   );
 }
