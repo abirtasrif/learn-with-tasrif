@@ -1,0 +1,92 @@
+[
+  {
+    "slug": "production-line-balancing-apparel",
+    "title": "Production Line Balancing for Garment Manufacturing",
+    "excerpt": "A practical guide to balancing sewing lines using SMV, takt time, and bottleneck analysis to maximize output.",
+    "category": "Industrial Engineering",
+    "date": "2026-08-20",
+    "readTime": "8 min read",
+    "coverImage": "/posts/line-balancing.jpg",
+    "content": "Line balancing is one of the most impactful levers in a garment factory. A well-balanced line reduces idle time, increases output per hour, and keeps operator morale high. In this article we cover how to calculate takt time, identify bottlenecks using operation cycle time data, and redistribute work across stations using pitch diagrams. We also share a simple Excel template you can adapt for your own production lines.\n\nThe first step is to capture the cycle time of each operation alongside its SMV. From there, the takt time is derived from daily demand and available minutes. Any operation whose cycle time exceeds takt time is a potential bottleneck. Using lean tools such as method study and work simplification, we can redesign those operations and bring them back within takt. Finally, we validate the balance by running the line and measuring real output against target, closing the loop with continuous improvement reviews."
+  },
+  {
+    "slug": "smv-and-productivity-explained",
+    "title": "SMV, Efficiency, and Productivity — A Practical Primer",
+    "excerpt": "Understand Standard Minute Value, how it's calculated, and how it drives factory efficiency KPIs.",
+    "category": "Industrial Engineering",
+    "date": "2026-08-05",
+    "readTime": "6 min read",
+    "coverImage": "/posts/smv-productivity.jpg",
+    "content": "If you work in apparel manufacturing, you hear the term SMV every day. But knowing the acronym is not the same as understanding how SMV actually impacts your bottom line. This article breaks down standard allowed minutes, rating factors, allowances, and the relationship between earned minutes, produced minutes, and line efficiency.\n\nWe also explain why two factories with the same style can have wildly different efficiency numbers, and how to set realistic targets that drive the right behavior instead of perverse incentives."
+  },
+  {
+    "slug": "lean-manufacturing-apparel",
+    "title": "Lean Manufacturing Tools That Actually Work in Apparel",
+    "excerpt": "From 5S to Kanban, a candid look at which lean tools deliver real ROI in sewing floors.",
+    "category": "Industrial Engineering",
+    "date": "2026-07-22",
+    "readTime": "10 min read",
+    "coverImage": "/posts/lean-apparel.jpg",
+    "content": "Not every lean tool is a good fit for labor-intensive apparel production. In this post I share the tools I have personally seen succeed on the floor, along with the common failure modes teams fall into when they try to roll out lean as a poster campaign rather than a mindset.\n\nWe cover practical 5S checklists, how to design a simple Kanban for cut-to-sew flow, and a realistic approach to setup time reduction for style changeovers."
+  },
+  {
+    "slug": "common-garment-defects-guide",
+    "title": "Common Garment Defects and How to Prevent Them",
+    "excerpt": "A visual reference of the most frequent sewing, fabric, and finishing defects with actionable fixes.",
+    "category": "Textile Quality",
+    "date": "2026-08-14",
+    "readTime": "7 min read",
+    "coverImage": "/posts/garment-defects.jpg",
+    "content": "Defect prevention is cheaper than defect correction. This guide walks through the top 20 garment defects I've seen across hundreds of audits — from broken stitches and open seams to shading, skewing, and spot stains — and maps each one to the root cause and the check point in the process where you should catch it.\n\nThe article includes a simple defects tracking template you can use to start reducing your rejection rate within a single week."
+  },
+  {
+    "slug": "fabric-inspection-4-point-system",
+    "title": "Fabric Inspection Using the 4-Point System",
+    "excerpt": "How to run a reliable in-house fabric inspection process and accept or reject rolls with confidence.",
+    "category": "Textile Quality",
+    "date": "2026-07-30",
+    "readTime": "6 min read",
+    "coverImage": "/posts/fabric-inspection.jpg",
+    "content": "A lot of sewing problems start long before the fabric reaches the cutting table. This article explains the 4-point system in plain English, how to calculate points per 100 sq. yards, how to sample rolls correctly, and how to communicate quality expectations to fabric mills using objective data rather than feelings.\n\nIt also includes a compact decision framework for when to accept, reject, or negotiate concessions on a suspect roll."
+  },
+  {
+    "slug": "quality-control-systems-apparel",
+    "title": "Building a Sustainable Quality Control System for Apparel",
+    "excerpt": "Moving beyond AQL inspections to a quality culture built on prevention, feedback, and CAPA.",
+    "category": "Textile Quality",
+    "date": "2026-07-10",
+    "readTime": "9 min read",
+    "coverImage": "/posts/quality-systems.jpg",
+    "content": "End-of-line inspections catch defects, they do not prevent them. This article describes how to build a layered QC system that begins at fabric receipt, flows through inline check points, and ends with a disciplined audit — and how to close the loop using corrective and preventive actions (CAPA) so the same defects do not return next season."
+  },
+  {
+    "slug": "building-modern-nextjs-interfaces",
+    "title": "Building Modern Interfaces with Next.js App Router",
+    "excerpt": "A thoughtful introduction to Server Components, metadata, and designing component boundaries.",
+    "category": "Web Development",
+    "date": "2026-08-28",
+    "readTime": "11 min read",
+    "coverImage": "/posts/nextjs-interfaces.jpg",
+    "content": "The App Router changed the way we think about React applications. Server Components are a fantastic default, but they force you to rethink where state and interactivity should live. In this post I share a simple mental model for deciding when to reach for 'use client', how to structure layouts, and how to keep your bundle lean while still building highly interactive interfaces.\n\nWe build a realistic portfolio section together — from data layout to component composition to animation boundaries — and talk about accessibility and keyboard interactions along the way."
+  },
+  {
+    "slug": "javascript-fundamentals-review",
+    "title": "JavaScript Fundamentals I Use Every Day",
+    "excerpt": "The core language features — not frameworks — that have the highest impact on the code I write.",
+    "category": "Web Development",
+    "date": "2026-08-10",
+    "readTime": "8 min read",
+    "coverImage": "/posts/js-fundamentals.jpg",
+    "content": "Frameworks come and go, but the fundamentals of JavaScript pay compounding returns. In this article I share the specific language features I reach for constantly: array methods, sets and maps for lookup tables, module boundaries, destructuring patterns that actually improve readability, and safe patterns for async data fetching.\n\nI also explain which patterns I avoid and why — because not everything published on a blog is a good idea in a real codebase."
+  },
+  {
+    "slug": "react-component-architecture",
+    "title": "React Component Architecture That Scales",
+    "excerpt": "How to organize components so your Next.js project stays maintainable beyond the first month.",
+    "category": "Web Development",
+    "date": "2026-07-18",
+    "readTime": "9 min read",
+    "coverImage": "/posts/react-architecture.jpg",
+    "content": "A clean folder structure is not a substitute for good component boundaries, but both help. In this post we walk through the conventions I use for naming, splitting, and composing components — including the difference between container and presentational components in a Server Components world, how to design component APIs that resist misuse, and how to introduce animation with Framer Motion without turning your codebase into spaghetti."
+  }
+]

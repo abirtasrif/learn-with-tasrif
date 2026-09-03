@@ -1,0 +1,67 @@
+{
+  "name": "Tasrif Ahmed",
+  "headline": "Textile Engineer × Web Developer",
+  "location": "Dhaka, Bangladesh",
+  "email": "tasrif.ahmed@example.com",
+  "bio": "I am a textile engineer turned web developer with deep expertise in industrial engineering, garment technology, and 3D fashion design. Over the years, I've worked across production floors, pattern rooms, and design studios — optimizing apparel manufacturing processes, creating technical packs, and building 3D garment simulations. Today, I combine that domain knowledge with modern web technologies to build software that solves real problems for the textile and apparel industry.",
+  "education": "B.Sc. in Textile Engineering, Specialization in Fabric Manufacturing & Apparel Technology",
+  "specialties": [
+    "3D Garment Simulation & Virtual Prototyping",
+    "Industrial Engineering & Line Balancing",
+    "Apparel Quality Management",
+    "Pattern Making & Tech Pack Development",
+    "Full-Stack Web Development",
+    "Technical Documentation & Tutorials"
+  ],
+  "journey": [
+    {
+      "step": 1,
+      "title": "Textile Engineering",
+      "era": "2016 – 2020",
+      "description": "Studied fabric manufacturing, textile chemistry, apparel production, and quality engineering. Built a strong foundation in fiber-to-garment workflows."
+    },
+    {
+      "step": 2,
+      "title": "Industrial Engineering",
+      "era": "2020 – 2022",
+      "description": "Worked in apparel manufacturing as an IE executive — conducting SMV studies, balancing production lines, improving operator efficiency, and implementing lean tools."
+    },
+    {
+      "step": 3,
+      "title": "Garment Technology",
+      "era": "2021 – 2023",
+      "description": "Led technical packages, garment construction, sewing feasibility reviews, and defect root-cause analysis for high-volume export orders."
+    },
+    {
+      "step": 4,
+      "title": "3D Fashion Design",
+      "era": "2022 – Present",
+      "description": "Mastered CLO 3D and Lectra Modaris for virtual sampling, 3D garment visualization, pattern grading, and fit simulation to reduce physical sample lead time."
+    },
+    {
+      "step": 5,
+      "title": "Web Development",
+      "era": "2023 – Present",
+      "description": "Transitioned into web engineering, building modern UIs with Next.js and JavaScript. Creating tools, portfolios, and learning content that blend textile domain knowledge with software craft."
+    }
+  ],
+  "experience": [
+    {
+      "company": "Jarvan IT",
+      "role": "Web Developer",
+      "era": "2024 – Present",
+      "description": "Design and develop modern web interfaces, dashboards, and marketing sites using Next.js, React, and Tailwind CSS. Focus on performance, accessibility, and clean component architecture."
+    },
+    {
+      "company": "Apparel Manufacturing Group",
+      "role": "Industrial Engineer & Technical Designer",
+      "era": "2020 – 2024",
+      "description": "Optimized production lines, created detailed tech packs, conducted quality audits, and introduced 3D virtual prototyping into the product development cycle."
+    }
+  ],
+  "socials": {
+    "github": "https://github.com/tasrif-ahmed",
+    "linkedin": "https://www.linkedin.com/in/tasrif-ahmed",
+    "youtube": "https://www.youtube.com/@learn-with-tasrif"
+  }
+}

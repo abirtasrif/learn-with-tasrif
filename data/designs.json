@@ -1,0 +1,98 @@
+[
+  {
+    "id": "d1",
+    "title": "Woven Cotton Shirt — 3D Simulation",
+    "category": "CLO 3D",
+    "categoryGroup": "CLO 3D",
+    "description": "Realistic 3D simulation of a woven button-down shirt with proper fabric drape, seam construction, and layered trim details.",
+    "image": "/designs/clo-shirt-1.jpg",
+    "tools": ["CLO 3D", "Lectra Modaris", "Photoshop"],
+    "year": "2025",
+    "featured": true,
+    "size": "lg"
+  },
+  {
+    "id": "d2",
+    "title": "Denim Jacket Virtual Prototype",
+    "category": "CLO 3D",
+    "categoryGroup": "CLO 3D",
+    "description": "Classic trucker jacket with 3D denim drape, wash effects, and hardware simulation for virtual fitting.",
+    "image": "/designs/clo-jacket.jpg",
+    "tools": ["CLO 3D", "Illustrator"],
+    "year": "2025",
+    "featured": true,
+    "size": "md"
+  },
+  {
+    "id": "d3",
+    "title": "Complete Tech Pack — Knit Polo",
+    "category": "Tech Packs",
+    "categoryGroup": "Tech Packs",
+    "description": "Full production tech pack including flat sketches, measurement sheets, BOM, seam details, and trim list.",
+    "image": "/designs/tech-pack-polo.jpg",
+    "tools": ["Illustrator", "Advanced Excel"],
+    "year": "2024",
+    "featured": true,
+    "size": "md"
+  },
+  {
+    "id": "d4",
+    "title": "Technical Drawing Pack",
+    "category": "Technical",
+    "categoryGroup": "Technical",
+    "description": "Set of vector technical drawings with front/back views, construction lines, and exploded seam views.",
+    "image": "/designs/technical-drawings.jpg",
+    "tools": ["Illustrator"],
+    "year": "2024",
+    "featured": false,
+    "size": "sm"
+  },
+  {
+    "id": "d5",
+    "title": "Women's Dress Collection — 3D Renders",
+    "category": "CLO 3D",
+    "categoryGroup": "Garment Design",
+    "description": "A mini capsule of woven dresses with flared silhouettes, digital prints, and photorealistic renderings.",
+    "image": "/designs/clo-dress.jpg",
+    "tools": ["CLO 3D", "Photoshop"],
+    "year": "2025",
+    "featured": true,
+    "size": "lg"
+  },
+  {
+    "id": "d6",
+    "title": "Pattern Development — Chino Pants",
+    "category": "Technical",
+    "categoryGroup": "Technical",
+    "description": "Base block to final pattern with grading rules, marker layout, and seam allowance standards.",
+    "image": "/designs/pattern-chinos.jpg",
+    "tools": ["Lectra Modaris", "Advanced Excel"],
+    "year": "2024",
+    "featured": false,
+    "size": "md"
+  },
+  {
+    "id": "d7",
+    "title": "Kids Wear — 3D Collection",
+    "category": "Garment Design",
+    "categoryGroup": "Garment Design",
+    "description": "Playful 3D kids wear designs with soft fabrics, prints, and rounded silhouettes.",
+    "image": "/designs/clo-kids.jpg",
+    "tools": ["CLO 3D", "Illustrator"],
+    "year": "2025",
+    "featured": false,
+    "size": "sm"
+  },
+  {
+    "id": "d8",
+    "title": "Outerwear Tech Pack",
+    "category": "Tech Packs",
+    "categoryGroup": "Tech Packs",
+    "description": "Heavyweight technical outerwear spec pack with layered construction, lining, and trim information.",
+    "image": "/designs/tech-pack-outerwear.jpg",
+    "tools": ["Illustrator", "Photoshop"],
+    "year": "2024",
+    "featured": false,
+    "size": "md"
+  }
+]

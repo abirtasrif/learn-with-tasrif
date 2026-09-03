@@ -1,0 +1,92 @@
+[
+  {
+    "name": "CLO 3D",
+    "category": "3D & Fashion",
+    "categoryGroup": "Textile & Fashion",
+    "level": 95,
+    "label": "Expert",
+    "icon": "shirt",
+    "description": "3D garment simulation, virtual fitting, fabric properties, and realistic renderings for digital product development."
+  },
+  {
+    "name": "Lectra Modaris",
+    "category": "CAD / Pattern Making",
+    "categoryGroup": "Textile & Fashion",
+    "level": 88,
+    "label": "Advanced",
+    "icon": "ruler",
+    "description": "Industry-grade pattern design, grading, marker making, and seamless integration with 3D prototyping workflows."
+  },
+  {
+    "name": "Adobe Illustrator",
+    "category": "Design",
+    "categoryGroup": "Design",
+    "level": 90,
+    "label": "Advanced",
+    "icon": "pen-tool",
+    "description": "Flat sketches, tech pack illustrations, spec sheets, and vector graphics for apparel product development."
+  },
+  {
+    "name": "Adobe Photoshop",
+    "category": "Design",
+    "categoryGroup": "Design",
+    "level": 82,
+    "label": "Advanced",
+    "icon": "image",
+    "description": "Textile print design, concept mood boards, image retouching, and 3D render post-processing."
+  },
+  {
+    "name": "Advanced Excel",
+    "category": "Productivity",
+    "categoryGroup": "Productivity",
+    "level": 85,
+    "label": "Advanced",
+    "icon": "table",
+    "description": "SMV calculators, production efficiency trackers, IE dashboards, and complex data analysis using formulas and pivots."
+  },
+  {
+    "name": "Industrial Engineering",
+    "category": "Engineering",
+    "categoryGroup": "Engineering",
+    "level": 92,
+    "label": "Expert",
+    "icon": "factory",
+    "description": "Line balancing, SMV, method study, work measurement, lean manufacturing, and capacity planning."
+  },
+  {
+    "name": "Quality Management",
+    "category": "Engineering",
+    "categoryGroup": "Engineering",
+    "level": 89,
+    "label": "Advanced",
+    "icon": "shield-check",
+    "description": "AQL inspection, defect classification, root cause analysis, CAPA, and quality system implementation."
+  },
+  {
+    "name": "JavaScript",
+    "category": "Programming",
+    "categoryGroup": "Development",
+    "level": 84,
+    "label": "Skilled",
+    "icon": "code-2",
+    "description": "ES6+, DOM manipulation, async patterns, React patterns, and building reusable component libraries."
+  },
+  {
+    "name": "Next.js",
+    "category": "Framework",
+    "categoryGroup": "Development",
+    "level": 80,
+    "label": "Skilled",
+    "icon": "layout-dashboard",
+    "description": "App Router, RSC, server-side rendering, static generation, metadata, and modern frontend architecture."
+  },
+  {
+    "name": "Tailwind CSS",
+    "category": "Framework",
+    "categoryGroup": "Development",
+    "level": 86,
+    "label": "Skilled",
+    "icon": "palette",
+    "description": "Utility-first styling, responsive systems, design tokens, and accessible component-based UI."
+  }
+]
