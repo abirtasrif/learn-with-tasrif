@@ -47,7 +47,7 @@ export default function About() {
                   className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl"
                   viewportMargin="0px 0px -15% 0px"
                 >
-                  A professional journey from technology to tetxile.
+                  A professional journey from technology to textile.
                 </TextRevealMask>
               </div>
               <motion.p

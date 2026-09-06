@@ -70,11 +70,19 @@ function SplitLine({ children }) {
   );
 }
 
-function RevealTarget({ animate, children, delay, display = "inline-block", duration, yPercent }) {
+function RevealTarget({
+  animate,
+  children,
+  className = "",
+  delay,
+  display = "inline-block",
+  duration,
+  yPercent,
+}) {
   return (
     <motion.span
       animate={animate ? { y: "0%" } : { y: `${yPercent}%` }}
-      className={`will-change-transform [backface-visibility:hidden] ${display === "block" ? "block" : "inline-block"}`}
+      className={`will-change-transform [backface-visibility:hidden] ${display === "block" ? "block" : "inline-block"} ${className}`.trim()}
       initial={{ y: `${yPercent}%` }}
       transition={{ duration, delay, ease: EXPO_OUT }}
     >
