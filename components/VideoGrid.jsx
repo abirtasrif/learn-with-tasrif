@@ -1,15 +1,11 @@
 "use client";
 
-import { useInView, motion, useReducedMotion } from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
+import { ArrowUpRight, Clock, Play, PlayCircle, X } from "lucide-react";
 import { useRef, useState } from "react";
-import {
-  ArrowUpRight,
-  Clock,
-  Play,
-  PlayCircle,
-  X,
-} from "lucide-react";
 import videos from "../data/videos.json";
+import { SpotlightCard } from "./ui/SpotlightCard";
+import { TextRevealMask } from "./ui/TextRevealMask";
 
 function VideoThumb({ video, playing, onPlay }) {
   return (
@@ -17,18 +13,26 @@ function VideoThumb({ video, playing, onPlay }) {
       type="button"
       onClick={onPlay}
       aria-label={`Play video: ${video.title}`}
-      className={`group relative block w-full overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg`}
+      data-cursor-label="PLAY"
+      className="group relative block w-full overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-xl"
     >
-      <div className="relative aspect-video w-full bg-gradient-to-br from-slate-200 via-slate-100 to-white">
+      <div className="relative aspect-video w-full bg-linear-to-br from-slate-200 via-slate-100 to-white">
         <div
           aria-hidden="true"
           className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(99,102,241,0.18),transparent_55%),radial-gradient(circle_at_80%_80%,rgba(15,23,42,0.14),transparent_55%)]"
         />
+        {/* Play button with pulse ring */}
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-white/95 text-slate-900 shadow-md ring-1 ring-slate-200 transition-all duration-300 group-hover:scale-105 group-hover:bg-indigo-600 group-hover:text-white group-hover:ring-indigo-500">
+          <span className="relative inline-flex h-14 w-14 items-center justify-center rounded-full bg-white/95 text-slate-900 shadow-md ring-1 ring-slate-200 transition-all duration-300 group-hover:scale-110 group-hover:bg-indigo-600 group-hover:text-white group-hover:ring-indigo-500 group-hover:shadow-indigo-200/60 group-hover:shadow-xl">
+            <span
+              aria-hidden="true"
+              className="absolute inset-0 rounded-full opacity-0 transition-opacity duration-300 group-hover:opacity-100 pulse-ring"
+            />
             <Play className="h-6 w-6 translate-x-0.5" />
           </span>
         </div>
+
+        {/* Top badges */}
         <div className="absolute inset-x-0 top-0 flex items-start justify-between p-4">
           <span className="inline-flex items-center gap-1 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-700 backdrop-blur ring-1 ring-slate-200">
             {video.category}
@@ -38,7 +42,11 @@ function VideoThumb({ video, playing, onPlay }) {
             {video.duration}
           </span>
         </div>
+
+        {/* Hover overlay */}
+        <div className="absolute inset-0 bg-slate-900/0 transition-all duration-500 group-hover:bg-slate-900/10" />
       </div>
+
       <div className="flex items-start justify-between gap-4 p-5">
         <div>
           <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-slate-500">
@@ -75,7 +83,7 @@ export default function VideoGrid() {
     <section id="videos" className="relative py-24 sm:py-32">
       <div
         aria-hidden="true"
-        className="absolute inset-x-0 top-0 -z-10 mx-auto h-64 max-w-6xl bg-gradient-to-b from-indigo-50/60 to-transparent blur-3xl"
+        className="absolute inset-x-0 top-0 -z-10 mx-auto h-64 max-w-6xl bg-linear-to-b from-indigo-50/60 to-transparent blur-3xl"
       />
       <div ref={ref} className="mx-auto max-w-7xl px-5 sm:px-8">
         <motion.div
@@ -88,11 +96,16 @@ export default function VideoGrid() {
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-indigo-600">
               Video Learning
             </p>
-            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
-              Practical tutorials on{" "}
-              <span className="gradient-text">fashion tech</span> and{" "}
-              <span className="gradient-text">web craft</span>.
-            </h2>
+            <div className="mt-4">
+              <TextRevealMask
+                as="h2"
+                splitBy="words"
+                className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl"
+                viewportMargin="0px 0px -15% 0px"
+              >
+                Practical tutorials on fashion tech and web craft.
+              </TextRevealMask>
+            </div>
             <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
               Long-form lessons that blend theory with real-world workflows —
               from CLO 3D simulations to production-ready Next.js projects.
@@ -109,13 +122,18 @@ export default function VideoGrid() {
         </motion.div>
 
         <div className="mt-14 grid grid-cols-1 gap-6 lg:grid-cols-12">
+          {/* Featured video */}
           <motion.div
             initial={{ opacity: 0, y: 18 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={baseTransition}
             className="lg:col-span-7"
           >
-            <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+            <SpotlightCard
+              className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm glow-ring"
+              tiltStrength={3}
+              glowColor="rgba(99, 102, 241, 0.10)"
+            >
               {active?.id === featured.id ? (
                 <div className="relative aspect-video w-full bg-black">
                   <button
@@ -166,9 +184,10 @@ export default function VideoGrid() {
                   <ArrowUpRight className="h-4 w-4" />
                 </a>
               </div>
-            </div>
+            </SpotlightCard>
           </motion.div>
 
+          {/* Smaller videos */}
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:col-span-5">
             {rest.map((video, i) => (
               <motion.div

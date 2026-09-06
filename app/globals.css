@@ -25,6 +25,20 @@
   --color-primary-900: #312e81;
 }
 
+/* ─── Lenis smooth scrolling ─────────────────────────────────── */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -35,6 +49,14 @@ body {
   font-feature-settings: "rlig" 1, "calt" 1;
 }
 
+/* ─── Custom cursor (hide native when JS cursor active) ───────── */
+@media (hover: hover) and (pointer: fine) {
+  body:has(.cursor-active) * {
+    cursor: none !important;
+  }
+}
+
+/* ─── Selection ─────────────────────────────────────────────── */
 ::selection {
   background-color: var(--color-primary-100);
   color: var(--color-primary-900);
@@ -46,6 +68,7 @@ body {
   border-radius: 6px;
 }
 
+/* ─── Gradient text ─────────────────────────────────────────── */
 .gradient-text {
   background: linear-gradient(135deg, #312e81 0%, #4f46e5 45%, #6366f1 100%);
   -webkit-background-clip: text;
@@ -53,12 +76,14 @@ body {
   color: transparent;
 }
 
+/* ─── Section background gradient blobs ─────────────────────── */
 .soft-gradient {
   background:
     radial-gradient(1200px 500px at 0% -10%, rgba(99, 102, 241, 0.10), transparent 60%),
     radial-gradient(900px 500px at 100% 10%, rgba(59, 130, 246, 0.08), transparent 60%);
 }
 
+/* ─── Dot/grid noise overlay ─────────────────────────────────── */
 .noise-grid {
   background-image:
     linear-gradient(to right, rgba(15, 23, 42, 0.04) 1px, transparent 1px),
@@ -67,5 +92,66 @@ body {
   mask-image: radial-gradient(ellipse at center, black 35%, transparent 75%);
 }
 
+/* ─── Scrollbar ─────────────────────────────────────────────── */
 .hide-scrollbar::-webkit-scrollbar { display: none; }
 .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ─── Marquee keyframes ─────────────────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes marquee-left {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  @keyframes marquee-right {
+    0%   { transform: translateX(-50%); }
+    100% { transform: translateX(0); }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @keyframes marquee-left  { 0%, 100% { transform: translateX(0); } }
+  @keyframes marquee-right { 0%, 100% { transform: translateX(0); } }
+}
+
+/* ─── Shimmer border for badges / hero pills ─────────────────── */
+@keyframes shimmer-border {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.shimmer-border {
+  background: linear-gradient(
+    90deg,
+    rgba(99, 102, 241, 0.15) 0%,
+    rgba(167, 139, 250, 0.4) 25%,
+    rgba(99, 102, 241, 0.15) 50%,
+    rgba(167, 139, 250, 0.4) 75%,
+    rgba(99, 102, 241, 0.15) 100%
+  );
+  background-size: 300% 300%;
+  animation: shimmer-border 4s ease infinite;
+}
+
+/* ─── Spotlight glow card ring ──────────────────────────────── */
+.glow-ring:hover {
+  box-shadow:
+    0 0 0 1px rgba(99, 102, 241, 0.25),
+    0 8px 32px -8px rgba(99, 102, 241, 0.2),
+    0 0 64px -16px rgba(99, 102, 241, 0.12);
+}
+
+/* ─── Animated pulse ring (play button, indicators) ─────────── */
+@keyframes pulse-ring {
+  0%   { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+.pulse-ring::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(99, 102, 241, 0.35);
+  animation: pulse-ring 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}

@@ -1,6 +1,5 @@
 "use client";
 
-import { useMemo, useState } from "react";
 import {
   AnimatePresence,
   LayoutGroup,
@@ -8,21 +7,23 @@ import {
   useInView,
   useReducedMotion,
 } from "framer-motion";
-import { useRef } from "react";
 import {
-  Shirt,
-  Ruler,
-  PenTool,
-  ImageIcon,
-  Table,
-  Factory,
-  ShieldCheck,
+  Check,
   Code2,
+  Factory,
+  ImageIcon,
   LayoutDashboard,
   Palette,
-  Check,
+  PenTool,
+  Ruler,
+  ShieldCheck,
+  Shirt,
+  Table,
 } from "lucide-react";
+import { useMemo, useRef, useState } from "react";
 import tools from "../data/tools.json";
+import { SpotlightCard } from "./ui/SpotlightCard";
+import { TextRevealMask } from "./ui/TextRevealMask";
 
 const iconMap = {
   shirt: Shirt,
@@ -60,12 +61,20 @@ export default function Skills() {
       active === "All"
         ? tools
         : tools.filter((t) => t.categoryGroup === active),
-    [active]
+    [active],
   );
 
   return (
     <section id="skills" className="relative py-24 sm:py-32">
-      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-white via-slate-50 to-white" aria-hidden="true" />
+      <div
+        className="absolute inset-0 -z-10 bg-linear-to-b from-white via-slate-50 to-white"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute right-0 top-1/4 h-96 w-72 rounded-full bg-violet-100/25 blur-3xl -z-10"
+        aria-hidden="true"
+      />
+
       <div ref={ref} className="mx-auto max-w-7xl px-5 sm:px-8">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
@@ -76,21 +85,27 @@ export default function Skills() {
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-indigo-600">
             Skills & Tools
           </p>
-          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
-            A toolkit built across the{" "}
-            <span className="gradient-text">factory floor</span> and the{" "}
-            <span className="gradient-text">codebase</span>.
-          </h2>
+          <div className="mt-4">
+            <TextRevealMask
+              as="h2"
+              splitBy="words"
+              className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl"
+              viewportMargin="0px 0px -15% 0px"
+            >
+              A toolkit built across the factory floor and the codebase.
+            </TextRevealMask>
+          </div>
           <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
             From 3D garment simulation to component-driven interfaces — a
             curated set of tools I rely on every day.
           </p>
         </motion.div>
 
+        {/* Filter tabs */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ ...baseTransition, delay: 0.08 }}
+          transition={{ ...baseTransition, delay: 0.15 }}
           className="mx-auto mt-12 flex max-w-3xl flex-wrap items-center justify-center gap-2"
           role="tablist"
           aria-label="Filter tools by category"
@@ -126,6 +141,7 @@ export default function Skills() {
           </LayoutGroup>
         </motion.div>
 
+        {/* Cards grid */}
         <motion.div layout className="mt-12">
           <AnimatePresence mode="popLayout">
             <motion.ul
@@ -152,59 +168,66 @@ export default function Skills() {
                     variants={{
                       initial: { opacity: 0, y: 18 },
                       animate: { opacity: 1, y: 0 },
-                      exit: { opacity: 0, y: -10 },
+                      exit: { opacity: 0, y: -10, scale: 0.97 },
                     }}
                     transition={baseTransition}
-                    whileHover={
-                      reduceMotion ? {} : { y: -4 }
-                    }
-                    className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
                   >
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex items-center gap-3">
-                        <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-slate-50 to-white text-indigo-600 ring-1 ring-slate-200">
-                          <Icon className="h-6 w-6" />
+                    <SpotlightCard
+                      className="group relative h-full overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:shadow-lg glow-ring"
+                      tiltStrength={5}
+                      glowColor="rgba(99, 102, 241, 0.12)"
+                    >
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex items-center gap-3">
+                          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-linear-to-br from-slate-50 to-white text-indigo-600 ring-1 ring-slate-200">
+                            <Icon className="h-6 w-6" />
+                          </span>
+                          <div>
+                            <h3 className="text-base font-semibold text-slate-900">
+                              {tool.name}
+                            </h3>
+                            <p className="text-xs font-medium uppercase tracking-[0.14em] text-slate-500">
+                              {tool.category}
+                            </p>
+                          </div>
+                        </div>
+                        <span className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2.5 py-1 text-[11px] font-medium text-indigo-700 ring-1 ring-inset ring-indigo-100">
+                          <Check className="h-3 w-3" />
+                          {tool.label}
                         </span>
-                        <div>
-                          <h3 className="text-base font-semibold text-slate-900">
-                            {tool.name}
-                          </h3>
-                          <p className="text-xs font-medium uppercase tracking-[0.14em] text-slate-500">
-                            {tool.category}
-                          </p>
+                      </div>
+
+                      <p className="mt-4 text-sm leading-relaxed text-slate-600">
+                        {tool.description}
+                      </p>
+
+                      {/* Animated skill bar */}
+                      <div className="mt-6">
+                        <div className="mb-2 flex items-center justify-between text-xs text-slate-500">
+                          <span>Skill level</span>
+                          <span className="font-medium text-slate-700">
+                            {tool.level}%
+                          </span>
+                        </div>
+                        <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={inView ? { width: `${tool.level}%` } : {}}
+                            transition={{
+                              ...baseTransition,
+                              delay: 0.4,
+                              duration: 0.8,
+                            }}
+                            className="h-full rounded-full bg-linear-to-r from-indigo-500 via-violet-500 to-indigo-400"
+                            role="progressbar"
+                            aria-valuenow={tool.level}
+                            aria-valuemin={0}
+                            aria-valuemax={100}
+                            aria-label={`${tool.name} skill level`}
+                          />
                         </div>
                       </div>
-                      <span className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2.5 py-1 text-[11px] font-medium text-indigo-700 ring-1 ring-inset ring-indigo-100">
-                        <Check className="h-3 w-3" />
-                        {tool.label}
-                      </span>
-                    </div>
-
-                    <p className="mt-4 text-sm leading-relaxed text-slate-600">
-                      {tool.description}
-                    </p>
-
-                    <div className="mt-6">
-                      <div className="mb-2 flex items-center justify-between text-xs text-slate-500">
-                        <span>Skill level</span>
-                        <span className="font-medium text-slate-700">
-                          {tool.level}%
-                        </span>
-                      </div>
-                      <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
-                        <motion.div
-                          initial={{ width: 0 }}
-                          animate={inView ? { width: `${tool.level}%` } : {}}
-                          transition={{ ...baseTransition, delay: 0.3 }}
-                          className="h-full rounded-full bg-gradient-to-r from-indigo-500 via-indigo-500 to-indigo-400"
-                          role="progressbar"
-                          aria-valuenow={tool.level}
-                          aria-valuemin={0}
-                          aria-valuemax={100}
-                          aria-label={`${tool.name} skill level`}
-                        />
-                      </div>
-                    </div>
+                    </SpotlightCard>
                   </motion.li>
                 );
               })}

@@ -1,13 +1,11 @@
 "use client";
 
-import { motion, useReducedMotion, useInView } from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
+import { ArrowDown, Building2, GraduationCap } from "lucide-react";
 import { useRef } from "react";
-import {
-  ArrowDown,
-  Building2,
-  GraduationCap,
-} from "lucide-react";
 import profile from "../data/profile.json";
+import { SpotlightCard } from "./ui/SpotlightCard";
+import { TextRevealMask } from "./ui/TextRevealMask";
 
 export default function About() {
   const ref = useRef(null);
@@ -19,11 +17,20 @@ export default function About() {
 
   return (
     <section id="about" className="relative py-24 sm:py-32">
+      {/* Background blobs */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10"
+      >
+        <div className="absolute left-0 top-1/3 h-96 w-96 rounded-full bg-indigo-100/30 blur-3xl" />
+      </div>
+
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <div
           ref={ref}
           className="grid grid-cols-1 gap-14 lg:grid-cols-12 lg:gap-16"
         >
+          {/* Left col */}
           <div className="lg:col-span-5">
             <motion.div
               initial={{ opacity: 0, y: 16 }}
@@ -33,54 +40,76 @@ export default function About() {
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-indigo-600">
                 About
               </p>
-              <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
-                A professional journey from{" "}
-                <span className="gradient-text">fabric</span> to{" "}
-                <span className="gradient-text">frontend</span>.
-              </h2>
-              <p className="mt-5 text-base leading-relaxed text-slate-600 sm:text-lg">
+              <div className="mt-4">
+                <TextRevealMask
+                  as="h2"
+                  splitBy="words"
+                  className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl"
+                  viewportMargin="0px 0px -15% 0px"
+                >
+                  A professional journey from technology to tetxile.
+                </TextRevealMask>
+              </div>
+              <motion.p
+                initial={{ opacity: 0, y: 12 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ ...transition, delay: 0.3 }}
+                className="mt-5 text-base leading-relaxed text-slate-600 sm:text-lg"
+              >
                 {profile.bio}
-              </p>
+              </motion.p>
 
-              <div className="mt-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                <div className="flex items-start gap-3">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 ring-1 ring-inset ring-indigo-100">
-                    <GraduationCap className="h-5 w-5" />
-                  </span>
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
-                      Education
-                    </p>
-                    <p className="mt-1 text-sm font-medium text-slate-800">
-                      {profile.education}
-                    </p>
-                  </div>
-                </div>
-                <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  {profile.experience.map((role) => (
-                    <div
-                      key={role.company}
-                      className="rounded-xl border border-slate-100 bg-slate-50/70 p-4"
-                    >
-                      <div className="flex items-center gap-2 text-slate-500">
-                        <Building2 className="h-4 w-4" />
-                        <span className="text-xs font-medium uppercase tracking-[0.16em]">
-                          {role.era}
-                        </span>
-                      </div>
-                      <p className="mt-2 text-sm font-semibold text-slate-900">
-                        {role.role} · {role.company}
+              {/* Education card */}
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ ...transition, delay: 0.45 }}
+              >
+                <SpotlightCard
+                  className="group mt-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm glow-ring"
+                  tiltStrength={4}
+                  glowColor="rgba(99, 102, 241, 0.10)"
+                >
+                  <div className="flex items-start gap-3">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 ring-1 ring-inset ring-indigo-100">
+                      <GraduationCap className="h-5 w-5" />
+                    </span>
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+                        Education
                       </p>
-                      <p className="mt-1 text-xs leading-relaxed text-slate-600">
-                        {role.description}
+                      <p className="mt-1 text-sm font-medium text-slate-800">
+                        {profile.education}
                       </p>
                     </div>
-                  ))}
-                </div>
-              </div>
+                  </div>
+                  <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    {profile.experience.map((role) => (
+                      <div
+                        key={role.company}
+                        className="rounded-xl border border-slate-100 bg-slate-50/70 p-4 transition-colors hover:bg-slate-50"
+                      >
+                        <div className="flex items-center gap-2 text-slate-500">
+                          <Building2 className="h-4 w-4" />
+                          <span className="text-xs font-medium uppercase tracking-[0.16em]">
+                            {role.era}
+                          </span>
+                        </div>
+                        <p className="mt-2 text-sm font-semibold text-slate-900">
+                          {role.role} · {role.company}
+                        </p>
+                        <p className="mt-1 text-xs leading-relaxed text-slate-600">
+                          {role.description}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </SpotlightCard>
+              </motion.div>
             </motion.div>
           </div>
 
+          {/* Right col — timeline */}
           <div className="lg:col-span-7">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -100,18 +129,24 @@ export default function About() {
                   {profile.journey.map((item, i) => (
                     <motion.li
                       key={item.step}
-                      initial={{ opacity: 0, y: 16 }}
-                      animate={inView ? { opacity: 1, y: 0 } : {}}
+                      initial={{ opacity: 0, x: -16 }}
+                      animate={inView ? { opacity: 1, x: 0 } : {}}
                       transition={{
                         ...transition,
-                        delay: 0.16 + i * 0.08,
+                        delay: 0.2 + i * 0.1,
                       }}
                       className="relative pb-10 last:pb-0"
                     >
-                      <span className="absolute -left-[42px] top-1 flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-sm font-semibold text-indigo-600 shadow-sm ring-1 ring-slate-200">
+                      {/* Pulsing node */}
+                      <span className="absolute -left-10.5 top-1 flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-sm font-semibold text-indigo-600 shadow-sm ring-1 ring-slate-200">
                         {item.step}
                       </span>
-                      <div className="rounded-2xl border border-slate-200 bg-white/80 p-5 shadow-sm backdrop-blur transition-all hover:border-slate-300 hover:bg-white">
+
+                      <SpotlightCard
+                        className="rounded-2xl border border-slate-200 bg-white/80 p-5 shadow-sm backdrop-blur transition-all hover:border-slate-300 hover:bg-white glow-ring"
+                        tiltStrength={3}
+                        glowColor="rgba(99, 102, 241, 0.08)"
+                      >
                         <div className="flex flex-wrap items-center justify-between gap-2">
                           <h3 className="text-base font-semibold text-slate-900 sm:text-lg">
                             {item.title}
@@ -123,9 +158,10 @@ export default function About() {
                         <p className="mt-2 text-sm leading-relaxed text-slate-600">
                           {item.description}
                         </p>
-                      </div>
+                      </SpotlightCard>
+
                       {i < profile.journey.length - 1 && (
-                        <span className="absolute -left-[30px] top-12 text-slate-300">
+                        <span className="absolute -left-7.5 top-12 text-slate-300">
                           <ArrowDown className="h-4 w-4" />
                         </span>
                       )}
@@ -133,7 +169,15 @@ export default function About() {
                   ))}
                 </ol>
 
-                <div className="mt-8 rounded-2xl border border-indigo-100 bg-gradient-to-br from-indigo-50/80 via-white to-white p-6">
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={inView ? { opacity: 1, y: 0 } : {}}
+                  transition={{
+                    ...transition,
+                    delay: 0.2 + profile.journey.length * 0.1 + 0.1,
+                  }}
+                  className="mt-8 rounded-2xl border border-indigo-100 bg-linear-to-br from-indigo-50/80 via-white to-white p-6"
+                >
                   <p className="text-xs font-semibold uppercase tracking-[0.16em] text-indigo-700">
                     Specialties
                   </p>
@@ -148,7 +192,7 @@ export default function About() {
                       </li>
                     ))}
                   </ul>
-                </div>
+                </motion.div>
               </div>
             </motion.div>
           </div>

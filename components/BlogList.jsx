@@ -10,8 +10,10 @@ import {
 import { ArrowLeft, ArrowRight, CalendarDays, Clock } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useMemo, useRef, useState } from "react";
 import posts from "../data/posts.json";
+import { SpotlightCard } from "./ui/SpotlightCard";
+import { TextRevealMask } from "./ui/TextRevealMask";
 
 const tabs = [
   { key: "All", label: "All" },
@@ -44,23 +46,25 @@ function categoryTone(cat) {
 
 function BlogListContent() {
   const searchParams = useSearchParams();
-  const initialCategory = searchParams.get("cat") || "All";
-  const [active, setActive] = useState(
-    tabs.map((t) => t.key).includes(initialCategory) ? initialCategory : "All",
-  );
+  const catParam = searchParams.get("cat");
+  const validCat =
+    catParam && tabs.some((t) => t.key === catParam) ? catParam : "All";
+
+  const [active, setActive] = useState(validCat);
+  const [prevCatParam, setPrevCatParam] = useState(catParam);
+
+  // Sync state during render if URL query param changes without effect
+  if (catParam !== prevCatParam) {
+    setPrevCatParam(catParam);
+    setActive(validCat);
+  }
+
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
   const reduceMotion = useReducedMotion();
   const baseTransition = reduceMotion
     ? { duration: 0 }
     : { duration: 0.5, ease: [0.22, 1, 0.36, 1] };
-
-  useEffect(() => {
-    const cat = searchParams.get("cat");
-    if (cat && tabs.map((t) => t.key).includes(cat)) {
-      setActive(cat);
-    }
-  }, [searchParams]);
 
   const sorted = useMemo(
     () =>
@@ -85,9 +89,9 @@ function BlogListContent() {
         >
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition-colors hover:text-indigo-700"
+            className="group inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition-colors hover:text-indigo-700"
           >
-            <ArrowLeft className="h-4 w-4" />
+            <ArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />
             Back to home
           </Link>
         </motion.div>
@@ -102,12 +106,17 @@ function BlogListContent() {
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-indigo-600">
               Blog
             </p>
-            <h1 className="mt-4 text-3xl font-semibold leading-[1.05] tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
-              Writing at the intersection of{" "}
-              <span className="gradient-text">manufacturing</span>,{" "}
-              <span className="gradient-text">quality</span>, and{" "}
-              <span className="gradient-text">web craft</span>.
-            </h1>
+            <div className="mt-4">
+              <TextRevealMask
+                as="h1"
+                splitBy="words"
+                className="text-3xl font-semibold leading-[1.05] tracking-tight text-slate-900 sm:text-4xl lg:text-5xl"
+                viewportMargin="0px"
+              >
+                Writing at the intersection of manufacturing, quality, and web
+                craft.
+              </TextRevealMask>
+            </div>
             <p className="mt-5 text-base leading-relaxed text-slate-600 sm:text-lg">
               Filter by topic to explore the full archive. All articles are
               based on hands-on experience from the factory floor and real
@@ -207,63 +216,63 @@ function BlogListContent() {
                         animate: { opacity: 1, y: 0 },
                       }}
                       transition={baseTransition}
-                      whileHover={reduceMotion ? {} : { y: -3 }}
                     >
-                      <Link
-                        href={`/blog/${post.slug}`}
-                        className="group flex flex-col gap-6 overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:shadow-lg sm:flex-row"
+                      <SpotlightCard
+                        cursorLabel="READ"
+                        glowColor="rgba(99, 102, 241, 0.10)"
+                        tiltStrength={3}
+                        className="rounded-2xl border border-slate-200 bg-white shadow-sm transition-all hover:shadow-xl glow-ring"
                       >
-                        <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden rounded-xl bg-slate-100 sm:aspect-[4/3] sm:w-48">
-                          <div
-                            role="img"
-                            aria-label={post.title}
-                            className="absolute inset-0 bg-gradient-to-br from-slate-200 via-slate-100 to-white"
-                          />
-                          <div
-                            aria-hidden="true"
-                            className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(99,102,241,0.2),transparent_55%),radial-gradient(circle_at_80%_80%,rgba(148,163,184,0.25),transparent_55%)]"
-                          />
-                          <motion.div
-                            aria-hidden="true"
-                            whileHover={reduceMotion ? {} : { scale: 1.05 }}
-                            transition={baseTransition}
-                            className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.25),transparent_60%)] opacity-0 transition-opacity group-hover:opacity-100"
-                          />
-                          <div className="absolute left-3 top-3">
-                            <span
-                              className={`rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] ring-1 ring-inset ${categoryTone(
-                                post.category,
-                              )}`}
-                            >
-                              {post.category}
-                            </span>
+                        <Link
+                          href={`/blog/${post.slug}`}
+                          className="group flex flex-col gap-6 p-6 sm:flex-row"
+                        >
+                          <div className="relative aspect-16/10 w-full shrink-0 overflow-hidden rounded-xl bg-slate-100 sm:aspect-4/3 sm:w-48">
+                            <div
+                              role="img"
+                              aria-label={post.title}
+                              className="absolute inset-0 bg-linear-to-br from-slate-200 via-slate-100 to-white"
+                            />
+                            <div
+                              aria-hidden="true"
+                              className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(99,102,241,0.2),transparent_55%),radial-gradient(circle_at_80%_80%,rgba(148,163,184,0.25),transparent_55%)]"
+                            />
+                            <div className="absolute left-3 top-3">
+                              <span
+                                className={`rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] ring-1 ring-inset ${categoryTone(
+                                  post.category,
+                                )}`}
+                              >
+                                {post.category}
+                              </span>
+                            </div>
                           </div>
-                        </div>
-                        <div className="flex flex-1 flex-col">
-                          <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500">
-                            <span className="inline-flex items-center gap-1">
-                              <CalendarDays className="h-3.5 w-3.5" />
-                              {formatDate(post.date)}
-                            </span>
-                            <span className="inline-flex items-center gap-1">
-                              <Clock className="h-3.5 w-3.5" />
-                              {post.readTime}
-                            </span>
+                          <div className="flex flex-1 flex-col">
+                            <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500">
+                              <span className="inline-flex items-center gap-1">
+                                <CalendarDays className="h-3.5 w-3.5" />
+                                {formatDate(post.date)}
+                              </span>
+                              <span className="inline-flex items-center gap-1">
+                                <Clock className="h-3.5 w-3.5" />
+                                {post.readTime}
+                              </span>
+                            </div>
+                            <h2 className="mt-3 text-xl font-semibold leading-snug tracking-tight text-slate-900 group-hover:text-indigo-700 transition-colors">
+                              {post.title}
+                            </h2>
+                            <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-slate-600">
+                              {post.excerpt}
+                            </p>
+                            <div className="mt-auto pt-5">
+                              <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-indigo-700">
+                                Read article
+                                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                              </span>
+                            </div>
                           </div>
-                          <h2 className="mt-3 text-xl font-semibold leading-snug tracking-tight text-slate-900 group-hover:text-indigo-700">
-                            {post.title}
-                          </h2>
-                          <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-slate-600">
-                            {post.excerpt}
-                          </p>
-                          <div className="mt-auto pt-5">
-                            <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-indigo-700">
-                              Read article
-                              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-                            </span>
-                          </div>
-                        </div>
-                      </Link>
+                        </Link>
+                      </SpotlightCard>
                     </motion.li>
                   ))}
                 </motion.ul>

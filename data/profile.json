@@ -1,17 +1,21 @@
 {
-  "name": "Tasrif Ahmed",
-  "headline": "Textile Engineer × Web Developer",
+  "name": "Abir Tasrif",
+  "headline": "Textile Engineer × Tech Enthusiast",
   "location": "Dhaka, Bangladesh",
-  "email": "tasrif.ahmed@example.com",
-  "bio": "I am a textile engineer turned web developer with deep expertise in industrial engineering, garment technology, and 3D fashion design. Over the years, I've worked across production floors, pattern rooms, and design studios — optimizing apparel manufacturing processes, creating technical packs, and building 3D garment simulations. Today, I combine that domain knowledge with modern web technologies to build software that solves real problems for the textile and apparel industry.",
-  "education": "B.Sc. in Textile Engineering, Specialization in Fabric Manufacturing & Apparel Technology",
+  "email": "abirtasrif@engineer.com",
+  "bio": "I am a textile engineer turned tech enthusiast with deep expertise in industrial engineering, garment technology, and 3D fashion design. Over the years, I've worked across production floors, pattern rooms, and design studios — optimizing apparel manufacturing processes, creating technical packs, and building 3D garment simulations. Today, I combine that domain knowledge with modern web technologies to build software that solves real problems for the textile and apparel industry.",
+  "education": "B.Sc. in Textile Engineering, Specialization in Apparel Manufacturing Technology",
   "specialties": [
     "3D Garment Simulation & Virtual Prototyping",
     "Industrial Engineering & Line Balancing",
     "Apparel Quality Management",
+    "Lean Management",
     "Pattern Making & Tech Pack Development",
-    "Full-Stack Web Development",
-    "Technical Documentation & Tutorials"
+    "Technical Documentation & Tutorials",
+    "Office Applications",
+    "Adobe Illustrator",
+    "Adobe Photoshop",
+    "Google Suite"
   ],
   "journey": [
     {
@@ -60,8 +64,8 @@
     }
   ],
   "socials": {
-    "github": "https://github.com/tasrif-ahmed",
-    "linkedin": "https://www.linkedin.com/in/tasrif-ahmed",
-    "youtube": "https://www.youtube.com/@learn-with-tasrif"
+    "github": "https://github.com/abirtasrif",
+    "linkedin": "https://www.linkedin.com/in/abirtasrif",
+    "youtube": "https://www.youtube.com/@learn_with_tasrif"
   }
 }

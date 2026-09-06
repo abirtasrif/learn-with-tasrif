@@ -1,13 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
-import {
-  ArrowLeft,
-  ArrowRight,
-  CalendarDays,
-  Clock,
-} from "lucide-react";
+import { ArrowLeft, ArrowRight, CalendarDays, Clock } from "lucide-react";
+import Link from "next/link";
+import { TextRevealMask } from "./ui/TextRevealMask";
 
 function formatDate(iso) {
   const d = new Date(iso);
@@ -63,7 +59,7 @@ export default function BlogArticle({ post, related = [] }) {
           >
             <span
               className={`rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] ring-1 ring-inset ${categoryTone(
-                post.category
+                post.category,
               )}`}
             >
               {post.category}
@@ -78,14 +74,16 @@ export default function BlogArticle({ post, related = [] }) {
             </span>
           </motion.div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ ...transition, delay: 0.1 }}
-            className="mt-6 text-3xl font-semibold leading-[1.1] tracking-tight text-slate-900 sm:text-5xl"
-          >
-            {post.title}
-          </motion.h1>
+          <div className="mt-6">
+            <TextRevealMask
+              as="h1"
+              splitBy="words"
+              className="text-3xl font-semibold leading-[1.1] tracking-tight text-slate-900 sm:text-5xl"
+              viewportMargin="0px"
+            >
+              {post.title}
+            </TextRevealMask>
+          </div>
 
           <motion.p
             initial={{ opacity: 0, y: 14 }}
@@ -103,11 +101,11 @@ export default function BlogArticle({ post, related = [] }) {
           transition={{ ...transition, delay: 0.22 }}
           className="mx-auto mt-12 max-w-4xl"
         >
-          <div className="relative aspect-[16/9] w-full overflow-hidden rounded-3xl border border-slate-200 bg-slate-100 shadow-sm">
+          <div className="relative aspect-video w-full overflow-hidden rounded-3xl border border-slate-200 bg-slate-100 shadow-sm">
             <div
               role="img"
               aria-label={post.title}
-              className="absolute inset-0 bg-gradient-to-br from-slate-200 via-slate-100 to-white"
+              className="absolute inset-0 bg-linear-to-br from-slate-200 via-slate-100 to-white"
             />
             <div
               aria-hidden="true"
@@ -143,14 +141,17 @@ export default function BlogArticle({ post, related = [] }) {
                     "Practical examples",
                     "What to do next",
                   ].map((t) => (
-                    <li key={t} className="flex items-start gap-2 text-slate-600">
+                    <li
+                      key={t}
+                      className="flex items-start gap-2 text-slate-600"
+                    >
                       <span className="mt-2 h-1.5 w-1.5 rounded-full bg-indigo-500" />
                       <span className="flex-1">{t}</span>
                     </li>
                   ))}
                 </ul>
               </div>
-              <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 via-white to-white p-6">
+              <div className="rounded-2xl border border-slate-200 bg-linear-to-br from-slate-50 via-white to-white p-6">
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
                   Enjoyed this article?
                 </p>
@@ -184,7 +185,9 @@ export default function BlogArticle({ post, related = [] }) {
                 ].map((t) => (
                   <li key={t} className="flex items-start gap-3">
                     <span className="mt-2 flex h-2 w-2 shrink-0 rounded-full bg-indigo-500" />
-                    <span className="text-base leading-relaxed sm:text-lg">{t}</span>
+                    <span className="text-base leading-relaxed sm:text-lg">
+                      {t}
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -193,9 +196,9 @@ export default function BlogArticle({ post, related = [] }) {
                 Thanks for reading
               </h2>
               <p className="mt-5 text-base leading-[1.9] text-slate-700 sm:text-lg">
-                If you found this article useful, you&apos;ll probably enjoy
-                the rest of the writing in this category — a mix of practical
-                field notes and framework-agnostic engineering ideas.
+                If you found this article useful, you&apos;ll probably enjoy the
+                rest of the writing in this category — a mix of practical field
+                notes and framework-agnostic engineering ideas.
               </p>
             </div>
           </div>
@@ -215,7 +218,8 @@ export default function BlogArticle({ post, related = [] }) {
                   Keep reading
                 </p>
                 <h2 className="mt-3 text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
-                  Related articles in <span className="gradient-text">{post.category}</span>
+                  Related articles in{" "}
+                  <span className="gradient-text">{post.category}</span>
                 </h2>
               </div>
               <Link
@@ -234,11 +238,11 @@ export default function BlogArticle({ post, related = [] }) {
                   href={`/blog/${r.slug}`}
                   className="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg"
                 >
-                  <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-slate-100">
+                  <div className="relative aspect-16/10 w-full overflow-hidden rounded-xl bg-slate-100">
                     <div
                       role="img"
                       aria-label={r.title}
-                      className="absolute inset-0 bg-gradient-to-br from-slate-200 via-slate-100 to-white"
+                      className="absolute inset-0 bg-linear-to-br from-slate-200 via-slate-100 to-white"
                     />
                     <div
                       aria-hidden="true"
@@ -247,7 +251,7 @@ export default function BlogArticle({ post, related = [] }) {
                     <div className="absolute left-3 top-3">
                       <span
                         className={`rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] ring-1 ring-inset ${categoryTone(
-                          r.category
+                          r.category,
                         )}`}
                       >
                         {r.category}

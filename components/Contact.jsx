@@ -5,6 +5,9 @@ import { ArrowRight, Link2, Mail } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useRef } from "react";
 import profile from "../data/profile.json";
+import { Magnetic } from "./ui/Magnetic";
+import { SpotlightCard } from "./ui/SpotlightCard";
+import { TextRevealMask } from "./ui/TextRevealMask";
 
 // Safe SVG Brand Icons to avoid Lucide import issues
 function LinkedInIcon(props) {
@@ -39,14 +42,13 @@ export default function Contact() {
     ? { duration: 0 }
     : { duration: 0.6, ease: [0.22, 1, 0.36, 1] };
 
-  // Pulling directly from your profile.json
-  const userEmail = profile?.email || "tasrif.ahmed@example.com";
+  const userEmail = profile?.email || "abirtasrif@engineer.com";
   const userLinkedin =
-    profile?.socials?.linkedin || "https://www.linkedin.com/in/tasrif-ahmed";
+    profile?.socials?.linkedin || "https://www.linkedin.com/in/abirtasrif";
   const userGithub =
-    profile?.socials?.github || "https://github.com/tasrif-ahmed";
+    profile?.socials?.github || "https://github.com/abirtasrif";
   const userYoutube =
-    profile?.socials?.youtube || "https://www.youtube.com/@learn-with-tasrif";
+    profile?.socials?.youtube || "https://www.youtube.com/@learn_with_tasrif";
 
   const channels = useMemo(
     () => [
@@ -87,21 +89,25 @@ export default function Contact() {
       card: "from-indigo-50/80 via-white to-white border-indigo-100",
       icon: "bg-indigo-50 text-indigo-600 ring-indigo-100",
       arrow: "text-indigo-700",
+      glow: "rgba(99, 102, 241, 0.12)",
     },
     sky: {
       card: "from-sky-50/80 via-white to-white border-sky-100",
       icon: "bg-sky-50 text-sky-600 ring-sky-100",
       arrow: "text-sky-700",
+      glow: "rgba(14, 165, 233, 0.12)",
     },
     slate: {
       card: "from-slate-50/80 via-white to-white border-slate-200",
       icon: "bg-slate-100 text-slate-700 ring-slate-200",
       arrow: "text-slate-800",
+      glow: "rgba(100, 116, 139, 0.10)",
     },
     rose: {
       card: "from-rose-50/80 via-white to-white border-rose-100",
       icon: "bg-rose-50 text-rose-600 ring-rose-100",
       arrow: "text-rose-700",
+      glow: "rgba(244, 63, 94, 0.12)",
     },
   };
 
@@ -112,7 +118,7 @@ export default function Contact() {
         className="absolute inset-0 -z-10 bg-[radial-gradient(1000px_400px_at_50%_-20%,rgba(99,102,241,0.12),transparent_60%)]"
       />
       <div ref={ref} className="mx-auto max-w-7xl px-5 sm:px-8">
-        <div className="overflow-hidden rounded-[2rem] border border-slate-200 bg-gradient-to-br from-white via-white to-slate-50 shadow-sm">
+        <div className="overflow-hidden rounded-4xl border border-slate-200 bg-linear-to-br from-white via-white to-slate-50 shadow-sm">
           <div className="grid grid-cols-1 gap-10 p-8 sm:p-12 lg:grid-cols-12 lg:gap-16 lg:p-16">
             <motion.div
               initial={{ opacity: 0, y: 18 }}
@@ -123,9 +129,16 @@ export default function Contact() {
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-indigo-600">
                 Contact
               </p>
-              <h2 className="mt-4 text-3xl font-semibold leading-[1.1] tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
-                Have a project, collaboration, or idea?
-              </h2>
+              <div className="mt-4">
+                <TextRevealMask
+                  as="h2"
+                  splitBy="words"
+                  className="text-3xl font-semibold leading-[1.1] tracking-tight text-slate-900 sm:text-4xl lg:text-5xl"
+                  viewportMargin="0px 0px -15% 0px"
+                >
+                  Have a project, collaboration, or idea?
+                </TextRevealMask>
+              </div>
               <p className="mt-4 text-balance text-2xl font-medium leading-tight text-slate-700 sm:text-3xl">
                 Let&apos;s build something useful.
               </p>
@@ -136,25 +149,29 @@ export default function Contact() {
               </p>
 
               <div className="mt-8 flex flex-wrap gap-3">
-                <Link
-                  href={`mailto:${userEmail}`}
-                  className="group inline-flex items-center gap-2 rounded-2xl bg-slate-900 px-6 py-3.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-slate-800 hover:shadow-md"
-                >
-                  Start a conversation
-                  <ArrowRight
-                    size={16}
-                    className="transition-transform duration-300 group-hover:translate-x-0.5"
-                  />
-                </Link>
-                <a
-                  href={userLinkedin}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-6 py-3.5 text-sm font-medium text-slate-800 transition-all hover:border-slate-300 hover:bg-white"
-                >
-                  <Link2 size={16} />
-                  LinkedIn
-                </a>
+                <Magnetic intensity={0.4} range={75}>
+                  <Link
+                    href={`mailto:${userEmail}`}
+                    className="group inline-flex items-center gap-2 rounded-2xl bg-slate-900 px-6 py-3.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-slate-800 hover:shadow-lg"
+                  >
+                    Start a conversation
+                    <ArrowRight
+                      size={16}
+                      className="transition-transform duration-300 group-hover:translate-x-1"
+                    />
+                  </Link>
+                </Magnetic>
+                <Magnetic intensity={0.4} range={75}>
+                  <a
+                    href={userLinkedin}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-6 py-3.5 text-sm font-medium text-slate-800 transition-all hover:border-slate-300 hover:bg-white hover:shadow-md"
+                  >
+                    <Link2 size={16} />
+                    LinkedIn
+                  </a>
+                </Magnetic>
               </div>
             </motion.div>
 
@@ -165,44 +182,52 @@ export default function Contact() {
                   const tone = toneStyles[ch.tone];
                   const external = ch.href.startsWith("http");
                   return (
-                    <motion.a
+                    <motion.div
                       key={ch.label}
-                      href={ch.href}
-                      target={external ? "_blank" : undefined}
-                      rel={external ? "noreferrer noopener" : undefined}
                       initial={{ opacity: 0, y: 18 }}
                       animate={inView ? { opacity: 1, y: 0 } : {}}
                       transition={{
                         ...baseTransition,
                         delay: 0.08 + i * 0.06,
                       }}
-                      whileHover={reduceMotion ? {} : { y: -3 }}
-                      className={`group relative overflow-hidden rounded-2xl border bg-gradient-to-br p-6 shadow-sm transition-all hover:shadow-lg ${tone.card}`}
                     >
-                      <div className="flex items-start justify-between gap-4">
-                        <span
-                          className={`flex h-12 w-12 items-center justify-center rounded-2xl ring-1 ring-inset ${tone.icon}`}
+                      <a
+                        href={ch.href}
+                        target={external ? "_blank" : undefined}
+                        rel={external ? "noreferrer noopener" : undefined}
+                        className="block h-full"
+                      >
+                        <SpotlightCard
+                          glowColor={tone.glow}
+                          tiltStrength={5}
+                          className={`group relative h-full overflow-hidden rounded-2xl border bg-linear-to-br p-6 shadow-sm transition-all hover:shadow-xl glow-ring ${tone.card}`}
                         >
-                          <Icon className="h-6 w-6" />
-                        </span>
-                        <span
-                          className={`inline-flex h-9 w-9 items-center justify-center rounded-xl border border-white/70 bg-white/80 ${tone.arrow}`}
-                        >
-                          <ArrowRight
-                            size={16}
-                            className="transition-transform duration-300 group-hover:translate-x-0.5"
-                          />
-                        </span>
-                      </div>
-                      <div className="mt-6">
-                        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
-                          {ch.label}
-                        </p>
-                        <p className="mt-1 text-sm font-semibold text-slate-900 sm:text-base">
-                          {ch.detail}
-                        </p>
-                      </div>
-                    </motion.a>
+                          <div className="flex items-start justify-between gap-4">
+                            <span
+                              className={`flex h-12 w-12 items-center justify-center rounded-2xl ring-1 ring-inset ${tone.icon}`}
+                            >
+                              <Icon className="h-6 w-6" />
+                            </span>
+                            <span
+                              className={`inline-flex h-9 w-9 items-center justify-center rounded-xl border border-white/70 bg-white/80 transition-transform duration-300 group-hover:scale-110 ${tone.arrow}`}
+                            >
+                              <ArrowRight
+                                size={16}
+                                className="transition-transform duration-300 group-hover:translate-x-0.5"
+                              />
+                            </span>
+                          </div>
+                          <div className="mt-6">
+                            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+                              {ch.label}
+                            </p>
+                            <p className="mt-1 text-sm font-semibold text-slate-900 sm:text-base">
+                              {ch.detail}
+                            </p>
+                          </div>
+                        </SpotlightCard>
+                      </a>
+                    </motion.div>
                   );
                 })}
               </div>

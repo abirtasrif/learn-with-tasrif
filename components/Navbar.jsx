@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { Menu, X, ArrowRight } from "lucide-react";
+import { ArrowRight, Menu, X } from "lucide-react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import profile from "../data/profile.json";
+import { Magnetic } from "./ui/Magnetic";
 
 const navItems = [
   { label: "About", href: "#about" },
@@ -49,7 +50,7 @@ export default function Navbar() {
       transition={transition}
       className={`sticky top-0 z-50 w-full transition-all duration-300 ${
         scrolled
-          ? "border-b border-slate-200/70 bg-white/70 backdrop-blur-xl"
+          ? "border-b border-slate-200/70 bg-white/75 backdrop-blur-xl shadow-xs"
           : "border-b border-transparent bg-transparent"
       }`}
     >
@@ -58,52 +59,53 @@ export default function Navbar() {
           scrolled ? "h-14 sm:h-16" : "h-16 sm:h-20"
         }`}
       >
-        <Link
-          href="/"
-          className="group flex items-center gap-2 text-slate-900"
-          aria-label={`${profile.name} — Home`}
-        >
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-600 to-indigo-500 text-sm font-semibold text-white shadow-sm shadow-indigo-200">
-            {profile.name
-              .split(" ")
-              .map((n) => n[0])
-              .slice(0, 2)
-              .join("")}
-          </span>
-          <div className="flex flex-col leading-tight">
-            <span className="text-sm font-semibold tracking-tight">
-              {profile.name}
+        <Magnetic intensity={0.2} range={60}>
+          <Link
+            href="/"
+            className="group flex items-center gap-2 text-slate-900"
+            aria-label={`${profile.name} — Home`}
+          >
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-br from-indigo-600 to-indigo-500 text-sm font-semibold text-white shadow-sm shadow-indigo-200 transition-transform duration-300 group-hover:scale-105">
+              {profile.name
+                .split(" ")
+                .map((n) => n[0])
+                .slice(0, 2)
+                .join("")}
             </span>
-            <span className="hidden text-[11px] text-slate-500 sm:block">
-              {profile.headline}
-            </span>
-          </div>
-        </Link>
+            <div className="flex flex-col leading-tight">
+              <span className="text-sm font-semibold tracking-tight">
+                {profile.name}
+              </span>
+              <span className="hidden text-[11px] text-slate-500 sm:block">
+                {profile.headline}
+              </span>
+            </div>
+          </Link>
+        </Magnetic>
 
-        <nav
-          className="hidden items-center gap-1 lg:flex"
-          aria-label="Primary"
-        >
+        <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary">
           {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="relative rounded-lg px-3.5 py-2 text-sm font-medium text-slate-600 transition-colors hover:text-slate-900 focus:text-slate-900"
+              className="group relative rounded-lg px-3.5 py-2 text-sm font-medium text-slate-600 transition-colors hover:text-slate-900 focus:text-slate-900"
             >
               <span>{item.label}</span>
-              <span className="pointer-events-none absolute inset-x-3 bottom-1 h-px scale-x-0 bg-indigo-500 transition-transform duration-300 group-hover:scale-x-100 hover:scale-x-100" />
+              <span className="pointer-events-none absolute inset-x-3 bottom-1 h-0.5 scale-x-0 rounded-full bg-indigo-500 transition-transform duration-300 group-hover:scale-x-100" />
             </Link>
           ))}
         </nav>
 
         <div className="hidden items-center gap-3 lg:flex">
-          <Link
-            href="#contact"
-            className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-slate-800 hover:shadow-md focus-visible:ring-2 focus-visible:ring-indigo-500"
-          >
-            Let&apos;s Connect
-            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-          </Link>
+          <Magnetic intensity={0.35} range={75}>
+            <Link
+              href="#contact"
+              className="group inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-slate-800 hover:shadow-md focus-visible:ring-2 focus-visible:ring-indigo-500"
+            >
+              Let&apos;s Connect
+              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
+          </Magnetic>
         </div>
 
         <button
