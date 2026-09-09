@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import CustomCursor from "../components/ui/CustomCursor";
+import FloatingDock from "../components/ui/FloatingDock";
 import ScrollProgress from "../components/ui/ScrollProgress";
 import SmoothScroll from "../components/ui/SmoothScroll";
 import profile from "../data/profile.json";
@@ -18,7 +19,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  metadataBase: new URL("https://example.com"),
+  metadataBase: new URL("https://abirtasrif.vercel.app"),
   title: {
     default: `${profile.name} — ${profile.headline}`,
     template: `%s | ${profile.name}`,
@@ -56,6 +57,7 @@ export default function RootLayout({ children }) {
           <main id="main-content" className="flex-1">
             {children}
           </main>
+          <FloatingDock />
           <Footer />
         </SmoothScroll>
       </body>

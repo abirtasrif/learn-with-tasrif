@@ -4,14 +4,55 @@
   "location": "Dhaka, Bangladesh",
   "email": "abirtasrif@engineer.com",
   "bio": "I am a textile engineer turned tech enthusiast with deep expertise in industrial engineering, garment technology, and 3D fashion design. Over the years, I've worked across production floors, pattern rooms, and design studios — optimizing apparel manufacturing processes, creating technical packs, and building 3D garment simulations. Today, I combine that domain knowledge with modern web technologies to build software that solves real problems for the textile and apparel industry.",
-  "education": "B.Sc. in Textile Engineering, Specialization in Apparel Manufacturing Technology",
+  "education": [
+    {
+      "degree": "PGD in Garments Business",
+      "institution": "IBA, University of Dhaka",
+      "year": "2024"
+    },
+    {
+      "degree": "B.Sc. in Textile Engineering",
+      "institution": "Daffodil International University",
+      "year": "2015"
+    }
+  ],
+  "certifications": [
+    {
+      "title": "5S & Visual Management",
+      "issuer": "Intertek",
+      "year": "2019"
+    },
+    {
+      "title": "Security Awarness Foundations",
+      "issuer": "KnowBe4",
+      "year": "2021"
+    },
+    {
+      "title": "2021 Common Threats",
+      "issuer": "KnowBe4",
+      "year": "2021"
+    },
+    {
+      "title": "Certificate-in-Computer Application",
+      "issuer": "Bangladesh Technical Education Board",
+      "year": "2008"
+    },
+    {
+      "title": "Fire Fighting, Prevention, Rescue & First Aid",
+      "issuer": "Bangladesh Fire Service & Civil Defence (FSCD)",
+      "year": "2018"
+    }
+  ],
   "specialties": [
+    "Textile Testing",
+    "Textile Inspection",
+    "Sustainability",
     "3D Garment Simulation & Virtual Prototyping",
-    "Industrial Engineering & Line Balancing",
+    "Industrial Engineering",
     "Apparel Quality Management",
     "Lean Management",
-    "Pattern Making & Tech Pack Development",
-    "Technical Documentation & Tutorials",
+    "Pattern Making",
+    "Tech Pack Development",
     "Office Applications",
     "Adobe Illustrator",
     "Adobe Photoshop",
@@ -20,47 +61,65 @@
   "journey": [
     {
       "step": 1,
-      "title": "Textile Engineering",
-      "era": "2016 – 2020",
+      "title": "IE Officer - Alema Textiles Ltd. (MIM Group)",
+      "era": "Aug 2015 – Feb 2017",
       "description": "Studied fabric manufacturing, textile chemistry, apparel production, and quality engineering. Built a strong foundation in fiber-to-garment workflows."
     },
     {
       "step": 2,
-      "title": "Industrial Engineering",
-      "era": "2020 – 2022",
+      "title": "Executive(CI) - Snowtex Outerwear Ltd.",
+      "era": "May 2017 – May 2018",
       "description": "Worked in apparel manufacturing as an IE executive — conducting SMV studies, balancing production lines, improving operator efficiency, and implementing lean tools."
     },
     {
       "step": 3,
-      "title": "Garment Technology",
-      "era": "2021 – 2023",
-      "description": "Led technical packages, garment construction, sewing feasibility reviews, and defect root-cause analysis for high-volume export orders."
+      "title": "Sr. Executive(IE) - Snowtex Outerwear Ltd.",
+      "era": "Jun 2018 – Mar 2020",
+      "description": "Worked in apparel manufacturing as an IE executive — conducting SMV studies, balancing production lines, improving operator efficiency, and implementing lean tools."
     },
     {
       "step": 4,
-      "title": "3D Fashion Design",
-      "era": "2022 – Present",
-      "description": "Mastered CLO 3D and Lectra Modaris for virtual sampling, 3D garment visualization, pattern grading, and fit simulation to reduce physical sample lead time."
+      "title": "Textile Quality Asst. - Groupe Casino Ltd. (BD)",
+      "era": "Mar 2020 – Dec 2021",
+      "description": "Led technical packages, garment construction, sewing feasibility reviews, and defect root-cause analysis for high-volume export orders."
     },
     {
       "step": 5,
-      "title": "Web Development",
-      "era": "2023 – Present",
-      "description": "Transitioned into web engineering, building modern UIs with Next.js and JavaScript. Creating tools, portfolios, and learning content that blend textile domain knowledge with software craft."
+      "title": "Textile Quality Technologist - Fashion Theory Ltd.",
+      "era": "Jan 2022 – Dec 2022",
+      "description": "Mastered CLO 3D and Lectra Modaris for virtual sampling, 3D garment visualization, pattern grading, and fit simulation to reduce physical sample lead time."
+    },
+    {
+      "step": 6,
+      "title": "Textile Sourcing Leader - Fashion Theory Ltd.",
+      "era": "Dec 2022 – Jun 2025",
+      "description": "Managed sustainable fabric sourcing, supplier audits, price negotiations, and supply chain timelines for overseas fashion clients."
+    },
+    {
+      "step": 7,
+      "title": "QA Technician - Capelli Sports Dhaka",
+      "era": "Aug 2026 – Present",
+      "description": "Overseeing product testing, inline and final inspections, factory compliance, and introducing 3D virtual prototyping into product development."
     }
   ],
   "experience": [
     {
-      "company": "Jarvan IT",
-      "role": "Web Developer",
-      "era": "2024 – Present",
-      "description": "Design and develop modern web interfaces, dashboards, and marketing sites using Next.js, React, and Tailwind CSS. Focus on performance, accessibility, and clean component architecture."
+      "company": "Capelli Sports Dhaka",
+      "role": "QA Technician",
+      "era": "2026 – Present",
+      "description": "Optimized production lines, created detailed tech packs, conducted quality audits, and introduced 3D virtual prototyping into the product development cycle."
     },
     {
-      "company": "Apparel Manufacturing Group",
-      "role": "Industrial Engineer & Technical Designer",
-      "era": "2020 – 2024",
-      "description": "Optimized production lines, created detailed tech packs, conducted quality audits, and introduced 3D virtual prototyping into the product development cycle."
+      "company": "Resilient Green Vision",
+      "role": "Asst. Consultant (Textile & Process)",
+      "era": "2025 – Present",
+      "description": "Advise manufacturers on process optimization, sustainable material adoption, lean implementations, and energy-efficient textile production."
+    },
+    {
+      "company": "Jarvan IT",
+      "role": "Product Designer & Developer",
+      "era": "2023 – Present",
+      "description": "Design and develop modern web interfaces, dashboards, and marketing sites and tools. Focus on performance, accessibility, and clean component architecture."
     }
   ],
   "socials": {

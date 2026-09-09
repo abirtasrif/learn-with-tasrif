@@ -10,6 +10,7 @@ import {
 import { ArrowUpRight, Layers } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
 import designs from "../data/designs.json";
+import { BorderBeam } from "./ui/BorderBeam";
 import { SpotlightCard } from "./ui/SpotlightCard";
 import { TextRevealMask } from "./ui/TextRevealMask";
 
@@ -164,9 +165,18 @@ export default function DesignShowcase() {
                       tiltStrength={6}
                       cursorLabel="VIEW"
                       className={`group relative h-full overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-shadow hover:shadow-2xl glow-ring ${
-                        featured ? "ring-1 ring-indigo-100" : ""
+                        featured ? "ring-1 ring-indigo-200" : ""
                       }`}
                     >
+                      {featured && (
+                        <BorderBeam
+                          size={240}
+                          duration={14}
+                          colorFrom="#6366f1"
+                          colorTo="#a855f7"
+                          borderWidth={1.5}
+                        />
+                      )}
                       {/* Image placeholder */}
                       <div className="relative aspect-4/3 w-full overflow-hidden bg-slate-100 sm:aspect-16/10 lg:aspect-auto lg:h-full lg:min-h-65">
                         <div

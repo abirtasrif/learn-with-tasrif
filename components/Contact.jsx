@@ -5,6 +5,7 @@ import { ArrowRight, Link2, Mail } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useRef } from "react";
 import profile from "../data/profile.json";
+import { BorderBeam } from "./ui/BorderBeam";
 import { Magnetic } from "./ui/Magnetic";
 import { SpotlightCard } from "./ui/SpotlightCard";
 import { TextRevealMask } from "./ui/TextRevealMask";
@@ -118,7 +119,14 @@ export default function Contact() {
         className="absolute inset-0 -z-10 bg-[radial-gradient(1000px_400px_at_50%_-20%,rgba(99,102,241,0.12),transparent_60%)]"
       />
       <div ref={ref} className="mx-auto max-w-7xl px-5 sm:px-8">
-        <div className="overflow-hidden rounded-4xl border border-slate-200 bg-linear-to-br from-white via-white to-slate-50 shadow-sm">
+        <div className="relative overflow-hidden rounded-4xl border border-slate-200 bg-linear-to-br from-white via-white to-slate-50 shadow-sm">
+          <BorderBeam
+            size={340}
+            duration={18}
+            colorFrom="#6366f1"
+            colorTo="#38bdf8"
+            borderWidth={1.5}
+          />
           <div className="grid grid-cols-1 gap-10 p-8 sm:p-12 lg:grid-cols-12 lg:gap-16 lg:p-16">
             <motion.div
               initial={{ opacity: 0, y: 18 }}

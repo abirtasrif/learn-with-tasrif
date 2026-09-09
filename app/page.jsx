@@ -8,6 +8,9 @@ import Marquee from "../components/ui/Marquee";
 import VideoGrid from "../components/VideoGrid";
 
 const marqueeTags = [
+  "Textile Testing",
+  "Textile Inspection",
+  "Sustainibility",
   "CLO 3D Design",
   "Textile Engineering",
   "Industrial Engineering",

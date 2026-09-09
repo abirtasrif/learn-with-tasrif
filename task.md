@@ -34,3 +34,17 @@
 ## Verification
 - [x] npm run lint — zero errors, zero warnings
 - [x] npm run build — 100% successful compile in 644ms, all 14 routes statically generated
+
+## 21st MCP Animation Upgrade
+- [x] components/ui/BorderBeam.jsx (21st MCP dillionverma/border-beam with CSS offset-path keyframes)
+- [x] components/ui/NumberTicker.jsx (21st MCP dillionverma/number-ticker with framer-motion spring physics)
+- [x] components/ui/InteractiveParticles.jsx (21st MCP inspired canvas particle field with mouse attraction & off-screen IntersectionObserver)
+- [x] components/ui/FloatingDock.jsx (21st MCP inspired macOS spring-magnified dock with smooth anchor jumps)
+- [x] globals.css (added @keyframes border-beam and .animate-border-beam)
+- [x] Hero.jsx (added InteractiveParticles canvas, BorderBeam on badge, live NumberTicker stats strip)
+- [x] Skills.jsx (integrated live NumberTicker on skill level percentages)
+- [x] DesignShowcase.jsx (BorderBeam traveling light sweep on featured showcase card)
+- [x] Contact.jsx (BorderBeam halo sweep on main collaboration container)
+- [x] app/layout.jsx (integrated FloatingDock at root layout)
+- [x] Verified build & lint: 0 errors, 14/14 static pages generated
+

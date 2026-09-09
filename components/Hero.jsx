@@ -4,21 +4,24 @@ import { motion, useReducedMotion } from "framer-motion";
 import {
   ArrowRight,
   BookOpen,
-  Briefcase,
-  Layers3,
+  Laptop,
   MapPin,
+  Shirt,
   Sparkles,
 } from "lucide-react";
 import Link from "next/link";
 import profile from "../data/profile.json";
+import { BorderBeam } from "./ui/BorderBeam";
+import { InteractiveParticles } from "./ui/InteractiveParticles";
 import { Magnetic } from "./ui/Magnetic";
+import { NumberTicker } from "./ui/NumberTicker";
 import { SpotlightCard } from "./ui/SpotlightCard";
 import { TextRevealMask } from "./ui/TextRevealMask";
 
 const labels = [
-  { title: "3D Garment Design", icon: Layers3, tone: "indigo" },
-  { title: "Industrial Engineering", icon: Briefcase, tone: "slate" },
-  { title: "Content & Tutorials", icon: BookOpen, tone: "sky" },
+  { title: "Fashion & Textile", icon: Shirt, tone: "indigo" },
+  { title: "Tech & Software", icon: Laptop, tone: "slate" },
+  { title: "Self-Development", icon: Sparkles, tone: "sky" },
 ];
 
 export default function Hero() {
@@ -32,6 +35,9 @@ export default function Hero() {
       <div className="absolute inset-0 soft-gradient" aria-hidden="true" />
       <div className="absolute inset-0 noise-grid" aria-hidden="true" />
 
+      {/* Interactive Canvas Particle network (21st.dev) */}
+      <InteractiveParticles quantity={36} color="99, 102, 241" />
+
       {/* Ambient glow orbs */}
       <div
         aria-hidden="true"
@@ -44,13 +50,20 @@ export default function Hero() {
 
       <div className="relative mx-auto max-w-7xl px-5 pb-24 pt-8 sm:px-8 sm:pb-32 sm:pt-14">
         <div className="mx-auto max-w-4xl text-center">
-          {/* Badge with shimmer border */}
+          {/* Badge with 21st Border Beam */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={transition}
-            className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-3.5 py-1.5 text-xs font-medium uppercase tracking-[0.14em] text-slate-600 backdrop-blur sm:text-[11px] shimmer-border"
+            className="relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-slate-200 bg-white/80 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.14em] text-slate-700 shadow-xs backdrop-blur sm:text-[11px]"
           >
+            <BorderBeam
+              size={90}
+              duration={10}
+              colorFrom="#6366f1"
+              colorTo="#a855f7"
+              borderWidth={1.5}
+            />
             <Sparkles className="h-3.5 w-3.5 text-indigo-600" />
             Textile Engineering × Tech Enthusiast
           </motion.div>
@@ -125,6 +138,48 @@ export default function Hero() {
           >
             <MapPin className="h-3.5 w-3.5 text-slate-400" />
             Based in {profile.location} · Available for select collaborations
+          </motion.div>
+
+          {/* 21st NumberTicker metrics banner */}
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ ...transition, delay: 0.85 }}
+            className="mx-auto mt-10 grid max-w-3xl grid-cols-2 gap-4 rounded-3xl border border-slate-200/80 bg-white/70 p-4 shadow-sm backdrop-blur-md sm:grid-cols-4 sm:p-5"
+          >
+            <div className="flex flex-col items-center justify-center p-2 text-center">
+              <div className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+                <NumberTicker value={50} delay={0.2} />+
+              </div>
+              <p className="mt-1 text-xs font-medium text-slate-500">
+                3D Simulations
+              </p>
+            </div>
+            <div className="flex flex-col items-center justify-center border-l border-slate-200/60 p-2 text-center">
+              <div className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+                <NumberTicker value={100} delay={0.3} />
+                K+
+              </div>
+              <p className="mt-1 text-xs font-medium text-slate-500">
+                Tutorial Views
+              </p>
+            </div>
+            <div className="flex flex-col items-center justify-center border-l border-slate-200/60 p-2 text-center">
+              <div className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+                <NumberTicker value={10} delay={0.4} />+
+              </div>
+              <p className="mt-1 text-xs font-medium text-slate-500">
+                Systems Optimized
+              </p>
+            </div>
+            <div className="flex flex-col items-center justify-center border-l border-slate-200/60 p-2 text-center">
+              <div className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+                <NumberTicker value={100} delay={0.5} />%
+              </div>
+              <p className="mt-1 text-xs font-medium text-slate-500">
+                Precision Standards
+              </p>
+            </div>
           </motion.div>
         </div>
 

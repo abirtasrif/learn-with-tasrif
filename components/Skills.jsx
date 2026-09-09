@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
 import tools from "../data/tools.json";
+import { NumberTicker } from "./ui/NumberTicker";
 import { SpotlightCard } from "./ui/SpotlightCard";
 import { TextRevealMask } from "./ui/TextRevealMask";
 
@@ -206,7 +207,7 @@ export default function Skills() {
                         <div className="mb-2 flex items-center justify-between text-xs text-slate-500">
                           <span>Skill level</span>
                           <span className="font-medium text-slate-700">
-                            {tool.level}%
+                            <NumberTicker value={tool.level} delay={0.2} />%
                           </span>
                         </div>
                         <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
