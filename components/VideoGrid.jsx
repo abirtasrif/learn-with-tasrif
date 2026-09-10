@@ -103,12 +103,12 @@ export default function VideoGrid() {
                 className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl"
                 viewportMargin="0px 0px -15% 0px"
               >
-                Practical tutorials on fashion tech and web craft.
+                Practical tutorials on fashion tech and computer applications.
               </TextRevealMask>
             </div>
             <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
               Long-form lessons that blend theory with real-world workflows —
-              from CLO 3D simulations to production-ready Next.js projects.
+              from Basic computer literacy to advanced complex projects.
             </p>
           </div>
           <a

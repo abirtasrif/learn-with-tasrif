@@ -3,90 +3,96 @@
     "name": "CLO 3D",
     "category": "3D & Fashion",
     "categoryGroup": "Textile & Fashion",
-    "level": 95,
-    "label": "Expert",
+    "label": "Intermediate",
     "icon": "shirt",
-    "description": "3D garment simulation, virtual fitting, fabric properties, and realistic renderings for digital product development."
+    "description": "3D garment simulation, virtual fitting, digital fabric physics, and realistic rendering for apparel product development."
   },
   {
     "name": "Lectra Modaris",
     "category": "CAD / Pattern Making",
     "categoryGroup": "Textile & Fashion",
-    "level": 88,
-    "label": "Advanced",
+    "label": "Beginner",
     "icon": "ruler",
-    "description": "Industry-grade pattern design, grading, marker making, and seamless integration with 3D prototyping workflows."
+    "description": "Digital pattern creation, size grading, marker optimization, and 2D-to-3D garment drafting workflows."
+  },
+  {
+    "name": "Textile Testing",
+    "category": "Quality Control",
+    "categoryGroup": "Textile & Fashion",
+    "label": "Advanced",
+    "icon": "flask-conical",
+    "description": "Physical and chemical lab testing, fabric performance evaluations, GSM analysis, and international ISO/AATCC standards compliance."
   },
   {
     "name": "Adobe Illustrator",
     "category": "Design",
     "categoryGroup": "Design",
-    "level": 90,
-    "label": "Advanced",
+    "label": "Expert",
     "icon": "pen-tool",
-    "description": "Flat sketches, tech pack illustrations, spec sheets, and vector graphics for apparel product development."
+    "description": "Vector tech packs, flat sketch generation, detailed spec sheets, and apparel artwork creation."
   },
   {
     "name": "Adobe Photoshop",
     "category": "Design",
     "categoryGroup": "Design",
-    "level": 82,
     "label": "Advanced",
     "icon": "image",
-    "description": "Textile print design, concept mood boards, image retouching, and 3D render post-processing."
+    "description": "Textile print repeat patterns, digital concept mood boards, photographic retouching, and render post-processing."
   },
   {
-    "name": "Advanced Excel",
-    "category": "Productivity",
+    "name": "Microsoft Excel",
+    "category": "Analytics & IE",
     "categoryGroup": "Productivity",
-    "level": 85,
     "label": "Advanced",
     "icon": "table",
-    "description": "SMV calculators, production efficiency trackers, IE dashboards, and complex data analysis using formulas and pivots."
+    "description": "SMV calculations, production line balancing models, statistical data analysis, advanced formulas, and dynamic pivot tables."
   },
   {
-    "name": "Industrial Engineering",
-    "category": "Engineering",
-    "categoryGroup": "Engineering",
-    "level": 92,
-    "label": "Expert",
-    "icon": "factory",
-    "description": "Line balancing, SMV, method study, work measurement, lean manufacturing, and capacity planning."
-  },
-  {
-    "name": "Quality Management",
-    "category": "Engineering",
-    "categoryGroup": "Engineering",
-    "level": 89,
+    "name": "Google Sheets",
+    "category": "Analytics & Collaboration",
+    "categoryGroup": "Productivity",
     "label": "Advanced",
-    "icon": "shield-check",
-    "description": "AQL inspection, defect classification, root cause analysis, CAPA, and quality system implementation."
+    "icon": "sheet",
+    "description": "Cloud-based collaborative reporting, real-time KPI tracking, dynamic formula modeling, and automated workflow scripts."
   },
   {
-    "name": "JavaScript",
-    "category": "Programming",
-    "categoryGroup": "Development",
-    "level": 84,
-    "label": "Skilled",
-    "icon": "code-2",
-    "description": "ES6+, DOM manipulation, async patterns, React patterns, and building reusable component libraries."
+    "name": "Power BI",
+    "category": "Data Visualization",
+    "categoryGroup": "Productivity",
+    "label": "Intermediate",
+    "icon": "bar-chart-3",
+    "description": "Interactive operational dashboards, DAX queries, data modeling, and business intelligence reporting for manufacturing analytics."
   },
   {
-    "name": "Next.js",
-    "category": "Framework",
-    "categoryGroup": "Development",
-    "level": 80,
-    "label": "Skilled",
+    "name": "Looker Studio",
+    "category": "Data Visualization",
+    "categoryGroup": "Productivity",
+    "label": "Intermediate",
     "icon": "layout-dashboard",
-    "description": "App Router, RSC, server-side rendering, static generation, metadata, and modern frontend architecture."
+    "description": "Custom automated performance reports, cross-platform data source integration, and real-time visual analytics dashboards."
   },
   {
-    "name": "Tailwind CSS",
-    "category": "Framework",
-    "categoryGroup": "Development",
-    "level": 86,
-    "label": "Skilled",
-    "icon": "palette",
-    "description": "Utility-first styling, responsive systems, design tokens, and accessible component-based UI."
+    "name": "Microsoft Word",
+    "category": "Documentation",
+    "categoryGroup": "Productivity",
+    "label": "Advanced",
+    "icon": "file-text",
+    "description": "Standard Operating Procedure (SOP) documentation, technical auditing reports, and structured business communications."
+  },
+  {
+    "name": "Microsoft PowerPoint",
+    "category": "Presentation",
+    "categoryGroup": "Productivity",
+    "label": "Advanced",
+    "icon": "presentation",
+    "description": "Executive pitch decks, production review visual presentations, and data-driven project proposals."
+  },
+  {
+    "name": "MS Outlook",
+    "category": "Communication",
+    "categoryGroup": "Productivity",
+    "label": "Advanced",
+    "icon": "mail",
+    "description": "Enterprise email management, calendar scheduling, team coordination, and cross-departmental communication."
   }
 ]

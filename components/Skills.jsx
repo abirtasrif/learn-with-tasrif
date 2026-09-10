@@ -22,7 +22,6 @@ import {
 } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
 import tools from "../data/tools.json";
-import { NumberTicker } from "./ui/NumberTicker";
 import { SpotlightCard } from "./ui/SpotlightCard";
 import { TextRevealMask } from "./ui/TextRevealMask";
 
@@ -201,33 +200,6 @@ export default function Skills() {
                       <p className="mt-4 text-sm leading-relaxed text-slate-600">
                         {tool.description}
                       </p>
-
-                      {/* Animated skill bar */}
-                      <div className="mt-6">
-                        <div className="mb-2 flex items-center justify-between text-xs text-slate-500">
-                          <span>Skill level</span>
-                          <span className="font-medium text-slate-700">
-                            <NumberTicker value={tool.level} delay={0.2} />%
-                          </span>
-                        </div>
-                        <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
-                          <motion.div
-                            initial={{ width: 0 }}
-                            animate={inView ? { width: `${tool.level}%` } : {}}
-                            transition={{
-                              ...baseTransition,
-                              delay: 0.4,
-                              duration: 0.8,
-                            }}
-                            className="h-full rounded-full bg-linear-to-r from-indigo-500 via-violet-500 to-indigo-400"
-                            role="progressbar"
-                            aria-valuenow={tool.level}
-                            aria-valuemin={0}
-                            aria-valuemax={100}
-                            aria-label={`${tool.name} skill level`}
-                          />
-                        </div>
-                      </div>
                     </SpotlightCard>
                   </motion.li>
                 );
