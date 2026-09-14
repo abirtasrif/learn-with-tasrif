@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
 import tools from "../data/tools.json";
+import { ScrollReveal, TRANSITIONS, VARIANTS } from "./ui/ScrollReveal";
 import { SpotlightCard } from "./ui/SpotlightCard";
 import { TextRevealMask } from "./ui/TextRevealMask";
 
@@ -47,6 +48,9 @@ const tabs = [
   { key: "Productivity", label: "Productivity" },
 ];
 
+// Spring physics for tab pill indicator
+const TAB_SPRING = { type: "spring", stiffness: 380, damping: 26, mass: 0.5 };
+
 export default function Skills() {
   const [active, setActive] = useState("All");
   const ref = useRef(null);
@@ -54,7 +58,7 @@ export default function Skills() {
   const reduceMotion = useReducedMotion();
   const baseTransition = reduceMotion
     ? { duration: 0 }
-    : { duration: 0.5, ease: [0.22, 1, 0.36, 1] };
+    : TRANSITIONS.default;
 
   const filtered = useMemo(
     () =>
@@ -71,17 +75,17 @@ export default function Skills() {
         aria-hidden="true"
       />
       <div
-        className="absolute right-0 top-1/4 h-96 w-72 rounded-full bg-violet-100/25 blur-3xl -z-10"
+        className="absolute right-0 top-1/4 h-96 w-72 rounded-full bg-violet-100/25 blur-3xl -z-10 animate-float-a"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute left-0 bottom-1/4 h-64 w-56 rounded-full bg-indigo-100/20 blur-3xl -z-10 animate-float-b"
         aria-hidden="true"
       />
 
       <div ref={ref} className="mx-auto max-w-7xl px-5 sm:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={baseTransition}
-          className="mx-auto max-w-3xl text-center"
-        >
+        {/* Section heading */}
+        <ScrollReveal variant="fadeUp" viewOptions={{ margin: "-80px" }} className="mx-auto max-w-3xl text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-indigo-600">
             Skills & Tools
           </p>
@@ -95,53 +99,54 @@ export default function Skills() {
               A toolkit built across the factory floor and the codebase.
             </TextRevealMask>
           </div>
-          <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
-            From 3D garment simulation to component-driven interfaces — a
-            curated set of tools I rely on every day.
-          </p>
-        </motion.div>
+          <ScrollReveal variant="blurIn" delay={0.25} viewOptions={{ margin: "-80px" }}>
+            <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
+              From 3D garment simulation to component-driven interfaces — a
+              curated set of tools I rely on every day.
+            </p>
+          </ScrollReveal>
+        </ScrollReveal>
 
         {/* Filter tabs */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ ...baseTransition, delay: 0.15 }}
-          className="mx-auto mt-12 flex max-w-3xl flex-wrap items-center justify-center gap-2"
-          role="tablist"
-          aria-label="Filter tools by category"
-        >
-          <LayoutGroup id="skills-tabs">
-            {tabs.map((tab) => {
-              const selected = tab.key === active;
-              return (
-                <button
-                  key={tab.key}
-                  type="button"
-                  role="tab"
-                  aria-selected={selected}
-                  onClick={() => setActive(tab.key)}
-                  className={`relative rounded-xl px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none ${
-                    selected
-                      ? "text-slate-900"
-                      : "text-slate-600 hover:text-slate-900"
-                  }`}
-                >
-                  {selected && (
-                    <motion.span
-                      layoutId="skills-tab-pill"
-                      className="absolute inset-0 rounded-xl bg-white shadow-sm ring-1 ring-slate-200"
-                      transition={baseTransition}
-                      aria-hidden="true"
-                    />
-                  )}
-                  <span className="relative z-10">{tab.label}</span>
-                </button>
-              );
-            })}
-          </LayoutGroup>
-        </motion.div>
+        <ScrollReveal variant="fadeUp" delay={0.15} viewOptions={{ margin: "-80px" }} className="mx-auto mt-12 flex max-w-3xl flex-wrap items-center justify-center gap-2">
+          <div
+            role="tablist"
+            aria-label="Filter tools by category"
+            className="flex flex-wrap items-center justify-center gap-2"
+          >
+            <LayoutGroup id="skills-tabs">
+              {tabs.map((tab) => {
+                const selected = tab.key === active;
+                return (
+                  <button
+                    key={tab.key}
+                    type="button"
+                    role="tab"
+                    aria-selected={selected}
+                    onClick={() => setActive(tab.key)}
+                    className={`relative rounded-xl px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none ${
+                      selected
+                        ? "text-slate-900"
+                        : "text-slate-600 hover:text-slate-900"
+                    }`}
+                  >
+                    {selected && (
+                      <motion.span
+                        layoutId="skills-tab-pill"
+                        className="absolute inset-0 rounded-xl bg-white shadow-sm ring-1 ring-slate-200"
+                        transition={TAB_SPRING}
+                        aria-hidden="true"
+                      />
+                    )}
+                    <span className="relative z-10">{tab.label}</span>
+                  </button>
+                );
+              })}
+            </LayoutGroup>
+          </div>
+        </ScrollReveal>
 
-        {/* Cards grid */}
+        {/* Cards grid — diagonal stagger wave */}
         <motion.div layout className="mt-12">
           <AnimatePresence mode="popLayout">
             <motion.ul
@@ -153,7 +158,8 @@ export default function Skills() {
                 initial: {},
                 animate: {
                   transition: {
-                    staggerChildren: reduceMotion ? 0 : 0.04,
+                    staggerChildren: reduceMotion ? 0 : 0.05,
+                    delayChildren: 0.05,
                   },
                 },
               }}
@@ -166,9 +172,9 @@ export default function Skills() {
                     key={tool.name}
                     layout
                     variants={{
-                      initial: { opacity: 0, y: 18 },
-                      animate: { opacity: 1, y: 0 },
-                      exit: { opacity: 0, y: -10, scale: 0.97 },
+                      initial: { opacity: 0, y: 24, scale: 0.92, filter: "blur(4px)" },
+                      animate: { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" },
+                      exit: { opacity: 0, scale: 0.94, filter: "blur(4px)", transition: { duration: 0.2 } },
                     }}
                     transition={baseTransition}
                   >

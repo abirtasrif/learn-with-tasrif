@@ -11,6 +11,7 @@ import { ArrowUpRight, Layers } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
 import designs from "../data/designs.json";
 import { BorderBeam } from "./ui/BorderBeam";
+import { ScrollReveal, TRANSITIONS, VARIANTS } from "./ui/ScrollReveal";
 import { SpotlightCard } from "./ui/SpotlightCard";
 import { TextRevealMask } from "./ui/TextRevealMask";
 
@@ -22,6 +23,9 @@ const tabs = [
   { key: "Technical", label: "Technical" },
 ];
 
+// Spring for tab pill
+const TAB_SPRING = { type: "spring", stiffness: 380, damping: 26, mass: 0.5 };
+
 export default function DesignShowcase() {
   const [active, setActive] = useState("All");
   const ref = useRef(null);
@@ -29,7 +33,7 @@ export default function DesignShowcase() {
   const reduceMotion = useReducedMotion();
   const baseTransition = reduceMotion
     ? { duration: 0 }
-    : { duration: 0.5, ease: [0.22, 1, 0.36, 1] };
+    : TRANSITIONS.default;
 
   const filtered = useMemo(() => {
     const list =
@@ -46,17 +50,13 @@ export default function DesignShowcase() {
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10"
       >
-        <div className="absolute left-1/2 top-0 h-64 w-full max-w-3xl -translate-x-1/2 bg-linear-to-b from-indigo-50/50 to-transparent blur-3xl" />
+        <div className="absolute left-1/2 top-0 h-64 w-full max-w-3xl -translate-x-1/2 bg-linear-to-b from-indigo-50/50 to-transparent blur-3xl animate-float-a" />
       </div>
 
       <div ref={ref} className="mx-auto max-w-7xl px-5 sm:px-8">
         <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={baseTransition}
-            className="max-w-2xl"
-          >
+          {/* Section title — slides from left */}
+          <ScrollReveal variant="slideLeft" viewOptions={{ margin: "-80px" }} className="max-w-2xl">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-indigo-600">
               Design Showcase
             </p>
@@ -70,59 +70,65 @@ export default function DesignShowcase() {
                 Selected work across fashion tech and technical design.
               </TextRevealMask>
             </div>
-            <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
-              A mix of virtual garment simulations, production-ready tech packs,
-              and technical drawings from real product development workflows.
-            </p>
-          </motion.div>
+            <ScrollReveal variant="blurIn" delay={0.2} viewOptions={{ margin: "-80px" }}>
+              <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
+                A mix of virtual garment simulations, production-ready tech packs,
+                and technical drawings from real product development workflows.
+              </p>
+            </ScrollReveal>
+          </ScrollReveal>
 
-          {/* Filter tabs */}
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ ...baseTransition, delay: 0.08 }}
-            className="flex flex-wrap items-center gap-2 sm:justify-start lg:justify-end"
-            role="tablist"
-            aria-label="Filter design work by category"
+          {/* Filter tabs — slides from right */}
+          <ScrollReveal
+            variant="slideRight"
+            delay={0.08}
+            viewOptions={{ margin: "-80px" }}
           >
-            <LayoutGroup id="design-tabs">
-              {tabs.map((tab) => {
-                const selected = tab.key === active;
-                return (
-                  <button
-                    key={tab.key}
-                    type="button"
-                    role="tab"
-                    aria-selected={selected}
-                    onClick={() => setActive(tab.key)}
-                    className={`relative rounded-xl px-4 py-2 text-sm font-medium transition-colors ${
-                      selected
-                        ? "text-slate-900"
-                        : "text-slate-600 hover:text-slate-900"
-                    }`}
-                  >
-                    {selected && (
-                      <motion.span
-                        layoutId="design-tab-pill"
-                        className="absolute inset-0 rounded-xl bg-slate-900"
-                        transition={baseTransition}
-                        aria-hidden="true"
-                      />
-                    )}
-                    <span
-                      className={`relative z-10 ${
-                        selected ? "text-white" : ""
+            <div
+              className="flex flex-wrap items-center gap-2 sm:justify-start lg:justify-end"
+              role="tablist"
+              aria-label="Filter design work by category"
+            >
+              <LayoutGroup id="design-tabs">
+                {tabs.map((tab) => {
+                  const selected = tab.key === active;
+                  return (
+                    <button
+                      key={tab.key}
+                      type="button"
+                      role="tab"
+                      aria-selected={selected}
+                      onClick={() => setActive(tab.key)}
+                      className={`relative rounded-xl px-4 py-2 text-sm font-medium transition-colors ${
+                        selected
+                          ? "text-slate-900"
+                          : "text-slate-600 hover:text-slate-900"
                       }`}
                     >
-                      {tab.label}
-                    </span>
-                  </button>
-                );
-              })}
-            </LayoutGroup>
-          </motion.div>
+                      {selected && (
+                        <motion.span
+                          layoutId="design-tab-pill"
+                          className="absolute inset-0 rounded-xl bg-slate-900"
+                          transition={TAB_SPRING}
+                          aria-hidden="true"
+                        />
+                      )}
+                      <span
+                        className={`relative z-10 ${
+                          selected ? "text-white" : ""
+                        }`}
+                      >
+                        {tab.label}
+                      </span>
+                    </button>
+                  );
+                })}
+              </LayoutGroup>
+            </div>
+          </ScrollReveal>
         </div>
 
+        {/* Cards grid — stagger with scale+blur entrance */}
         <motion.div layout className="mt-14">
           <AnimatePresence mode="popLayout">
             <motion.ul
@@ -147,15 +153,20 @@ export default function DesignShowcase() {
                       : "lg:col-span-4";
                 const spanRow =
                   design.size === "lg" ? "lg:row-span-2" : "lg:row-span-1";
-                const featured = i === 0 && design.featured;
+                const isFeatured = i === 0 && design.featured;
                 return (
                   <motion.li
                     key={design.id}
                     layout
                     variants={{
-                      initial: { opacity: 0, y: 28, scale: 0.97 },
-                      animate: { opacity: 1, y: 0, scale: 1 },
-                      exit: { opacity: 0, y: -10, scale: 0.97 },
+                      initial: { opacity: 0, y: 32, scale: 0.93, filter: "blur(6px)" },
+                      animate: { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" },
+                      exit: {
+                        opacity: 0,
+                        scale: 0.95,
+                        filter: "blur(4px)",
+                        transition: { duration: 0.22 },
+                      },
                     }}
                     transition={baseTransition}
                     className={`${spanCol} ${spanRow}`}
@@ -165,10 +176,10 @@ export default function DesignShowcase() {
                       tiltStrength={6}
                       cursorLabel="VIEW"
                       className={`group relative h-full overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-shadow hover:shadow-2xl glow-ring ${
-                        featured ? "ring-1 ring-indigo-200" : ""
+                        isFeatured ? "ring-1 ring-indigo-200" : ""
                       }`}
                     >
-                      {featured && (
+                      {isFeatured && (
                         <BorderBeam
                           size={240}
                           duration={14}
@@ -177,8 +188,13 @@ export default function DesignShowcase() {
                           borderWidth={1.5}
                         />
                       )}
-                      {/* Image placeholder */}
-                      <div className="relative aspect-4/3 w-full overflow-hidden bg-slate-100 sm:aspect-16/10 lg:aspect-auto lg:h-full lg:min-h-65">
+                      {/* Image placeholder — subtle zoom-settle on enter */}
+                      <motion.div
+                        className="relative aspect-4/3 w-full overflow-hidden bg-slate-100 sm:aspect-16/10 lg:aspect-auto lg:h-full lg:min-h-65"
+                        initial={{ scale: 1.04 }}
+                        animate={inView ? { scale: 1 } : { scale: 1.04 }}
+                        transition={{ ...TRANSITIONS.slow, delay: 0.1 + i * 0.05 }}
+                      >
                         <div
                           role="img"
                           aria-label={design.title}
@@ -210,7 +226,7 @@ export default function DesignShowcase() {
                             </span>
                           )}
                         </div>
-                      </div>
+                      </motion.div>
 
                       <div className="p-6">
                         <div className="flex items-start justify-between gap-4">

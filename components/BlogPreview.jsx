@@ -11,6 +11,7 @@ import { ArrowRight, CalendarDays, Clock } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useRef, useState } from "react";
 import posts from "../data/posts.json";
+import { ScrollReveal, TRANSITIONS, VARIANTS } from "./ui/ScrollReveal";
 import { SpotlightCard } from "./ui/SpotlightCard";
 import { TextRevealMask } from "./ui/TextRevealMask";
 
@@ -43,6 +44,9 @@ function categoryTone(cat) {
   }
 }
 
+// Spring for tab pill
+const TAB_SPRING = { type: "spring", stiffness: 380, damping: 26, mass: 0.5 };
+
 export default function BlogPreview() {
   const [active, setActive] = useState("All");
   const ref = useRef(null);
@@ -50,7 +54,7 @@ export default function BlogPreview() {
   const reduceMotion = useReducedMotion();
   const baseTransition = reduceMotion
     ? { duration: 0 }
-    : { duration: 0.5, ease: [0.22, 1, 0.36, 1] };
+    : TRANSITIONS.default;
 
   const sorted = useMemo(
     () =>
@@ -76,69 +80,70 @@ export default function BlogPreview() {
       />
 
       <div ref={ref} className="mx-auto max-w-7xl px-5 sm:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={baseTransition}
-          className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between"
-        >
-          <div className="max-w-2xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-indigo-600">
-              Writing & Articles
-            </p>
-            <div className="mt-4">
-              <TextRevealMask
-                as="h2"
-                splitBy="words"
-                className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl"
-                viewportMargin="0px 0px -15% 0px"
-              >
-                Field notes from the factory floor and the editor.
-              </TextRevealMask>
+        {/* Header */}
+        <ScrollReveal variant="fadeUp" viewOptions={{ margin: "-80px" }}>
+          <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-2xl">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-indigo-600">
+                Writing & Articles
+              </p>
+              <div className="mt-4">
+                <TextRevealMask
+                  as="h2"
+                  splitBy="words"
+                  className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl"
+                  viewportMargin="0px 0px -15% 0px"
+                >
+                  Field notes from the factory floor and the editor.
+                </TextRevealMask>
+              </div>
+              <ScrollReveal variant="blurIn" delay={0.2} viewOptions={{ margin: "-80px" }}>
+                <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
+                  Practical guides, deep dives, and honest lessons learned about
+                  manufacturing, quality, and building modern web products.
+                </p>
+              </ScrollReveal>
             </div>
-            <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
-              Practical guides, deep dives, and honest lessons learned about
-              manufacturing, quality, and building modern web products.
-            </p>
-          </div>
 
-          <div
-            className="flex flex-wrap items-center gap-2"
-            role="tablist"
-            aria-label="Filter blog posts by category"
-          >
-            <LayoutGroup id="blog-tabs">
-              {tabs.map((tab) => {
-                const selected = tab.key === active;
-                return (
-                  <button
-                    key={tab.key}
-                    type="button"
-                    role="tab"
-                    aria-selected={selected}
-                    onClick={() => setActive(tab.key)}
-                    className={`relative rounded-xl px-4 py-2 text-sm font-medium transition-colors ${
-                      selected
-                        ? "text-slate-900"
-                        : "text-slate-600 hover:text-slate-900"
-                    }`}
-                  >
-                    {selected && (
-                      <motion.span
-                        layoutId="blog-tab-pill"
-                        className="absolute inset-0 rounded-xl bg-white shadow-sm ring-1 ring-slate-200"
-                        transition={baseTransition}
-                        aria-hidden="true"
-                      />
-                    )}
-                    <span className="relative z-10">{tab.label}</span>
-                  </button>
-                );
-              })}
-            </LayoutGroup>
+            <div
+              className="flex flex-wrap items-center gap-2"
+              role="tablist"
+              aria-label="Filter blog posts by category"
+            >
+              <LayoutGroup id="blog-tabs">
+                {tabs.map((tab) => {
+                  const selected = tab.key === active;
+                  return (
+                    <button
+                      key={tab.key}
+                      type="button"
+                      role="tab"
+                      aria-selected={selected}
+                      onClick={() => setActive(tab.key)}
+                      className={`relative rounded-xl px-4 py-2 text-sm font-medium transition-colors ${
+                        selected
+                          ? "text-slate-900"
+                          : "text-slate-600 hover:text-slate-900"
+                      }`}
+                    >
+                      {selected && (
+                        <motion.span
+                          layoutId="blog-tab-pill"
+                          className="absolute inset-0 rounded-xl bg-white shadow-sm ring-1 ring-slate-200"
+                          transition={TAB_SPRING}
+                          aria-hidden="true"
+                        />
+                      )}
+                      <span className="relative z-10">{tab.label}</span>
+                    </button>
+                  );
+                })}
+              </LayoutGroup>
+            </div>
           </div>
-        </motion.div>
+        </ScrollReveal>
 
+        {/* Articles grid */}
         <motion.div layout className="mt-14">
           <AnimatePresence mode="popLayout">
             {featured ? (
@@ -150,16 +155,16 @@ export default function BlogPreview() {
                 variants={{
                   initial: {},
                   animate: {
-                    transition: { staggerChildren: reduceMotion ? 0 : 0.06 },
+                    transition: { staggerChildren: reduceMotion ? 0 : 0.07 },
                   },
                 }}
                 className="grid grid-cols-1 gap-6 lg:grid-cols-12"
               >
-                {/* Featured article */}
+                {/* Featured article — slides from left, scale */}
                 <motion.article
                   variants={{
-                    initial: { opacity: 0, y: 28, scale: 0.97 },
-                    animate: { opacity: 1, y: 0, scale: 1 },
+                    initial: { opacity: 0, x: -24, scale: 0.96, filter: "blur(6px)" },
+                    animate: { opacity: 1, x: 0, scale: 1, filter: "blur(0px)" },
                   }}
                   transition={baseTransition}
                   className="lg:col-span-7"
@@ -223,14 +228,14 @@ export default function BlogPreview() {
                   </SpotlightCard>
                 </motion.article>
 
-                {/* Secondary articles */}
+                {/* Secondary articles — staggered scaleUp */}
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:col-span-5">
                   {rest.slice(0, 4).map((post) => (
                     <motion.article
                       key={post.slug}
                       variants={{
-                        initial: { opacity: 0, y: 22 },
-                        animate: { opacity: 1, y: 0 },
+                        initial: { opacity: 0, y: 24, scale: 0.93, filter: "blur(4px)" },
+                        animate: { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" },
                       }}
                       transition={baseTransition}
                     >
@@ -309,12 +314,8 @@ export default function BlogPreview() {
           </AnimatePresence>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ ...baseTransition, delay: 0.2 }}
-          className="mt-14 flex justify-center"
-        >
+        {/* CTA */}
+        <ScrollReveal variant="fadeUp" delay={0.2} viewOptions={{ margin: "-80px" }} className="mt-14 flex justify-center">
           <Link
             href="/blog"
             className="group inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-6 py-3.5 text-sm font-medium text-slate-800 shadow-sm transition-all hover:border-slate-300 hover:shadow-md"
@@ -322,7 +323,7 @@ export default function BlogPreview() {
             View all articles
             <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
           </Link>
-        </motion.div>
+        </ScrollReveal>
       </div>
     </section>
   );

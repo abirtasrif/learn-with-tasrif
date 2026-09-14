@@ -1,8 +1,10 @@
 "use client";
 
+import { motion } from "framer-motion";
 import Link from "next/link";
 import profile from "../data/profile.json";
 import { Magnetic } from "./ui/Magnetic";
+import { ScrollReveal, StaggerReveal, TRANSITIONS, VARIANTS } from "./ui/ScrollReveal";
 
 function GitHubIcon(props) {
   return (
@@ -73,7 +75,8 @@ export default function Footer() {
     <footer className="border-t border-slate-200 bg-white/70 backdrop-blur">
       <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
-          <div className="lg:col-span-5">
+          {/* Brand column — slide from left */}
+          <ScrollReveal variant="slideLeft" viewOptions={{ margin: "-40px" }} className="lg:col-span-5">
             <Link href="/" className="flex items-center gap-2.5">
               <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-linear-to-br from-indigo-600 to-indigo-500 text-sm font-semibold text-white shadow-sm shadow-indigo-200">
                 {profile.name
@@ -95,32 +98,56 @@ export default function Footer() {
               Working at the intersection of textile engineering, industrial
               engineering, garment technology, and modern web development.
             </p>
-            <div className="mt-6 flex items-center gap-2">
+            {/* Social icons — stagger springPop */}
+            <StaggerReveal
+              stagger={0.08}
+              delay={0.1}
+              className="mt-6 flex items-center gap-2"
+              viewOptions={{ margin: "-40px" }}
+            >
               {socials.map(({ label, href, icon: Icon }) => (
-                <Magnetic key={label} intensity={0.4} range={60}>
-                  <a
-                    href={href}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    aria-label={label}
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 transition-all hover:border-indigo-200 hover:bg-indigo-50 hover:text-indigo-700 hover:shadow-sm"
-                  >
-                    <Icon className="h-4 w-4" />
-                  </a>
-                </Magnetic>
+                <motion.div key={label} variants={VARIANTS.springPop} transition={TRANSITIONS.springLight}>
+                  <Magnetic intensity={0.4} range={60}>
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      aria-label={label}
+                      className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 transition-all hover:border-indigo-200 hover:bg-indigo-50 hover:text-indigo-700 hover:shadow-sm"
+                    >
+                      <Icon className="h-4 w-4" />
+                    </a>
+                  </Magnetic>
+                </motion.div>
               ))}
-            </div>
-          </div>
+            </StaggerReveal>
+          </ScrollReveal>
 
+          {/* Link columns — stagger from right */}
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:col-span-7">
-            {columns.map((col) => (
-              <div key={col.title}>
+            {columns.map((col, colIdx) => (
+              <ScrollReveal
+                key={col.title}
+                variant="fadeUp"
+                delay={0.1 + colIdx * 0.1}
+                viewOptions={{ margin: "-40px" }}
+              >
                 <h3 className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
                   {col.title}
                 </h3>
-                <ul className="mt-4 space-y-3">
+                <StaggerReveal
+                  stagger={0.05}
+                  delay={0.15 + colIdx * 0.1}
+                  as="ul"
+                  className="mt-4 space-y-3"
+                  viewOptions={{ margin: "-40px" }}
+                >
                   {col.links.map((link) => (
-                    <li key={link.label}>
+                    <motion.li
+                      key={link.label}
+                      variants={VARIANTS.fadeUp}
+                      transition={TRANSITIONS.default}
+                    >
                       <Link
                         href={link.href}
                         target={link.external ? "_blank" : undefined}
@@ -129,23 +156,26 @@ export default function Footer() {
                       >
                         {link.label}
                       </Link>
-                    </li>
+                    </motion.li>
                   ))}
-                </ul>
-              </div>
+                </StaggerReveal>
+              </ScrollReveal>
             ))}
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-slate-200 pt-6 sm:flex-row sm:items-center">
-          <p className="text-xs text-slate-500">
-            © {year} {profile.name}. All rights reserved.
-          </p>
-          <p className="text-xs text-slate-500">
-            Designed & built with Next.js, Tailwind CSS, and a lot of strong
-            coffee.
-          </p>
-        </div>
+        {/* Bottom bar */}
+        <ScrollReveal variant="fadeIn" delay={0.3} viewOptions={{ margin: "-40px" }}>
+          <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-slate-200 pt-6 sm:flex-row sm:items-center">
+            <p className="text-xs text-slate-500">
+              © {year} {profile.name}. All rights reserved.
+            </p>
+            <p className="text-xs text-slate-500">
+              Designed & built with Next.js, Tailwind CSS, and a lot of strong
+              coffee.
+            </p>
+          </div>
+        </ScrollReveal>
       </div>
     </footer>
   );

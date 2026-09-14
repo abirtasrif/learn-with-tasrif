@@ -4,6 +4,7 @@ import { motion, useInView, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Clock, Play, PlayCircle, X } from "lucide-react";
 import { useRef, useState } from "react";
 import videos from "../data/videos.json";
+import { ScrollReveal, TRANSITIONS, VARIANTS } from "./ui/ScrollReveal";
 import { SpotlightCard } from "./ui/SpotlightCard";
 import { TextRevealMask } from "./ui/TextRevealMask";
 
@@ -21,7 +22,7 @@ function VideoThumb({ video, playing, onPlay }) {
           aria-hidden="true"
           className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(99,102,241,0.18),transparent_55%),radial-gradient(circle_at_80%_80%,rgba(15,23,42,0.14),transparent_55%)]"
         />
-        {/* Play button with pulse ring */}
+        {/* Play button with enhanced pulse ring */}
         <div className="absolute inset-0 flex items-center justify-center">
           <span className="relative inline-flex h-14 w-14 items-center justify-center rounded-full bg-white/95 text-slate-900 shadow-md ring-1 ring-slate-200 transition-all duration-300 group-hover:scale-110 group-hover:bg-indigo-600 group-hover:text-white group-hover:ring-indigo-500 group-hover:shadow-indigo-200/60 group-hover:shadow-xl">
             <span
@@ -73,7 +74,7 @@ export default function VideoGrid() {
   const reduceMotion = useReducedMotion();
   const baseTransition = reduceMotion
     ? { duration: 0 }
-    : { duration: 0.6, ease: [0.22, 1, 0.36, 1] };
+    : TRANSITIONS.default;
   const [active, setActive] = useState(null);
 
   const featured = videos.find((v) => v.featured) || videos[0];
@@ -83,16 +84,12 @@ export default function VideoGrid() {
     <section id="videos" className="relative py-24 sm:py-32">
       <div
         aria-hidden="true"
-        className="absolute inset-x-0 top-0 -z-10 mx-auto h-64 max-w-6xl bg-linear-to-b from-indigo-50/60 to-transparent blur-3xl"
+        className="absolute inset-x-0 top-0 -z-10 mx-auto h-64 max-w-6xl bg-linear-to-b from-indigo-50/60 to-transparent blur-3xl animate-float-c"
       />
       <div ref={ref} className="mx-auto max-w-7xl px-5 sm:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={baseTransition}
-          className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between"
-        >
-          <div className="max-w-2xl">
+        {/* Header row — split entrance */}
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+          <ScrollReveal variant="slideLeft" viewOptions={{ margin: "-80px" }} className="max-w-2xl">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-indigo-600">
               Video Learning
             </p>
@@ -106,27 +103,32 @@ export default function VideoGrid() {
                 Practical tutorials on fashion tech and computer applications.
               </TextRevealMask>
             </div>
-            <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
-              Long-form lessons that blend theory with real-world workflows —
-              from Basic computer literacy to advanced complex projects.
-            </p>
-          </div>
-          <a
-            href="#"
-            onClick={(e) => e.preventDefault()}
-            className="inline-flex w-fit items-center gap-2 rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-medium text-slate-800 shadow-sm transition-all hover:border-slate-300 hover:shadow-md"
-          >
-            View full channel
-            <ArrowUpRight className="h-4 w-4" />
-          </a>
-        </motion.div>
+            <ScrollReveal variant="blurIn" delay={0.2} viewOptions={{ margin: "-80px" }}>
+              <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
+                Long-form lessons that blend theory with real-world workflows —
+                from Basic computer literacy to advanced complex projects.
+              </p>
+            </ScrollReveal>
+          </ScrollReveal>
+
+          <ScrollReveal variant="slideRight" delay={0.1} viewOptions={{ margin: "-80px" }}>
+            <a
+              href="#"
+              onClick={(e) => e.preventDefault()}
+              className="inline-flex w-fit items-center gap-2 rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-medium text-slate-800 shadow-sm transition-all hover:border-slate-300 hover:shadow-md"
+            >
+              View full channel
+              <ArrowUpRight className="h-4 w-4" />
+            </a>
+          </ScrollReveal>
+        </div>
 
         <div className="mt-14 grid grid-cols-1 gap-6 lg:grid-cols-12">
-          {/* Featured video */}
+          {/* Featured video — slides from left */}
           <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={baseTransition}
+            initial={{ opacity: 0, x: -24, scale: 0.97, filter: "blur(6px)" }}
+            animate={inView ? { opacity: 1, x: 0, scale: 1, filter: "blur(0px)" } : {}}
+            transition={{ ...baseTransition, delay: 0.1 }}
             className="lg:col-span-7"
           >
             <SpotlightCard
@@ -187,14 +189,14 @@ export default function VideoGrid() {
             </SpotlightCard>
           </motion.div>
 
-          {/* Smaller videos */}
+          {/* Sidebar videos — staggered from right */}
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:col-span-5">
             {rest.map((video, i) => (
               <motion.div
                 key={video.id}
-                initial={{ opacity: 0, y: 18 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ ...baseTransition, delay: 0.08 + i * 0.06 }}
+                initial={{ opacity: 0, x: 20, y: 12, filter: "blur(4px)" }}
+                animate={inView ? { opacity: 1, x: 0, y: 0, filter: "blur(0px)" } : {}}
+                transition={{ ...baseTransition, delay: 0.15 + i * 0.08 }}
               >
                 {active?.id === video.id ? (
                   <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-slate-200 bg-black shadow-sm">

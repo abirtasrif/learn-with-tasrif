@@ -1,6 +1,10 @@
 "use client";
 
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import {
+  motion,
+  useInView,
+  useReducedMotion,
+} from "framer-motion";
 import {
   ArrowDown,
   Award,
@@ -10,6 +14,7 @@ import {
 } from "lucide-react";
 import { useRef } from "react";
 import profile from "../data/profile.json";
+import { ScrollReveal, StaggerReveal, TRANSITIONS, VARIANTS } from "./ui/ScrollReveal";
 import { SpotlightCard } from "./ui/SpotlightCard";
 import { TextRevealMask } from "./ui/TextRevealMask";
 
@@ -17,9 +22,10 @@ export default function About() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
   const reduceMotion = useReducedMotion();
+
   const transition = reduceMotion
     ? { duration: 0 }
-    : { duration: 0.6, ease: [0.22, 1, 0.36, 1] };
+    : TRANSITIONS.default;
 
   // Handle education data safely (supports array or legacy single string, capped at 3 items)
   const educationItems = Array.isArray(profile.education)
@@ -35,12 +41,13 @@ export default function About() {
 
   return (
     <section id="about" className="relative py-24 sm:py-32">
-      {/* Background blobs */}
+      {/* Background blobs — with float animations */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10"
       >
-        <div className="absolute left-0 top-1/3 h-96 w-96 rounded-full bg-indigo-100/30 blur-3xl" />
+        <div className="absolute left-0 top-1/3 h-96 w-96 rounded-full bg-indigo-100/30 blur-3xl animate-float-b" />
+        <div className="absolute right-0 bottom-1/4 h-64 w-64 rounded-full bg-violet-100/20 blur-3xl animate-float-c" />
       </div>
 
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
@@ -48,13 +55,9 @@ export default function About() {
           ref={ref}
           className="grid grid-cols-1 gap-14 lg:grid-cols-12 lg:gap-16"
         >
-          {/* Left col */}
+          {/* Left col — slides in from left */}
           <div className="lg:col-span-5">
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={transition}
-            >
+            <ScrollReveal variant="slideLeft" viewOptions={{ margin: "-80px" }}>
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-indigo-600">
                 About
               </p>
@@ -68,21 +71,14 @@ export default function About() {
                   A professional journey from technology to textile.
                 </TextRevealMask>
               </div>
-              <motion.p
-                initial={{ opacity: 0, y: 12 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ ...transition, delay: 0.3 }}
-                className="mt-5 text-base leading-relaxed text-slate-600 sm:text-lg"
-              >
-                {profile.bio}
-              </motion.p>
+              <ScrollReveal variant="fadeUp" delay={0.3} viewOptions={{ margin: "-80px" }}>
+                <p className="mt-5 text-base leading-relaxed text-slate-600 sm:text-lg">
+                  {profile.bio}
+                </p>
+              </ScrollReveal>
 
               {/* Education & Roles Spotlight Card */}
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ ...transition, delay: 0.45 }}
-              >
+              <ScrollReveal variant="scaleUp" delay={0.45} viewOptions={{ margin: "-80px" }}>
                 <SpotlightCard
                   className="group mt-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm glow-ring"
                   tiltStrength={4}
@@ -100,11 +96,13 @@ export default function About() {
                     </div>
                   </div>
 
-                  {/* Education Items List */}
-                  <div className="mt-4 space-y-3">
+                  {/* Education Items List — staggered */}
+                  <StaggerReveal stagger={0.08} delay={0.55} className="mt-4 space-y-3" viewOptions={{ margin: "-40px" }}>
                     {educationItems.map((edu, idx) => (
-                      <div
+                      <motion.div
                         key={idx}
+                        variants={VARIANTS.fadeUp}
+                        transition={TRANSITIONS.default}
                         className="rounded-xl border border-slate-100 bg-slate-50/70 p-3.5 transition-colors hover:bg-slate-50"
                       >
                         <p className="text-sm font-semibold text-slate-800">
@@ -115,9 +113,9 @@ export default function About() {
                             {edu.institution} {edu.year ? `· ${edu.year}` : ""}
                           </p>
                         )}
-                      </div>
+                      </motion.div>
                     ))}
-                  </div>
+                  </StaggerReveal>
 
                   {/* Current Roles Header */}
                   <div className="mt-8 flex items-center gap-3 border-t border-slate-100 pt-6">
@@ -131,11 +129,13 @@ export default function About() {
                     </div>
                   </div>
 
-                  {/* Experience Roles List */}
-                  <div className="mt-4 flex flex-col gap-3">
+                  {/* Experience Roles List — staggered */}
+                  <StaggerReveal stagger={0.09} delay={0.7} className="mt-4 flex flex-col gap-3" viewOptions={{ margin: "-40px" }}>
                     {profile.experience.map((role) => (
-                      <div
+                      <motion.div
                         key={role.company}
+                        variants={VARIANTS.scaleUp}
+                        transition={TRANSITIONS.default}
                         className="w-full rounded-xl border border-slate-100 bg-slate-50/70 p-4 transition-colors hover:bg-slate-50"
                       >
                         <div className="flex items-center gap-2 text-slate-500">
@@ -150,18 +150,14 @@ export default function About() {
                         <p className="mt-1 text-xs leading-relaxed text-slate-600">
                           {role.description}
                         </p>
-                      </div>
+                      </motion.div>
                     ))}
-                  </div>
+                  </StaggerReveal>
                 </SpotlightCard>
-              </motion.div>
+              </ScrollReveal>
 
               {/* Training & Certifications */}
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ ...transition, delay: 0.55 }}
-              >
+              <ScrollReveal variant="scaleUp" delay={0.6} viewOptions={{ margin: "-80px" }}>
                 <SpotlightCard
                   className="group mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm glow-ring"
                   tiltStrength={4}
@@ -178,10 +174,12 @@ export default function About() {
                     </div>
                   </div>
 
-                  <div className="mt-4 flex flex-col gap-3">
+                  <StaggerReveal stagger={0.07} delay={0.7} className="mt-4 flex flex-col gap-3" viewOptions={{ margin: "-40px" }}>
                     {certifications.map((item, idx) => (
-                      <div
+                      <motion.div
                         key={idx}
+                        variants={VARIANTS.fadeUp}
+                        transition={TRANSITIONS.default}
                         className="rounded-xl border border-slate-100 bg-slate-50/70 p-3.5 transition-colors hover:bg-slate-50"
                       >
                         <p className="text-sm font-semibold text-slate-800">
@@ -192,22 +190,17 @@ export default function About() {
                             {item.issuer} {item.year ? `· ${item.year}` : ""}
                           </p>
                         )}
-                      </div>
+                      </motion.div>
                     ))}
-                  </div>
+                  </StaggerReveal>
                 </SpotlightCard>
-              </motion.div>
-            </motion.div>
+              </ScrollReveal>
+            </ScrollReveal>
           </div>
 
-          {/* Right col — timeline & specialties */}
+          {/* Right col — timeline & specialties, slides from right */}
           <div className="lg:col-span-7">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ ...transition, delay: 0.1 }}
-              className="relative"
-            >
+            <ScrollReveal variant="slideRight" delay={0.1} viewOptions={{ margin: "-80px" }}>
               <div className="sticky top-24 space-y-8">
                 <div>
                   <div className="flex items-center gap-2">
@@ -217,21 +210,45 @@ export default function About() {
                     </p>
                   </div>
 
-                  <ol className="relative mt-6 border-l border-slate-200 pl-8">
+                  {/* Timeline with draw-in border */}
+                  <ol className="relative mt-6 pl-8">
+                    {/* Animated vertical line */}
+                    {inView && !reduceMotion && (
+                      <span
+                        aria-hidden="true"
+                        className="absolute left-0 top-0 bottom-0 w-px bg-slate-200 animate-line-draw"
+                      />
+                    )}
+                    {!inView && (
+                      <span
+                        aria-hidden="true"
+                        className="absolute left-0 top-0 bottom-0 w-px bg-slate-200"
+                      />
+                    )}
+
                     {profile.journey.map((item, i) => (
                       <motion.li
                         key={item.step}
-                        initial={{ opacity: 0, x: -16 }}
-                        animate={inView ? { opacity: 1, x: 0 } : {}}
+                        initial={{ opacity: 0, x: -20, filter: "blur(6px)" }}
+                        animate={inView ? { opacity: 1, x: 0, filter: "blur(0px)" } : {}}
                         transition={{
-                          ...transition,
-                          delay: 0.2 + i * 0.1,
+                          ...TRANSITIONS.default,
+                          delay: 0.25 + i * 0.12,
                         }}
                         className="relative pb-10 last:pb-0"
                       >
-                        <span className="absolute -left-10.5 top-1 flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-sm font-semibold text-indigo-600 shadow-sm ring-1 ring-slate-200">
+                        {/* Step number — spring pop */}
+                        <motion.span
+                          initial={{ opacity: 0, scale: 0.6 }}
+                          animate={inView ? { opacity: 1, scale: 1 } : {}}
+                          transition={{
+                            ...TRANSITIONS.spring,
+                            delay: 0.2 + i * 0.12,
+                          }}
+                          className="absolute -left-10.5 top-1 flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-sm font-semibold text-indigo-600 shadow-sm ring-1 ring-slate-200"
+                        >
                           {item.step}
-                        </span>
+                        </motion.span>
 
                         <SpotlightCard
                           className="rounded-2xl border border-slate-200 bg-white/80 p-5 shadow-sm backdrop-blur transition-all hover:border-slate-300 hover:bg-white glow-ring"
@@ -262,32 +279,37 @@ export default function About() {
                 </div>
 
                 {/* Specialties Section */}
-                <motion.div
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={inView ? { opacity: 1, y: 0 } : {}}
-                  transition={{
-                    ...transition,
-                    delay: 0.2 + profile.journey.length * 0.1 + 0.1,
-                  }}
+                <ScrollReveal
+                  variant="scaleUp"
+                  delay={0.2 + profile.journey.length * 0.12}
+                  viewOptions={{ margin: "-80px" }}
                   className="rounded-2xl border border-indigo-100 bg-linear-to-br from-indigo-50/80 via-white to-white p-6"
                 >
                   <p className="text-xs font-semibold uppercase tracking-[0.16em] text-indigo-700">
                     Specialties
                   </p>
-                  <ul className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  <StaggerReveal
+                    stagger={0.05}
+                    delay={0.1}
+                    as="ul"
+                    className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2"
+                    viewOptions={{ margin: "-40px" }}
+                  >
                     {profile.specialties.map((s) => (
-                      <li
+                      <motion.li
                         key={s}
+                        variants={VARIANTS.fadeUp}
+                        transition={TRANSITIONS.default}
                         className="flex items-center gap-2 text-sm text-slate-700"
                       >
                         <span className="h-1.5 w-1.5 rounded-full bg-indigo-500" />
                         {s}
-                      </li>
+                      </motion.li>
                     ))}
-                  </ul>
-                </motion.div>
+                  </StaggerReveal>
+                </ScrollReveal>
               </div>
-            </motion.div>
+            </ScrollReveal>
           </div>
         </div>
       </div>

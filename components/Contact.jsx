@@ -7,6 +7,7 @@ import { useMemo, useRef } from "react";
 import profile from "../data/profile.json";
 import { BorderBeam } from "./ui/BorderBeam";
 import { Magnetic } from "./ui/Magnetic";
+import { ScrollReveal, StaggerReveal, TRANSITIONS, VARIANTS } from "./ui/ScrollReveal";
 import { SpotlightCard } from "./ui/SpotlightCard";
 import { TextRevealMask } from "./ui/TextRevealMask";
 
@@ -41,7 +42,7 @@ export default function Contact() {
   const reduceMotion = useReducedMotion();
   const baseTransition = reduceMotion
     ? { duration: 0 }
-    : { duration: 0.6, ease: [0.22, 1, 0.36, 1] };
+    : TRANSITIONS.default;
 
   const userEmail = profile?.email || "abirtasrif@engineer.com";
   const userLinkedin =
@@ -118,6 +119,11 @@ export default function Contact() {
         aria-hidden="true"
         className="absolute inset-0 -z-10 bg-[radial-gradient(1000px_400px_at_50%_-20%,rgba(99,102,241,0.12),transparent_60%)]"
       />
+      {/* Floating ambient blob */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -z-10 right-1/4 bottom-1/3 h-72 w-72 rounded-full bg-indigo-100/20 blur-3xl animate-float-b"
+      />
       <div ref={ref} className="mx-auto max-w-7xl px-5 sm:px-8">
         <div className="relative overflow-hidden rounded-4xl border border-slate-200 bg-linear-to-br from-white via-white to-slate-50 shadow-sm">
           <BorderBeam
@@ -128,12 +134,8 @@ export default function Contact() {
             borderWidth={1.5}
           />
           <div className="grid grid-cols-1 gap-10 p-8 sm:p-12 lg:grid-cols-12 lg:gap-16 lg:p-16">
-            <motion.div
-              initial={{ opacity: 0, y: 18 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={baseTransition}
-              className="lg:col-span-5"
-            >
+            {/* Left — slide from left */}
+            <ScrollReveal variant="slideLeft" viewOptions={{ margin: "-80px" }} className="lg:col-span-5">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-indigo-600">
                 Contact
               </p>
@@ -147,57 +149,86 @@ export default function Contact() {
                   Have a project, collaboration, or idea?
                 </TextRevealMask>
               </div>
-              <p className="mt-4 text-balance text-2xl font-medium leading-tight text-slate-700 sm:text-3xl">
-                Let&apos;s build something useful.
-              </p>
-              <p className="mt-5 text-base leading-relaxed text-slate-600 sm:text-lg">
-                I&apos;m selectively open to product development, consulting,
-                and content collaborations — especially where textile domain
-                knowledge meets thoughtful software.
-              </p>
 
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Magnetic intensity={0.4} range={75}>
-                  <Link
-                    href={`mailto:${userEmail}`}
-                    className="group inline-flex items-center gap-2 rounded-2xl bg-slate-900 px-6 py-3.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-slate-800 hover:shadow-lg"
-                  >
-                    Start a conversation
-                    <ArrowRight
-                      size={16}
-                      className="transition-transform duration-300 group-hover:translate-x-1"
-                    />
-                  </Link>
-                </Magnetic>
-                <Magnetic intensity={0.4} range={75}>
-                  <a
-                    href={userLinkedin}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-6 py-3.5 text-sm font-medium text-slate-800 transition-all hover:border-slate-300 hover:bg-white hover:shadow-md"
-                  >
-                    <Link2 size={16} />
-                    LinkedIn
-                  </a>
-                </Magnetic>
-              </div>
-            </motion.div>
+              <ScrollReveal variant="blurIn" delay={0.25} viewOptions={{ margin: "-80px" }}>
+                <p className="mt-4 text-balance text-2xl font-medium leading-tight text-slate-700 sm:text-3xl">
+                  Let&apos;s build something useful.
+                </p>
+                <p className="mt-5 text-base leading-relaxed text-slate-600 sm:text-lg">
+                  I&apos;m selectively open to product development, consulting,
+                  and content collaborations — especially where textile domain
+                  knowledge meets thoughtful software.
+                </p>
+              </ScrollReveal>
 
+              {/* CTA buttons — spring pop stagger */}
+              <motion.div
+                initial="hidden"
+                animate={inView ? "visible" : "hidden"}
+                variants={{
+                  hidden: {},
+                  visible: {
+                    transition: {
+                      staggerChildren: reduceMotion ? 0 : 0.12,
+                      delayChildren: 0.4,
+                    },
+                  },
+                }}
+                className="mt-8 flex flex-wrap gap-3"
+              >
+                <motion.div
+                  variants={VARIANTS.springPop}
+                  transition={TRANSITIONS.spring}
+                >
+                  <Magnetic intensity={0.4} range={75}>
+                    <Link
+                      href={`mailto:${userEmail}`}
+                      className="group inline-flex items-center gap-2 rounded-2xl bg-slate-900 px-6 py-3.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-slate-800 hover:shadow-lg"
+                    >
+                      Start a conversation
+                      <ArrowRight
+                        size={16}
+                        className="transition-transform duration-300 group-hover:translate-x-1"
+                      />
+                    </Link>
+                  </Magnetic>
+                </motion.div>
+                <motion.div
+                  variants={VARIANTS.springPop}
+                  transition={TRANSITIONS.spring}
+                >
+                  <Magnetic intensity={0.4} range={75}>
+                    <a
+                      href={userLinkedin}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-6 py-3.5 text-sm font-medium text-slate-800 transition-all hover:border-slate-300 hover:bg-white hover:shadow-md"
+                    >
+                      <Link2 size={16} />
+                      LinkedIn
+                    </a>
+                  </Magnetic>
+                </motion.div>
+              </motion.div>
+            </ScrollReveal>
+
+            {/* Right — channel cards stagger scaleUp */}
             <div className="lg:col-span-7">
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                {channels.map((ch, i) => {
+              <StaggerReveal
+                stagger={0.1}
+                delay={0.2}
+                className="grid grid-cols-1 gap-4 sm:grid-cols-2"
+                viewOptions={{ margin: "-80px" }}
+              >
+                {channels.map((ch) => {
                   const Icon = ch.IconComponent;
                   const tone = toneStyles[ch.tone];
                   const external = ch.href.startsWith("http");
                   return (
                     <motion.div
                       key={ch.label}
-                      initial={{ opacity: 0, y: 18 }}
-                      animate={inView ? { opacity: 1, y: 0 } : {}}
-                      transition={{
-                        ...baseTransition,
-                        delay: 0.08 + i * 0.06,
-                      }}
+                      variants={VARIANTS.scaleUp}
+                      transition={TRANSITIONS.default}
                     >
                       <a
                         href={ch.href}
@@ -238,27 +269,24 @@ export default function Contact() {
                     </motion.div>
                   );
                 })}
-              </div>
+              </StaggerReveal>
 
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ ...baseTransition, delay: 0.32 }}
-                className="mt-6 rounded-2xl border border-slate-200 bg-white/70 p-5 backdrop-blur"
-              >
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
-                  Availability
-                </p>
-                <p className="mt-2 text-sm leading-relaxed text-slate-700">
-                  Currently working full-time at{" "}
-                  <span className="font-semibold text-slate-900">
-                    Jarvan IT
-                  </span>
-                  , and taking on a small number of freelance and content
-                  projects each quarter. Typical response time: within 2 working
-                  days.
-                </p>
-              </motion.div>
+              <ScrollReveal variant="fadeUp" delay={0.45} viewOptions={{ margin: "-80px" }}>
+                <div className="mt-6 rounded-2xl border border-slate-200 bg-white/70 p-5 backdrop-blur">
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+                    Availability
+                  </p>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-700">
+                    Currently working full-time at{" "}
+                    <span className="font-semibold text-slate-900">
+                      Jarvan IT
+                    </span>
+                    , and taking on a small number of freelance and content
+                    projects each quarter. Typical response time: within 2 working
+                    days.
+                  </p>
+                </div>
+              </ScrollReveal>
             </div>
           </div>
         </div>

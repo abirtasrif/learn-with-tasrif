@@ -167,3 +167,46 @@ body {
   animation: border-beam calc(var(--duration, 15) * 1s) infinite linear;
 }
 
+/* ─── Ambient float (orbs / blobs) ──────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes float-a {
+    0%, 100% { transform: translateY(0px) scale(1); }
+    33%       { transform: translateY(-18px) scale(1.04); }
+    66%       { transform: translateY(10px) scale(0.97); }
+  }
+  @keyframes float-b {
+    0%, 100% { transform: translateY(0px) scale(1) translateX(0px); }
+    40%       { transform: translateY(14px) scale(1.03) translateX(-12px); }
+    80%       { transform: translateY(-10px) scale(0.98) translateX(8px); }
+  }
+  @keyframes float-c {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50%       { transform: translateY(-22px) rotate(4deg); }
+  }
+}
+
+.animate-float-a { animation: float-a 8s ease-in-out infinite; }
+.animate-float-b { animation: float-b 11s ease-in-out infinite; }
+.animate-float-c { animation: float-c 14s ease-in-out infinite; }
+
+/* ─── Timeline draw-in ───────────────────────────────────────── */
+@keyframes line-draw {
+  0%   { transform: scaleY(0); opacity: 0; }
+  100% { transform: scaleY(1); opacity: 1; }
+}
+
+.animate-line-draw {
+  transform-origin: top;
+  animation: line-draw 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ─── Reduce-motion: disable all custom animations ───────────── */
+@media (prefers-reduced-motion: reduce) {
+  .animate-float-a,
+  .animate-float-b,
+  .animate-float-c,
+  .animate-line-draw {
+    animation: none !important;
+  }
+}
+
