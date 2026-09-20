@@ -228,8 +228,8 @@ export default function About() {
                     {profile.journey.map((item, i) => (
                       <motion.li
                         key={item.step}
-                        initial={{ opacity: 0, x: -24, filter: "blur(6px)" }}
-                        animate={inView ? { opacity: 1, x: 0, filter: "blur(0px)" } : {}}
+                        initial={{ opacity: 0, x: -24 }}
+                        animate={inView ? { opacity: 1, x: 0 } : {}}
                         transition={{
                           ...TRANSITIONS.default,
                           delay: 0.25 + i * 0.12,

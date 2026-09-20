@@ -159,13 +159,12 @@ export default function DesignShowcase() {
                     key={design.id}
                     layout
                     variants={{
-                      initial: { opacity: 0, y: 32, scale: 0.93, filter: "blur(6px)" },
-                      animate: { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" },
+                      initial: { opacity: 0, y: 28, scale: 0.96 },
+                      animate: { opacity: 1, y: 0, scale: 1 },
                       exit: {
                         opacity: 0,
-                        scale: 0.95,
-                        filter: "blur(4px)",
-                        transition: { duration: 0.22 },
+                        scale: 0.97,
+                        transition: { duration: 0.18 },
                       },
                     }}
                     transition={baseTransition}

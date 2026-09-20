@@ -86,6 +86,8 @@ body {
   filter: blur(70px);
   mix-blend-mode: normal;
   pointer-events: none;
+  will-change: transform;
+  contain: layout style; /* keep offscreen layers from triggering reflow */
 }
 
 .aurora-orb-a {
@@ -149,7 +151,8 @@ body {
     -webkit-mask-composite: xor;
     mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     mask-composite: exclude;
-    animation: holo-spin 7s linear infinite;
+    /* Idle: static gradient border (no repaint). Spin runs only while hovering. */
+    animation: none;
     opacity: 0.45;
     transition: opacity 0.3s ease;
     pointer-events: none;
@@ -159,6 +162,7 @@ body {
   .holo-border:hover::after {
     opacity: 0.9;
     padding: 1.5px;
+    animation: holo-spin 5s linear infinite;
   }
 }
 
@@ -490,9 +494,9 @@ body {
   }
 }
 
-.animate-float-a { animation: float-a 8s ease-in-out infinite; }
-.animate-float-b { animation: float-b 11s ease-in-out infinite; }
-.animate-float-c { animation: float-c 14s ease-in-out infinite; }
+.animate-float-a { animation: float-a 8s ease-in-out infinite; will-change: transform; }
+.animate-float-b { animation: float-b 11s ease-in-out infinite; will-change: transform; }
+.animate-float-c { animation: float-c 14s ease-in-out infinite; will-change: transform; }
 
 /* ─── Timeline draw-in ───────────────────────────────────────── */
 @keyframes line-draw {

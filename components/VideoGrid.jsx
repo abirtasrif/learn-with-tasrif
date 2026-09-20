@@ -141,8 +141,8 @@ export default function VideoGrid() {
         <div className="mt-14 grid grid-cols-1 gap-6 lg:grid-cols-12">
           {/* Featured video — slides from left */}
           <motion.div
-            initial={{ opacity: 0, x: -24, scale: 0.97, filter: "blur(6px)" }}
-            animate={inView ? { opacity: 1, x: 0, scale: 1, filter: "blur(0px)" } : {}}
+            initial={{ opacity: 0, x: -24, scale: 0.98 }}
+            animate={inView ? { opacity: 1, x: 0, scale: 1 } : {}}
             transition={{ ...baseTransition, delay: 0.1 }}
             className="lg:col-span-7"
           >
@@ -205,8 +205,8 @@ export default function VideoGrid() {
             {rest.map((video, i) => (
               <motion.div
                 key={video.id}
-                initial={{ opacity: 0, x: 20, y: 12, filter: "blur(4px)" }}
-                animate={inView ? { opacity: 1, x: 0, y: 0, filter: "blur(0px)" } : {}}
+                initial={{ opacity: 0, x: 20, y: 12 }}
+                animate={inView ? { opacity: 1, x: 0, y: 0 } : {}}
                 transition={{ ...baseTransition, delay: 0.15 + i * 0.08 }}
               >
                 {active?.id === video.id ? (

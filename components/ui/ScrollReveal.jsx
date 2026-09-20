@@ -11,34 +11,35 @@ import {
 import { useRef, useState } from "react";
 
 // ─── Shared easing ────────────────────────────────────────────────────────────
-// Expo-out: snappy entry, silky finish — matches TextRevealMask
-const EXPO_OUT = [0.16, 1, 0.3, 1];
+// EaseOutQuint-ish: gentle ramp-up, soft landing. Only transform/opacity are
+// animated (never CSS filter) so reveals run on the compositor and stay smooth.
+const EASE_SMOOTH = [0.22, 1, 0.36, 1];
 
 // ─── Animation vocabulary ─────────────────────────────────────────────────────
 export const VARIANTS = {
   fadeUp: {
-    hidden: { opacity: 0, y: 28, filter: "blur(4px)" },
-    visible: { opacity: 1, y: 0, filter: "blur(0px)" },
+    hidden: { opacity: 0, y: 24 },
+    visible: { opacity: 1, y: 0 },
   },
   fadeIn: {
-    hidden: { opacity: 0, filter: "blur(6px)" },
-    visible: { opacity: 1, filter: "blur(0px)" },
+    hidden: { opacity: 0 },
+    visible: { opacity: 1 },
   },
   blurIn: {
-    hidden: { opacity: 0, filter: "blur(12px)", scale: 0.98 },
-    visible: { opacity: 1, filter: "blur(0px)", scale: 1 },
+    hidden: { opacity: 0, scale: 0.985 },
+    visible: { opacity: 1, scale: 1 },
   },
   scaleUp: {
-    hidden: { opacity: 0, scale: 0.92, y: 16, filter: "blur(4px)" },
-    visible: { opacity: 1, scale: 1, y: 0, filter: "blur(0px)" },
+    hidden: { opacity: 0, scale: 0.94, y: 12 },
+    visible: { opacity: 1, scale: 1, y: 0 },
   },
   slideLeft: {
-    hidden: { opacity: 0, x: -28, filter: "blur(4px)" },
-    visible: { opacity: 1, x: 0, filter: "blur(0px)" },
+    hidden: { opacity: 0, x: -24 },
+    visible: { opacity: 1, x: 0 },
   },
   slideRight: {
-    hidden: { opacity: 0, x: 28, filter: "blur(4px)" },
-    visible: { opacity: 1, x: 0, filter: "blur(0px)" },
+    hidden: { opacity: 0, x: 24 },
+    visible: { opacity: 1, x: 0 },
   },
   springPop: {
     hidden: { opacity: 0, scale: 0.7 },
@@ -48,10 +49,10 @@ export const VARIANTS = {
 
 // ─── Shared transition presets ────────────────────────────────────────────────
 export const TRANSITIONS = {
-  default: { duration: 0.65, ease: EXPO_OUT },
+  default: { duration: 0.5, ease: EASE_SMOOTH },
   spring: { type: "spring", stiffness: 280, damping: 22, mass: 0.6 },
   springLight: { type: "spring", stiffness: 400, damping: 28, mass: 0.4 },
-  slow: { duration: 0.9, ease: EXPO_OUT },
+  slow: { duration: 0.75, ease: EASE_SMOOTH },
 };
 
 // ─── ScrollReveal component ───────────────────────────────────────────────────

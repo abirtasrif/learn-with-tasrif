@@ -9,15 +9,15 @@ export default function SmoothScroll({ children }) {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: 0.9,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
-      // Smooth touch/trackpad panning on mobile & tablets too.
-      syncTouch: true,
+      // Native touch/trackpad panning stays untouched — better feel on mobile.
+      syncTouch: false,
       wheelMultiplier: 1,
-      touchMultiplier: 1,
+      touchMultiplier: 1.4,
     });
 
     // Smooth anchor navigation – intercept same-page hash links,
@@ -35,7 +35,7 @@ export default function SmoothScroll({ children }) {
       const el = id ? document.getElementById(id) : null;
       if (!el) return;
       e.preventDefault();
-      lenis.scrollTo(el, { offset: -80, duration: 1.4 });
+      lenis.scrollTo(el, { offset: -80, duration: 0.9 });
     }
     document.addEventListener("click", handleAnchor);
 

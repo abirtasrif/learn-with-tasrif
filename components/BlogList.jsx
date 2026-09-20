@@ -219,6 +219,7 @@ function BlogListContent() {
                       <div className="gradient-border-glow rounded-2xl border border-white/80 bg-white/85 shadow-lg shadow-indigo-500/10 transition-all hover:-translate-y-0.5 hover:shadow-xl">
                         <Link
                           href={`/blog/${post.slug}`}
+                          data-cursor-label="READ"
                           className="group flex flex-col gap-6 p-6 sm:flex-row"
                         >
                           <div className="relative aspect-16/10 w-full shrink-0 overflow-hidden rounded-xl bg-linear-to-br from-indigo-50 via-white to-sky-50 sm:aspect-4/3 sm:w-48">

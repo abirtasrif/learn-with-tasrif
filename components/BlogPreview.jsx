@@ -162,14 +162,14 @@ export default function BlogPreview() {
                 {/* Featured article — slides from left, scale */}
                 <motion.article
                   variants={{
-                    initial: { opacity: 0, x: -24, scale: 0.96, filter: "blur(6px)" },
-                    animate: { opacity: 1, x: 0, scale: 1, filter: "blur(0px)" },
+                    initial: { opacity: 0, x: -24, scale: 0.98 },
+                    animate: { opacity: 1, x: 0, scale: 1 },
                   }}
                   transition={baseTransition}
                   className="lg:col-span-7"
                 >
 <div className="group relative h-full overflow-hidden rounded-3xl border border-white/80 bg-white/85 shadow-lg shadow-indigo-500/10 transition-all hover:-translate-y-1 hover:shadow-2xl gradient-border-glow">
-                    <Link href={`/blog/${featured.slug}`} className="block">
+                    <Link href={`/blog/${featured.slug}`} data-cursor-label="READ" className="block">
                       <div className="relative aspect-video w-full overflow-hidden bg-linear-to-br from-indigo-50 via-white to-sky-50 lg:aspect-16/10">
                         <div
                           role="img"
@@ -228,14 +228,15 @@ export default function BlogPreview() {
                     <motion.article
                       key={post.slug}
                       variants={{
-                        initial: { opacity: 0, y: 24, scale: 0.93, filter: "blur(4px)" },
-                        animate: { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" },
+                        initial: { opacity: 0, y: 24, scale: 0.96 },
+                        animate: { opacity: 1, y: 0, scale: 1 },
                       }}
                       transition={baseTransition}
                     >
                       <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/80 bg-white/85 shadow-lg shadow-indigo-500/10 transition-all hover:-translate-y-1 hover:shadow-xl gradient-border-glow">
                         <Link
                           href={`/blog/${post.slug}`}
+                          data-cursor-label="READ"
                           className="flex flex-1 flex-col"
                         >
                           <div className="relative aspect-video w-full overflow-hidden bg-linear-to-br from-indigo-50 via-white to-sky-50">

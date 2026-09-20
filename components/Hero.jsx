@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  motion,
-  useReducedMotion,
-} from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   ArrowRight,
   BookOpen,
@@ -18,7 +15,7 @@ import { BorderBeam } from "./ui/BorderBeam";
 import { InteractiveParticles } from "./ui/InteractiveParticles";
 import { Magnetic } from "./ui/Magnetic";
 import { NumberTicker } from "./ui/NumberTicker";
-import { ScrollReveal, StaggerReveal, TRANSITIONS, VARIANTS } from "./ui/ScrollReveal";
+import { StaggerReveal, TRANSITIONS, VARIANTS } from "./ui/ScrollReveal";
 import { SpotlightCard } from "./ui/SpotlightCard";
 import { TextRevealMask } from "./ui/TextRevealMask";
 
@@ -55,14 +52,14 @@ export default function Hero() {
       {/* Orbital ring decorations */}
       <div
         aria-hidden="true"
-        className="orbit-ring animate-orbit left-1/2 top-24 h-[34rem] w-[34rem] -translate-x-1/2"
+        className="orbit-ring animate-orbit left-1/2 top-24 h-136 w-136 -translate-x-1/2"
         style={{ "--orbit-duration": "40s" }}
       >
         <span className="orbit-sat" style={{ marginLeft: "-4px", top: "0%" }} />
       </div>
       <div
         aria-hidden="true"
-        className="orbit-ring animate-orbit left-1/2 top-24 h-[46rem] w-[46rem] -translate-x-1/2 opacity-70"
+        className="orbit-ring animate-orbit left-1/2 top-24 h-184 w-184 -translate-x-1/2 opacity-70"
         style={{ "--orbit-duration": "64s" }}
       >
         <span className="orbit-sat" style={{ marginTop: "-4px", left: "0%" }} />
@@ -87,11 +84,10 @@ export default function Hero() {
 
       <div className="relative mx-auto max-w-7xl px-5 pb-24 pt-8 sm:px-8 sm:pb-32 sm:pt-14">
         <div className="mx-auto max-w-4xl text-center">
-
           {/* Badge — holographic pill */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.72, filter: "blur(8px)" }}
-            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+            initial={{ opacity: 0, scale: 0.86 }}
+            animate={{ opacity: 1, scale: 1 }}
             transition={badgeTransition}
             className="relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-white/70 bg-white/80 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.14em] text-slate-700 shadow-lg shadow-indigo-500/10 backdrop-blur holo-border sm:text-[11px]"
           >
@@ -104,7 +100,7 @@ export default function Hero() {
             />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-linear-to-r from-indigo-500 to-sky-400 shadow-[0_0_10px_rgba(99,102,241,0.9)]" />
             <Sparkles className="h-3.5 w-3.5 text-indigo-600" />
-            Textile Engineering × Tech Enthusiast
+            Textile Engineer × Tech Enthusiast
           </motion.div>
 
           {/* Hero heading — masked reveal with aurora accent */}
@@ -116,16 +112,15 @@ export default function Hero() {
               viewportMargin="0px"
               delay={0.08}
             >
-              I bridge the gap between{" "}
-              <strong>textile engineering</strong> and{" "}
+              I bridge the gap between <strong>textile engineering</strong> and{" "}
               <strong>modern computer technology.</strong>
             </TextRevealMask>
           </div>
 
           {/* Sub text — word blur stagger */}
           <motion.p
-            initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={smoothTransition(0.55)}
             className="mx-auto mt-6 max-w-2xl text-pretty text-base leading-relaxed text-slate-600 sm:text-lg"
           >
@@ -165,7 +160,10 @@ export default function Hero() {
                   href="#designs"
                   className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-2xl bg-linear-to-r from-indigo-600 via-violet-500 to-sky-500 px-6 py-3.5 text-sm font-medium text-white shadow-lg shadow-indigo-500/25 transition-all hover:shadow-indigo-500/40 sm:w-auto"
                 >
-                  <span className="absolute inset-0 bg-linear-to-r from-sky-500 via-indigo-500 to-violet-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true" />
+                  <span
+                    className="absolute inset-0 bg-linear-to-r from-sky-500 via-indigo-500 to-violet-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                    aria-hidden="true"
+                  />
                   <span className="relative z-10">Explore My Work</span>
                   <ArrowRight className="relative z-10 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
