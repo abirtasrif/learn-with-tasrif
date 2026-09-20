@@ -259,7 +259,7 @@ export default function Contact() {
         aria-hidden="true"
         className="pointer-events-none absolute -z-10 right-1/4 bottom-1/3 h-72 w-72 rounded-full bg-indigo-100/20 blur-3xl animate-float-b"
       />
-      <div ref={ref} className="mx-auto max-w-7xl px-5 sm:px-8">
+      <div ref={ref} className="mx-auto max-w-7xl px-4 sm:px-8">
         <div className="relative overflow-hidden rounded-4xl border border-white/70 bg-linear-to-br from-white/90 via-white/95 to-slate-50/90 shadow-2xl shadow-indigo-500/10 backdrop-blur-xl holo-border">
           <BorderBeam
             size={340}
@@ -268,7 +268,7 @@ export default function Contact() {
             colorTo="#38bdf8"
             borderWidth={1.5}
           />
-          <div className="grid grid-cols-1 gap-10 p-8 sm:p-12 lg:grid-cols-12 lg:gap-16 lg:p-16">
+          <div className="grid grid-cols-1 gap-8 p-6 sm:gap-10 sm:p-10 md:gap-12 md:p-12 lg:grid-cols-12 lg:gap-16 lg:p-16">
             {/* Left — slide from left */}
             <ScrollReveal variant="slideLeft" viewOptions={{ margin: "-80px" }} className="lg:col-span-5">
 <p className="text-xs font-semibold uppercase tracking-[0.18em] gradient-text">
@@ -356,7 +356,7 @@ export default function Contact() {
               <StaggerReveal
                 stagger={0.1}
                 delay={0.2}
-                className="grid grid-cols-1 gap-4 sm:grid-cols-2"
+                className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 md:mt-6 md:gap-5"
                 viewOptions={{ margin: "-80px" }}
               >
                 {channels.map((ch) => {
@@ -411,7 +411,7 @@ export default function Contact() {
               </StaggerReveal>
 
               <ScrollReveal variant="fadeUp" delay={0.45} viewOptions={{ margin: "-80px" }}>
-                <div className="mt-6 rounded-2xl border border-white/80 bg-white/75 p-5 shadow-lg shadow-indigo-500/10 backdrop-blur holo-border">
+                <div className="mt-5 rounded-2xl border border-white/80 bg-white/75 p-5 shadow-lg shadow-indigo-500/10 backdrop-blur holo-border sm:mt-6">
                   <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
                     Availability
                   </p>

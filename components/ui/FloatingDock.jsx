@@ -90,12 +90,14 @@ export function FloatingDock({ className = "" }) {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Reveal dock once user has scrolled past hero top (e.g. 180px)
-      if (window.scrollY > 180) {
-        setVisible(true);
-      } else {
-        setVisible(false);
-      }
+      // Reveal dock once user has scrolled past hero top (e.g. 180px),
+      // but hide it again while the footer is on screen so it never
+      // covers the footer content (short landscape tablets).
+      const footer = document.querySelector("footer");
+      const footerTop = footer?.getBoundingClientRect().top ?? Infinity;
+      const footerNear =
+        footerTop < window.innerHeight * 0.85 && footerTop >= 0;
+      setVisible(window.scrollY > 180 && !footerNear);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
