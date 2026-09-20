@@ -6,7 +6,6 @@ import {
   useReducedMotion,
 } from "framer-motion";
 import {
-  ArrowDown,
   Award,
   Briefcase,
   Building2,
@@ -58,7 +57,7 @@ export default function About() {
           {/* Left col — slides in from left */}
           <div className="lg:col-span-5">
             <ScrollReveal variant="slideLeft" viewOptions={{ margin: "-80px" }}>
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-indigo-600">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] gradient-text">
                 About
               </p>
               <div className="mt-4">
@@ -80,7 +79,7 @@ export default function About() {
               {/* Education & Roles Spotlight Card */}
               <ScrollReveal variant="scaleUp" delay={0.45} viewOptions={{ margin: "-80px" }}>
                 <SpotlightCard
-                  className="group mt-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm glow-ring"
+                  className="group mt-8 rounded-2xl border border-white/80 bg-white/85 p-6 shadow-lg shadow-indigo-500/10 glow-ring"
                   tiltStrength={4}
                   glowColor="rgba(99, 102, 241, 0.10)"
                 >
@@ -159,7 +158,7 @@ export default function About() {
               {/* Training & Certifications */}
               <ScrollReveal variant="scaleUp" delay={0.6} viewOptions={{ margin: "-80px" }}>
                 <SpotlightCard
-                  className="group mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm glow-ring"
+                  className="group mt-6 rounded-2xl border border-white/80 bg-white/85 p-6 shadow-lg shadow-indigo-500/10 glow-ring"
                   tiltStrength={4}
                   glowColor="rgba(99, 102, 241, 0.10)"
                 >
@@ -229,50 +228,48 @@ export default function About() {
                     {profile.journey.map((item, i) => (
                       <motion.li
                         key={item.step}
-                        initial={{ opacity: 0, x: -20, filter: "blur(6px)" }}
+                        initial={{ opacity: 0, x: -24, filter: "blur(6px)" }}
                         animate={inView ? { opacity: 1, x: 0, filter: "blur(0px)" } : {}}
                         transition={{
                           ...TRANSITIONS.default,
                           delay: 0.25 + i * 0.12,
                         }}
-                        className="relative pb-10 last:pb-0"
+                        className="relative pb-8 pl-9 last:pb-0"
                       >
-                        {/* Step number — spring pop */}
+                        {/* Timeline node — glowing milestone marker */}
                         <motion.span
-                          initial={{ opacity: 0, scale: 0.6 }}
+                          initial={{ opacity: 0, scale: 0.5 }}
                           animate={inView ? { opacity: 1, scale: 1 } : {}}
                           transition={{
                             ...TRANSITIONS.spring,
                             delay: 0.2 + i * 0.12,
                           }}
-                          className="absolute -left-10.5 top-1 flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-sm font-semibold text-indigo-600 shadow-sm ring-1 ring-slate-200"
+                          aria-hidden="true"
+                          className="absolute left-0 top-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-white shadow-md shadow-indigo-500/25 ring-1 ring-indigo-200"
                         >
-                          {item.step}
+                          <span className="h-2.5 w-2.5 rounded-full bg-linear-to-r from-indigo-500 to-sky-400 shadow-[0_0_10px_rgba(99,102,241,0.8)]" />
                         </motion.span>
 
                         <SpotlightCard
-                          className="rounded-2xl border border-slate-200 bg-white/80 p-5 shadow-sm backdrop-blur transition-all hover:border-slate-300 hover:bg-white glow-ring"
+                          className="rounded-2xl border border-white/80 bg-white/80 p-5 shadow-sm transition-all hover:border-indigo-200 hover:bg-white glow-ring"
                           tiltStrength={3}
                           glowColor="rgba(99, 102, 241, 0.08)"
                         >
-                          <div className="flex flex-wrap items-center justify-between gap-2">
-                            <h3 className="text-base font-semibold text-slate-900 sm:text-lg">
-                              {item.title}
-                            </h3>
-                            <span className="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-medium text-slate-600">
+                          <div className="flex flex-wrap items-center gap-2.5">
+                            <span className="rounded-full border border-indigo-200 bg-linear-to-r from-indigo-50 to-sky-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-indigo-700">
                               {item.era}
                             </span>
+                            <span className="text-[11px] font-medium uppercase tracking-[0.16em] text-slate-400">
+                              Step {String(item.step).padStart(2, "0")}
+                            </span>
                           </div>
-                          <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                          <h3 className="mt-2.5 text-base font-semibold text-slate-900 sm:text-lg">
+                            {item.title}
+                          </h3>
+                          <p className="mt-1.5 text-sm leading-relaxed text-slate-600">
                             {item.description}
                           </p>
                         </SpotlightCard>
-
-                        {i < profile.journey.length - 1 && (
-                          <span className="absolute -left-7.5 top-12 text-slate-300">
-                            <ArrowDown className="h-4 w-4" />
-                          </span>
-                        )}
                       </motion.li>
                     ))}
                   </ol>

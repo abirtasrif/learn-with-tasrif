@@ -5,26 +5,41 @@ import { ArrowUpRight, Clock, Play, PlayCircle, X } from "lucide-react";
 import { useRef, useState } from "react";
 import videos from "../data/videos.json";
 import { ScrollReveal, TRANSITIONS, VARIANTS } from "./ui/ScrollReveal";
-import { SpotlightCard } from "./ui/SpotlightCard";
 import { TextRevealMask } from "./ui/TextRevealMask";
 
 function VideoThumb({ video, playing, onPlay }) {
+  const handleMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    e.currentTarget.style.setProperty("--mx", `${e.clientX - rect.left}px`);
+    e.currentTarget.style.setProperty("--my", `${e.clientY - rect.top}px`);
+  };
+
   return (
     <button
       type="button"
       onClick={onPlay}
+      onMouseMove={handleMove}
       aria-label={`Play video: ${video.title}`}
       data-cursor-label="PLAY"
-      className="group relative block w-full overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-xl"
+      className="group relative block w-full overflow-hidden rounded-2xl border border-white/80 bg-white/85 text-left shadow-lg shadow-indigo-500/5 backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:shadow-xl"
     >
-      <div className="relative aspect-video w-full bg-linear-to-br from-slate-200 via-slate-100 to-white">
+      <div className="relative aspect-video w-full bg-linear-to-br from-indigo-200/50 via-slate-100 to-sky-200/50">
         <div
           aria-hidden="true"
           className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(99,102,241,0.18),transparent_55%),radial-gradient(circle_at_80%_80%,rgba(15,23,42,0.14),transparent_55%)]"
         />
-        {/* Play button with enhanced pulse ring */}
+        {/* Cursor-follow spotlight (21st "Spotlight Card" effect) */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          style={{
+            background:
+              "radial-gradient(420px circle at var(--mx,50%) var(--my,50%), rgba(99,102,241,0.28), rgba(34,211,238,0.16) 45%, transparent 65%)",
+          }}
+        />
+        {/* Play button with enhanced pulse + glow */}
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="relative inline-flex h-14 w-14 items-center justify-center rounded-full bg-white/95 text-slate-900 shadow-md ring-1 ring-slate-200 transition-all duration-300 group-hover:scale-110 group-hover:bg-indigo-600 group-hover:text-white group-hover:ring-indigo-500 group-hover:shadow-indigo-200/60 group-hover:shadow-xl">
+          <span className="relative inline-flex h-14 w-14 items-center justify-center rounded-full bg-white/95 text-slate-900 shadow-[0_0_0_6px_rgba(99,102,241,0.1)] ring-1 ring-slate-200 transition-all duration-300 group-hover:scale-110 group-hover:bg-indigo-600 group-hover:text-white group-hover:ring-indigo-500 group-hover:shadow-[0_0_0_8px_rgba(99,102,241,0.16),0_14px_32px_-8px_rgba(99,102,241,0.5)]">
             <span
               aria-hidden="true"
               className="absolute inset-0 rounded-full opacity-0 transition-opacity duration-300 group-hover:opacity-100 pulse-ring"
@@ -60,7 +75,7 @@ function VideoThumb({ video, playing, onPlay }) {
             {video.description}
           </p>
         </div>
-        <span className="mt-1 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-500 transition-all group-hover:border-indigo-200 group-hover:bg-indigo-50 group-hover:text-indigo-600">
+        <span className="mt-1 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-white/90 bg-white text-slate-500 shadow-sm transition-all group-hover:border-indigo-200 group-hover:bg-linear-to-br group-hover:from-indigo-50 group-hover:to-sky-50 group-hover:text-indigo-600">
           <ArrowUpRight className="h-4 w-4" />
         </span>
       </div>
@@ -90,7 +105,7 @@ export default function VideoGrid() {
         {/* Header row — split entrance */}
         <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <ScrollReveal variant="slideLeft" viewOptions={{ margin: "-80px" }} className="max-w-2xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-indigo-600">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] gradient-text">
               Video Learning
             </p>
             <div className="mt-4">
@@ -115,7 +130,7 @@ export default function VideoGrid() {
             <a
               href="#"
               onClick={(e) => e.preventDefault()}
-              className="inline-flex w-fit items-center gap-2 rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-medium text-slate-800 shadow-sm transition-all hover:border-slate-300 hover:shadow-md"
+              className="inline-flex w-fit items-center gap-2 rounded-2xl border border-white/80 bg-white/85 px-5 py-3 text-sm font-medium text-slate-800 shadow-lg shadow-indigo-500/10 backdrop-blur holo-border transition-all hover:shadow-xl"
             >
               View full channel
               <ArrowUpRight className="h-4 w-4" />
@@ -131,11 +146,7 @@ export default function VideoGrid() {
             transition={{ ...baseTransition, delay: 0.1 }}
             className="lg:col-span-7"
           >
-            <SpotlightCard
-              className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm glow-ring"
-              tiltStrength={3}
-              glowColor="rgba(99, 102, 241, 0.10)"
-            >
+            <div className="group relative overflow-hidden rounded-3xl border border-white/80 bg-white/85 shadow-lg shadow-indigo-500/10 glow-ring">
               {active?.id === featured.id ? (
                 <div className="relative aspect-video w-full bg-black">
                   <button
@@ -180,13 +191,13 @@ export default function VideoGrid() {
                   href={featured.youtubeUrl}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-medium text-white transition-all hover:bg-slate-800"
+                  className="inline-flex items-center gap-2 rounded-xl bg-linear-to-r from-indigo-600 via-violet-500 to-sky-500 px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-indigo-500/25 transition-all hover:shadow-indigo-500/40"
                 >
                   Watch on YouTube
                   <ArrowUpRight className="h-4 w-4" />
                 </a>
               </div>
-            </SpotlightCard>
+            </div>
           </motion.div>
 
           {/* Sidebar videos — staggered from right */}

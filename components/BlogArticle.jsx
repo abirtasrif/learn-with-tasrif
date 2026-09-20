@@ -130,7 +130,7 @@ export default function BlogArticle({ post, related = [] }) {
         >
           <aside className="lg:col-span-3">
             <div className="sticky top-28 space-y-8">
-              <div className="rounded-2xl border border-slate-200 bg-white p-6">
+              <div className="rounded-2xl border border-white/80 bg-white/80 p-6 shadow-lg shadow-indigo-500/10 backdrop-blur holo-border">
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
                   In this article
                 </p>
@@ -151,7 +151,7 @@ export default function BlogArticle({ post, related = [] }) {
                   ))}
                 </ul>
               </div>
-              <div className="rounded-2xl border border-slate-200 bg-linear-to-br from-slate-50 via-white to-white p-6">
+              <div className="rounded-2xl border border-white/80 bg-linear-to-br from-indigo-50/60 via-white/90 to-white/90 p-6 shadow-lg shadow-indigo-500/10 backdrop-blur holo-border">
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
                   Enjoyed this article?
                 </p>
@@ -214,7 +214,7 @@ export default function BlogArticle({ post, related = [] }) {
           >
             <div className="flex items-end justify-between gap-6">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-indigo-600">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] gradient-text">
                   Keep reading
                 </p>
                 <h2 className="mt-3 text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
@@ -236,13 +236,13 @@ export default function BlogArticle({ post, related = [] }) {
                 <Link
                   key={r.slug}
                   href={`/blog/${r.slug}`}
-                  className="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg"
+                  className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/80 bg-white/85 p-6 shadow-lg shadow-indigo-500/10 transition-all hover:-translate-y-1 hover:shadow-xl gradient-border-glow"
                 >
-                  <div className="relative aspect-16/10 w-full overflow-hidden rounded-xl bg-slate-100">
+                  <div className="relative aspect-16/10 w-full overflow-hidden rounded-xl bg-linear-to-br from-indigo-50 via-white to-sky-50">
                     <div
                       role="img"
                       aria-label={r.title}
-                      className="absolute inset-0 bg-linear-to-br from-slate-200 via-slate-100 to-white"
+                      className="absolute inset-0 bg-linear-to-br from-indigo-200/70 via-slate-100 to-sky-200/60 transition-transform duration-700 group-hover:scale-105"
                     />
                     <div
                       aria-hidden="true"

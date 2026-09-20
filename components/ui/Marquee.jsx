@@ -40,9 +40,9 @@ export default function Marquee({
         {[...items, ...items].map((item, i) => (
           <span
             key={i}
-            className="inline-flex shrink-0 items-center gap-2 px-6 text-sm font-medium uppercase tracking-[0.2em] text-slate-400"
+            className="mr-4 inline-flex shrink-0 items-center gap-2.5 rounded-full border border-white/70 bg-white/60 px-5 py-2 text-sm font-medium uppercase tracking-[0.16em] text-slate-500 shadow-sm shadow-indigo-500/5 backdrop-blur-sm"
           >
-            <span className="h-1 w-1 rounded-full bg-indigo-400" />
+            <span className="h-1.5 w-1.5 rounded-full bg-linear-to-r from-indigo-500 to-sky-400 shadow-[0_0_8px_rgba(99,102,241,0.8)]" />
             {item}
           </span>
         ))}

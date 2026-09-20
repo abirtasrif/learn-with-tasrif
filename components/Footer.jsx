@@ -72,13 +72,13 @@ const socials = [
 export default function Footer() {
   const year = new Date().getFullYear();
   return (
-    <footer className="border-t border-slate-200 bg-white/70 backdrop-blur">
-      <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8">
+    <footer className="border-t border-white/70 bg-white/75 backdrop-blur-xl shadow-[0_-8px_30px_-20px_rgba(99,102,241,0.35)]">
+      <div className="mx-auto max-w-7xl px-5 pt-14 pb-14 md:pb-44 lg:pb-14 sm:px-8">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
           {/* Brand column — slide from left */}
           <ScrollReveal variant="slideLeft" viewOptions={{ margin: "-40px" }} className="lg:col-span-5">
             <Link href="/" className="flex items-center gap-2.5">
-              <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-linear-to-br from-indigo-600 to-indigo-500 text-sm font-semibold text-white shadow-sm shadow-indigo-200">
+              <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-linear-to-br from-indigo-600 via-violet-500 to-sky-500 text-sm font-semibold text-white shadow-lg shadow-indigo-500/30">
                 {profile.name
                   .split(" ")
                   .map((n) => n[0])
@@ -113,7 +113,7 @@ export default function Footer() {
                       target="_blank"
                       rel="noreferrer noopener"
                       aria-label={label}
-                      className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 transition-all hover:border-indigo-200 hover:bg-indigo-50 hover:text-indigo-700 hover:shadow-sm"
+                      className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/80 bg-white/85 text-slate-600 shadow-sm transition-all hover:border-indigo-200 hover:bg-linear-to-br hover:from-indigo-50 hover:to-sky-50 hover:text-indigo-700 hover:shadow-md holo-border"
                     >
                       <Icon className="h-4 w-4" />
                     </a>

@@ -4,14 +4,15 @@
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
-  --color-background: #f8fafc;
+  /* Aurora light theme — cool, near-white base (inspired by 21st.dev "Northern Lights" light) */
+  --color-background: #f7f8fd;
   --color-surface: #ffffff;
-  --color-surface-muted: #f1f5f9;
-  --color-border: #e2e8f0;
-  --color-border-strong: #cbd5e1;
-  --color-text: #0f172a;
-  --color-text-muted: #475569;
-  --color-text-subtle: #64748b;
+  --color-surface-muted: #eef0fa;
+  --color-border: #e3e6f3;
+  --color-border-strong: #c9d0ea;
+  --color-text: #0b1023;
+  --color-text-muted: #46506a;
+  --color-text-subtle: #64708c;
 
   --color-primary-50: #eef2ff;
   --color-primary-100: #e0e7ff;
@@ -23,6 +24,13 @@
   --color-primary-700: #4338ca;
   --color-primary-800: #3730a3;
   --color-primary-900: #312e81;
+}
+
+/* Register the rotating border angle so it can be animated */
+@property --holo-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
 }
 
 /* ─── Lenis smooth scrolling ─────────────────────────────────── */
@@ -47,6 +55,226 @@ body {
   background-color: var(--color-background);
   color: var(--color-text);
   font-feature-settings: "rlig" 1, "calt" 1;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Aurora backdrop (light) ─────────────────────────────────── */
+@keyframes aurora-orbit-a {
+  0%   { transform: translate3d(-8%, -4%, 0) scale(1); }
+  33%  { transform: translate3d(6%, 8%, 0) scale(1.12); }
+  66%  { transform: translate3d(-4%, 10%, 0) scale(0.94); }
+  100% { transform: translate3d(-8%, -4%, 0) scale(1); }
+}
+
+@keyframes aurora-orbit-b {
+  0%   { transform: translate3d(6%, 6%, 0) scale(1); }
+  40%  { transform: translate3d(-8%, -6%, 0) scale(1.1); }
+  80%  { transform: translate3d(4%, -2%, 0) scale(0.96); }
+  100% { transform: translate3d(6%, 6%, 0) scale(1); }
+}
+
+@keyframes aurora-orbit-c {
+  0%   { transform: translate3d(0%, 0%, 0) rotate(0deg) scale(1); }
+  50%  { transform: translate3d(-5%, 6%, 0) rotate(6deg) scale(1.08); }
+  100% { transform: translate3d(0%, 0%, 0) rotate(0deg) scale(1); }
+}
+
+/* Animated aurora orbs — pastel, light-theme appropriate */
+.aurora-orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(70px);
+  mix-blend-mode: normal;
+  pointer-events: none;
+}
+
+.aurora-orb-a {
+  width: 34rem;
+  height: 34rem;
+  left: -6%;
+  top: -8%;
+  background: radial-gradient(circle at 35% 30%, rgba(129, 140, 248, 0.34), rgba(196, 181, 253, 0.12) 55%, transparent 75%);
+  animation: aurora-orbit-a 26s ease-in-out infinite;
+}
+
+.aurora-orb-b {
+  width: 30rem;
+  height: 30rem;
+  right: -8%;
+  top: 22%;
+  background: radial-gradient(circle at 60% 40%, rgba(56, 189, 248, 0.26), rgba(125, 211, 252, 0.10) 55%, transparent 75%);
+  animation: aurora-orbit-b 32s ease-in-out infinite;
+}
+
+.aurora-orb-c {
+  width: 26rem;
+  height: 26rem;
+  left: 32%;
+  bottom: -12%;
+  background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.24), rgba(216, 180, 254, 0.10) 55%, transparent 75%);
+  animation: aurora-orbit-c 38s ease-in-out infinite;
+}
+
+/* ─── Holographic gradient border (21st HolographicInterface) ── */
+@keyframes holo-spin {
+  to { --holo-angle: 360deg; }
+}
+
+.holo-border {
+  position: relative;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .holo-border::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: conic-gradient(
+      from var(--holo-angle, 0deg),
+      transparent 0%,
+      transparent 6%,
+      rgba(99, 102, 241, 0.65) 14%,
+      rgba(168, 85, 247, 0.5) 21%,
+      rgba(56, 189, 248, 0.45) 30%,
+      transparent 42%,
+      transparent 58%,
+      rgba(99, 102, 241, 0.35) 72%,
+      rgba(34, 211, 238, 0.3) 80%,
+      transparent 94%,
+      transparent 100%
+    );
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    animation: holo-spin 7s linear infinite;
+    opacity: 0.45;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 30;
+  }
+
+  .holo-border:hover::after {
+    opacity: 0.9;
+    padding: 1.5px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .holo-border::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: conic-gradient(
+      from 0deg,
+      rgba(99, 102, 241, 0.45) 0%,
+      rgba(168, 85, 247, 0.35) 14%,
+      rgba(56, 189, 248, 0.3) 26%,
+      transparent 45%,
+      transparent 60%,
+      rgba(99, 102, 241, 0.3) 80%,
+      transparent 100%
+    );
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    opacity: 0.5;
+    pointer-events: none;
+    z-index: 30;
+  }
+}
+
+/* Holographic sheen — soft light glare that sits above cards */
+.holo-sheen {
+  position: relative;
+}
+
+.holo-sheen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 20;
+  background:
+    linear-gradient(120deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 38%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.holo-sheen:hover::before {
+  opacity: 1;
+}
+
+/* ─── Blueprint / holographic grid overlay ───────────────────── */
+.grid-overlay {
+  background-image:
+    linear-gradient(to right, rgba(15, 23, 42, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.035) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 78%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 78%);
+}
+
+/* ─── Orbital ring decoration (hero) ─────────────────────────── */
+@keyframes orbit-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes orbit-pulse {
+  0%   { opacity: 0.5; transform: scale(0.97); }
+  50%  { opacity: 1; transform: scale(1); }
+  100% { opacity: 0.5; transform: scale(0.97); }
+}
+
+.orbit-ring {
+  position: absolute;
+  border-radius: 9999px;
+  pointer-events: none;
+}
+
+.orbit-ring::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  border: 1px dashed rgba(99, 102, 241, 0.18);
+  animation: orbit-pulse 5s ease-in-out infinite;
+}
+
+.orbit-ring .orbit-sat {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  margin: -4px;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  box-shadow: 0 0 12px 2px rgba(99, 102, 241, 0.55);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .animate-orbit {
+    animation: orbit-spin var(--orbit-duration, 28s) linear infinite;
+  }
+}
+
+/* ─── Glass panel ─────────────────────────────────────────────── */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.62);
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 12px 32px -18px rgba(99, 102, 241, 0.25),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.8);
 }
 
 /* ─── Custom cursor (hide native when JS cursor active) ───────── */
@@ -58,7 +286,7 @@ body {
 
 /* ─── Selection ─────────────────────────────────────────────── */
 ::selection {
-  background-color: var(--color-primary-100);
+  background-color: var(--color-primary-200);
   color: var(--color-primary-900);
 }
 
@@ -68,33 +296,74 @@ body {
   border-radius: 6px;
 }
 
-/* ─── Gradient text ─────────────────────────────────────────── */
+/* ─── Animated gradient text ─────────────────────────────────── */
+@keyframes gradient-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 .gradient-text {
-  background: linear-gradient(135deg, #312e81 0%, #4f46e5 45%, #6366f1 100%);
+  background: linear-gradient(
+    110deg,
+    #312e81 0%,
+    #6366f1 28%,
+    #0ea5e9 52%,
+    #a855f7 76%,
+    #6366f1 100%
+  );
+  background-size: 220% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  .gradient-text {
+    animation: gradient-shift 7s ease-in-out infinite;
+  }
+}
+
 /* ─── Section background gradient blobs ─────────────────────── */
 .soft-gradient {
   background:
-    radial-gradient(1200px 500px at 0% -10%, rgba(99, 102, 241, 0.10), transparent 60%),
-    radial-gradient(900px 500px at 100% 10%, rgba(59, 130, 246, 0.08), transparent 60%);
+    radial-gradient(1200px 500px at 0% -10%, rgba(99, 102, 241, 0.2), transparent 60%),
+    radial-gradient(900px 500px at 100% 10%, rgba(14, 165, 233, 0.14), transparent 60%),
+    radial-gradient(700px 420px at 50% 110%, rgba(168, 85, 247, 0.14), transparent 60%);
 }
 
 /* ─── Dot/grid noise overlay ─────────────────────────────────── */
 .noise-grid {
   background-image:
-    linear-gradient(to right, rgba(15, 23, 42, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(15, 23, 42, 0.04) 1px, transparent 1px);
+    linear-gradient(to right, rgba(15, 23, 42, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
   background-size: 48px 48px;
   mask-image: radial-gradient(ellipse at center, black 35%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 35%, transparent 75%);
 }
 
 /* ─── Scrollbar ─────────────────────────────────────────────── */
 .hide-scrollbar::-webkit-scrollbar { display: none; }
 .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #c7d2fe, #a5b4fc);
+  border-radius: 999px;
+  border: 2px solid var(--color-background);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #818cf8, #6366f1);
+}
 
 /* ─── Marquee keyframes ─────────────────────────────────────── */
 @media (prefers-reduced-motion: no-preference) {
@@ -139,6 +408,42 @@ body {
     0 0 0 1px rgba(99, 102, 241, 0.25),
     0 8px 32px -8px rgba(99, 102, 241, 0.2),
     0 0 64px -16px rgba(99, 102, 241, 0.12);
+}
+
+/* ─── Hover gradient border (21st "Hover Border Gradient") ─── */
+.gradient-border-glow {
+  position: relative;
+}
+.gradient-border-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.9),
+    rgba(167, 139, 250, 0.7) 30%,
+    rgba(34, 211, 238, 0.9) 65%,
+    rgba(99, 102, 241, 0.9)
+  );
+  background-size: 300% 300%;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+.gradient-border-glow:hover::before {
+  opacity: 1;
+  animation: gradient-shift 5s linear infinite;
 }
 
 /* ─── Animated pulse ring (play button, indicators) ─────────── */
@@ -200,13 +505,45 @@ body {
   animation: line-draw 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* ─── Section aurora tint (applies to every major section) ───── */
+#about,
+#skills,
+#designs,
+#videos,
+#blog-preview,
+#contact,
+#blog-root {
+  position: relative;
+  isolation: isolate;
+}
+
+#about::before,
+#skills::before,
+#designs::before,
+#videos::before,
+#blog-preview::before,
+#contact::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(820px 480px at 88% 0%, rgba(99, 102, 241, 0.08), transparent 62%),
+    radial-gradient(700px 440px at 8% 92%, rgba(14, 165, 233, 0.07), transparent 62%),
+    radial-gradient(560px 400px at 55% 45%, rgba(168, 85, 247, 0.06), transparent 62%);
+}
+
 /* ─── Reduce-motion: disable all custom animations ───────────── */
 @media (prefers-reduced-motion: reduce) {
   .animate-float-a,
   .animate-float-b,
   .animate-float-c,
-  .animate-line-draw {
+  .animate-line-draw,
+  .aurora-orb-a,
+  .aurora-orb-b,
+  .aurora-orb-c,
+  .orbit-ring::after {
     animation: none !important;
   }
 }
-

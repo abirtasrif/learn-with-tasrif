@@ -12,7 +12,6 @@ import Link from "next/link";
 import { useMemo, useRef, useState } from "react";
 import posts from "../data/posts.json";
 import { ScrollReveal, TRANSITIONS, VARIANTS } from "./ui/ScrollReveal";
-import { SpotlightCard } from "./ui/SpotlightCard";
 import { TextRevealMask } from "./ui/TextRevealMask";
 
 const tabs = [
@@ -84,7 +83,7 @@ export default function BlogPreview() {
         <ScrollReveal variant="fadeUp" viewOptions={{ margin: "-80px" }}>
           <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-indigo-600">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] gradient-text">
                 Writing & Articles
               </p>
               <div className="mt-4">
@@ -169,18 +168,13 @@ export default function BlogPreview() {
                   transition={baseTransition}
                   className="lg:col-span-7"
                 >
-                  <SpotlightCard
-                    cursorLabel="READ"
-                    glowColor="rgba(99, 102, 241, 0.12)"
-                    tiltStrength={5}
-                    className="group relative h-full overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-shadow hover:shadow-2xl glow-ring"
-                  >
+<div className="group relative h-full overflow-hidden rounded-3xl border border-white/80 bg-white/85 shadow-lg shadow-indigo-500/10 transition-all hover:-translate-y-1 hover:shadow-2xl gradient-border-glow">
                     <Link href={`/blog/${featured.slug}`} className="block">
-                      <div className="relative aspect-video w-full overflow-hidden bg-slate-100 lg:aspect-16/10">
+                      <div className="relative aspect-video w-full overflow-hidden bg-linear-to-br from-indigo-50 via-white to-sky-50 lg:aspect-16/10">
                         <div
                           role="img"
                           aria-label={featured.title}
-                          className="absolute inset-0 bg-linear-to-br from-slate-200 via-slate-100 to-white"
+                          className="absolute inset-0 bg-linear-to-br from-indigo-200/70 via-slate-100 to-sky-200/60 transition-transform duration-700 group-hover:scale-105"
                         />
                         <div
                           aria-hidden="true"
@@ -225,7 +219,7 @@ export default function BlogPreview() {
                         </div>
                       </div>
                     </Link>
-                  </SpotlightCard>
+                  </div>
                 </motion.article>
 
                 {/* Secondary articles — staggered scaleUp */}
@@ -239,21 +233,16 @@ export default function BlogPreview() {
                       }}
                       transition={baseTransition}
                     >
-                      <SpotlightCard
-                        cursorLabel="READ"
-                        glowColor="rgba(99, 102, 241, 0.10)"
-                        tiltStrength={4}
-                        className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-shadow hover:shadow-lg glow-ring"
-                      >
+                      <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/80 bg-white/85 shadow-lg shadow-indigo-500/10 transition-all hover:-translate-y-1 hover:shadow-xl gradient-border-glow">
                         <Link
                           href={`/blog/${post.slug}`}
                           className="flex flex-1 flex-col"
                         >
-                          <div className="relative aspect-video w-full overflow-hidden bg-slate-100">
+                          <div className="relative aspect-video w-full overflow-hidden bg-linear-to-br from-indigo-50 via-white to-sky-50">
                             <div
                               role="img"
                               aria-label={post.title}
-                              className="absolute inset-0 bg-linear-to-br from-slate-200 via-slate-100 to-white"
+                              className="absolute inset-0 bg-linear-to-br from-indigo-200/70 via-slate-100 to-sky-200/60 transition-transform duration-700 group-hover:scale-105"
                             />
                             <div
                               aria-hidden="true"
@@ -294,9 +283,9 @@ export default function BlogPreview() {
                                 <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
                               </span>
                             </div>
-                          </div>
+                      </div>
                         </Link>
-                      </SpotlightCard>
+                      </div>
                     </motion.article>
                   ))}
                 </div>
@@ -318,7 +307,7 @@ export default function BlogPreview() {
         <ScrollReveal variant="fadeUp" delay={0.2} viewOptions={{ margin: "-80px" }} className="mt-14 flex justify-center">
           <Link
             href="/blog"
-            className="group inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-6 py-3.5 text-sm font-medium text-slate-800 shadow-sm transition-all hover:border-slate-300 hover:shadow-md"
+            className="group inline-flex items-center gap-2 rounded-2xl border border-white/80 bg-white/85 px-6 py-3.5 text-sm font-medium text-slate-800 shadow-lg shadow-indigo-500/10 backdrop-blur holo-border transition-all hover:shadow-xl"
           >
             View all articles
             <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />

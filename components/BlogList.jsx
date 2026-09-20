@@ -12,7 +12,6 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useMemo, useRef, useState } from "react";
 import posts from "../data/posts.json";
-import { SpotlightCard } from "./ui/SpotlightCard";
 import { TextRevealMask } from "./ui/TextRevealMask";
 
 const tabs = [
@@ -103,7 +102,7 @@ function BlogListContent() {
             transition={{ ...baseTransition, delay: 0.04 }}
             className="lg:col-span-5"
           >
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-indigo-600">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] gradient-text">
               Blog
             </p>
             <div className="mt-4">
@@ -147,7 +146,7 @@ function BlogListContent() {
                       {selected && (
                         <motion.span
                           layoutId="blog-list-tab-pill"
-                          className="absolute inset-0 rounded-xl bg-white shadow-sm ring-1 ring-slate-200"
+                          className="absolute inset-0 rounded-xl bg-linear-to-r from-indigo-600 via-violet-500 to-sky-500 shadow-[0_4px_16px_-4px_rgba(99,102,241,0.6)]"
                           transition={baseTransition}
                           aria-hidden="true"
                         />
@@ -159,7 +158,7 @@ function BlogListContent() {
               </LayoutGroup>
             </div>
 
-            <div className="mt-8 rounded-2xl border border-slate-200 bg-white/80 p-6 backdrop-blur">
+            <div className="mt-8 rounded-2xl border border-white/80 bg-white/75 p-6 shadow-lg shadow-indigo-500/10 backdrop-blur holo-border">
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
                 Stats
               </p>
@@ -217,21 +216,16 @@ function BlogListContent() {
                       }}
                       transition={baseTransition}
                     >
-                      <SpotlightCard
-                        cursorLabel="READ"
-                        glowColor="rgba(99, 102, 241, 0.10)"
-                        tiltStrength={3}
-                        className="rounded-2xl border border-slate-200 bg-white shadow-sm transition-all hover:shadow-xl glow-ring"
-                      >
+                      <div className="gradient-border-glow rounded-2xl border border-white/80 bg-white/85 shadow-lg shadow-indigo-500/10 transition-all hover:-translate-y-0.5 hover:shadow-xl">
                         <Link
                           href={`/blog/${post.slug}`}
                           className="group flex flex-col gap-6 p-6 sm:flex-row"
                         >
-                          <div className="relative aspect-16/10 w-full shrink-0 overflow-hidden rounded-xl bg-slate-100 sm:aspect-4/3 sm:w-48">
+                          <div className="relative aspect-16/10 w-full shrink-0 overflow-hidden rounded-xl bg-linear-to-br from-indigo-50 via-white to-sky-50 sm:aspect-4/3 sm:w-48">
                             <div
                               role="img"
                               aria-label={post.title}
-                              className="absolute inset-0 bg-linear-to-br from-slate-200 via-slate-100 to-white"
+                              className="absolute inset-0 bg-linear-to-br from-indigo-200/70 via-slate-100 to-sky-200/60 transition-transform duration-700 group-hover:scale-110"
                             />
                             <div
                               aria-hidden="true"
@@ -272,7 +266,7 @@ function BlogListContent() {
                             </div>
                           </div>
                         </Link>
-                      </SpotlightCard>
+                      </div>
                     </motion.li>
                   ))}
                 </motion.ul>

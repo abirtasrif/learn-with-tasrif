@@ -86,7 +86,7 @@ export default function Skills() {
       <div ref={ref} className="mx-auto max-w-7xl px-5 sm:px-8">
         {/* Section heading */}
         <ScrollReveal variant="fadeUp" viewOptions={{ margin: "-80px" }} className="mx-auto max-w-3xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-indigo-600">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] gradient-text">
             Skills & Tools
           </p>
           <div className="mt-4">
@@ -179,13 +179,13 @@ export default function Skills() {
                     transition={baseTransition}
                   >
                     <SpotlightCard
-                      className="group relative h-full overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:shadow-lg glow-ring"
+                      className="group relative h-full overflow-hidden rounded-2xl border border-white/80 bg-white/85 p-6 shadow-lg shadow-indigo-500/10 transition-all hover:shadow-xl glow-ring"
                       tiltStrength={5}
                       glowColor="rgba(99, 102, 241, 0.12)"
                     >
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex items-center gap-3">
-                          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-linear-to-br from-slate-50 to-white text-indigo-600 ring-1 ring-slate-200">
+                          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-linear-to-br from-indigo-50 via-white to-sky-50 text-indigo-600 ring-1 ring-indigo-100 shadow-sm shadow-indigo-500/10">
                             <Icon className="h-6 w-6" />
                           </span>
                           <div>

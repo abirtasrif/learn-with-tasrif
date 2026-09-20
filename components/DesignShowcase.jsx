@@ -57,7 +57,7 @@ export default function DesignShowcase() {
         <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           {/* Section title — slides from left */}
           <ScrollReveal variant="slideLeft" viewOptions={{ margin: "-80px" }} className="max-w-2xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-indigo-600">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] gradient-text">
               Design Showcase
             </p>
             <div className="mt-4">
@@ -108,7 +108,7 @@ export default function DesignShowcase() {
                       {selected && (
                         <motion.span
                           layoutId="design-tab-pill"
-                          className="absolute inset-0 rounded-xl bg-slate-900"
+                          className="absolute inset-0 rounded-xl bg-linear-to-r from-indigo-600 via-violet-500 to-sky-500 shadow-[0_4px_16px_-4px_rgba(99,102,241,0.6)]"
                           transition={TAB_SPRING}
                           aria-hidden="true"
                         />
@@ -175,7 +175,7 @@ export default function DesignShowcase() {
                       glowColor="rgba(99, 102, 241, 0.14)"
                       tiltStrength={6}
                       cursorLabel="VIEW"
-                      className={`group relative h-full overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-shadow hover:shadow-2xl glow-ring ${
+                      className={`group relative h-full overflow-hidden rounded-3xl border border-white/80 bg-white/85 shadow-lg shadow-indigo-500/10 transition-shadow hover:shadow-2xl glow-ring ${
                         isFeatured ? "ring-1 ring-indigo-200" : ""
                       }`}
                     >
@@ -190,7 +190,7 @@ export default function DesignShowcase() {
                       )}
                       {/* Image placeholder — subtle zoom-settle on enter */}
                       <motion.div
-                        className="relative aspect-4/3 w-full overflow-hidden bg-slate-100 sm:aspect-16/10 lg:aspect-auto lg:h-full lg:min-h-65"
+                        className="relative aspect-4/3 w-full overflow-hidden bg-linear-to-br from-indigo-50 via-white to-sky-50 sm:aspect-16/10 lg:aspect-auto lg:h-full lg:min-h-65"
                         initial={{ scale: 1.04 }}
                         animate={inView ? { scale: 1 } : { scale: 1.04 }}
                         transition={{ ...TRANSITIONS.slow, delay: 0.1 + i * 0.05 }}
@@ -198,7 +198,7 @@ export default function DesignShowcase() {
                         <div
                           role="img"
                           aria-label={design.title}
-                          className="absolute inset-0 bg-linear-to-br from-slate-200 via-slate-100 to-white"
+                          className="absolute inset-0 bg-linear-to-br from-indigo-200/70 via-slate-100 to-sky-200/60 shadow-[inset_0_0_40px_rgba(255,255,255,0.6)]"
                         />
                         <div className="absolute inset-0 flex items-center justify-center bg-[radial-gradient(circle_at_30%_20%,rgba(99,102,241,0.14),transparent_55%),radial-gradient(circle_at_80%_80%,rgba(148,163,184,0.25),transparent_55%)]">
                           <div className="flex flex-col items-center gap-2 text-slate-400">
@@ -242,7 +242,7 @@ export default function DesignShowcase() {
                             href="#"
                             aria-label={`Open case study for ${design.title}`}
                             onClick={(e) => e.preventDefault()}
-                            className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-600 transition-all hover:border-indigo-200 hover:bg-indigo-50 hover:text-indigo-700"
+                            className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-white/90 bg-white text-slate-600 shadow-sm transition-all hover:border-indigo-200 hover:bg-linear-to-br hover:from-indigo-50 hover:to-sky-50 hover:text-indigo-700"
                           >
                             <ArrowUpRight className="h-4 w-4" />
                           </a>
@@ -253,7 +253,7 @@ export default function DesignShowcase() {
                             {design.tools.map((t) => (
                               <span
                                 key={t}
-                                className="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-medium text-slate-600"
+                                className="rounded-full border border-white/70 bg-linear-to-r from-indigo-50/70 to-sky-50/70 px-2.5 py-1 text-[11px] font-medium text-indigo-600 backdrop-blur-sm"
                               >
                                 {t}
                               </span>

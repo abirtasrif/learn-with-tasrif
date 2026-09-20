@@ -43,7 +43,17 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-slate-50 text-slate-900">
+      <body className="min-h-full flex flex-col bg-background text-slate-900">
+        {/* Aurora holographic backdrop — light theme */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
+        >
+          <div className="aurora-orb aurora-orb-a" />
+          <div className="aurora-orb aurora-orb-b" />
+          <div className="aurora-orb aurora-orb-c" />
+          <div className="absolute inset-0 grid-overlay opacity-60" />
+        </div>
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-100 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-indigo-700 focus:shadow-lg focus:ring-2 focus:ring-indigo-500"

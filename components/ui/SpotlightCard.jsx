@@ -4,7 +4,10 @@ import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useRef } from "react";
 
 /**
- * SpotlightCard – 3D tilt + radial spotlight glow following the cursor.
+ * SpotlightCard – holographic 3D tilt + cursor-tracked spotlight.
+ * Styled after 21st.dev's HolographicInterface: adds a rotating
+ * aurora gradient border (`.holo-border`) and a hover light-sheen
+ * (`.holo-sheen`), all light-theme safe.
  * Usage: <SpotlightCard className="..." cursorLabel="VIEW">...</SpotlightCard>
  */
 export function SpotlightCard({
@@ -13,6 +16,7 @@ export function SpotlightCard({
   glowColor = "rgba(99, 102, 241, 0.15)",
   tiltStrength = 8, // max degrees
   cursorLabel,
+  holo = true, // aurora border + sheen
   ...props
 }) {
   const cardRef = useRef(null);
@@ -55,7 +59,7 @@ export function SpotlightCard({
   return (
     <motion.div
       ref={cardRef}
-      className={`relative overflow-hidden ${className}`}
+      className={`relative overflow-hidden ${holo ? "holo-border holo-sheen" : ""} ${className}`}
       data-cursor-label={cursorLabel}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}

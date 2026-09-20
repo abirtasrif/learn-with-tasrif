@@ -3,8 +3,10 @@ import { Suspense } from "react";
 
 export default function BlogPage() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <BlogList />
-    </Suspense>
+    <div id="blog-root" className="relative overflow-hidden">
+      <Suspense fallback={<div>Loading...</div>}>
+        <BlogList />
+      </Suspense>
+    </div>
   );
 }

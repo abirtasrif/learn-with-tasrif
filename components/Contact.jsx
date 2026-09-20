@@ -1,9 +1,9 @@
 "use client";
 
 import { motion, useInView, useReducedMotion } from "framer-motion";
-import { ArrowRight, Link2, Mail } from "lucide-react";
+import { ArrowRight, Check, Link2, Mail, Send } from "lucide-react";
 import Link from "next/link";
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, useState } from "react";
 import profile from "../data/profile.json";
 import { BorderBeam } from "./ui/BorderBeam";
 import { Magnetic } from "./ui/Magnetic";
@@ -33,6 +33,141 @@ function YouTubeIcon(props) {
     <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
       <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
     </svg>
+  );
+}
+
+const inputClasses =
+  "w-full rounded-xl border border-white/70 bg-white/80 px-4 py-3 text-sm text-slate-900 shadow-sm outline-none transition-all placeholder:text-slate-400 focus:border-indigo-300 focus:ring-2 focus:ring-indigo-200/60 holo-border";
+
+function ContactForm({ email }) {
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [sent, setSent] = useState(false);
+
+  const update = (e) =>
+    setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!form.name.trim() || !form.email.trim() || !form.message.trim()) return;
+    const subject = encodeURIComponent(`Portfolio inquiry from ${form.name}`);
+    const body = encodeURIComponent(
+      `${form.message}\n\n— ${form.name} (${form.email})`,
+    );
+    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+    setSent(true);
+  };
+
+  if (sent) {
+    return (
+      <div className="flex flex-col items-center justify-center rounded-3xl border border-white/70 bg-white/80 px-6 py-12 text-center shadow-xl shadow-indigo-500/10 backdrop-blur-xl holo-border">
+        <span className="relative flex h-14 w-14 items-center justify-center rounded-2xl bg-linear-to-r from-indigo-600 via-violet-500 to-sky-500 text-white shadow-lg shadow-indigo-500/30">
+          <span className="absolute inset-0 rounded-2xl holo-border" />
+          <Check className="h-7 w-7" />
+        </span>
+        <p className="mt-5 text-lg font-semibold text-slate-900">
+          Your email draft is ready
+        </p>
+        <p className="mt-1 max-w-sm text-sm leading-relaxed text-slate-600">
+          I replied to everything within 2 working days — hit send and I&apos;ll
+          get back to you promptly.
+        </p>
+        <button
+          type="button"
+          onClick={() => setSent(false)}
+          className="mt-6 inline-flex items-center gap-2 rounded-xl border border-white/80 bg-white/85 px-4 py-2.5 text-sm font-medium text-slate-800 shadow-sm holo-border transition-all hover:shadow-md"
+        >
+          Send another message
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <form
+      onSubmit={handleSubmit}
+      className="relative overflow-hidden rounded-3xl border border-white/70 bg-white/80 p-5 shadow-xl shadow-indigo-500/10 backdrop-blur-xl holo-border sm:p-6"
+    >
+      <BorderBeam
+        size={280}
+        duration={16}
+        colorFrom="#6366f1"
+        colorTo="#22d3ee"
+        borderWidth={1.5}
+      />
+      <div className="flex items-center justify-between gap-3">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+            Send a message
+          </p>
+          <p className="mt-0.5 text-sm font-semibold text-slate-900">
+            Let&apos;s start the conversation
+          </p>
+        </div>
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-medium text-emerald-700 ring-1 ring-inset ring-emerald-100">
+          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.9)]" />
+          Available now
+        </span>
+      </div>
+
+      <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <label className="block">
+          <span className="mb-1.5 block text-xs font-medium text-slate-600">
+            Name
+          </span>
+          <input
+            type="text"
+            name="name"
+            required
+            value={form.name}
+            onChange={update}
+            placeholder="Your name"
+            className={inputClasses}
+          />
+        </label>
+        <label className="block">
+          <span className="mb-1.5 block text-xs font-medium text-slate-600">
+            Email
+          </span>
+          <input
+            type="email"
+            name="email"
+            required
+            value={form.email}
+            onChange={update}
+            placeholder="you@example.com"
+            className={inputClasses}
+          />
+        </label>
+      </div>
+
+      <label className="mt-4 block">
+        <span className="mb-1.5 block text-xs font-medium text-slate-600">
+          Message
+        </span>
+        <textarea
+          name="message"
+          required
+          rows={4}
+          value={form.message}
+          onChange={update}
+          placeholder="Tell me about your project, role, or idea…"
+          className={`${inputClasses} resize-none`}
+        />
+      </label>
+
+      <div className="mt-5 flex flex-col-reverse items-stretch gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <p className="text-xs text-slate-500">
+          Opens in your email app — no data is stored.
+        </p>
+        <button
+          type="submit"
+          className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-xl bg-linear-to-r from-indigo-600 via-violet-500 to-sky-500 px-5 py-3 text-sm font-medium text-white shadow-lg shadow-indigo-500/25 transition-all hover:shadow-indigo-500/40"
+        >
+          <Send className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          Send Message
+        </button>
+      </div>
+    </form>
   );
 }
 
@@ -125,7 +260,7 @@ export default function Contact() {
         className="pointer-events-none absolute -z-10 right-1/4 bottom-1/3 h-72 w-72 rounded-full bg-indigo-100/20 blur-3xl animate-float-b"
       />
       <div ref={ref} className="mx-auto max-w-7xl px-5 sm:px-8">
-        <div className="relative overflow-hidden rounded-4xl border border-slate-200 bg-linear-to-br from-white via-white to-slate-50 shadow-sm">
+        <div className="relative overflow-hidden rounded-4xl border border-white/70 bg-linear-to-br from-white/90 via-white/95 to-slate-50/90 shadow-2xl shadow-indigo-500/10 backdrop-blur-xl holo-border">
           <BorderBeam
             size={340}
             duration={18}
@@ -136,9 +271,9 @@ export default function Contact() {
           <div className="grid grid-cols-1 gap-10 p-8 sm:p-12 lg:grid-cols-12 lg:gap-16 lg:p-16">
             {/* Left — slide from left */}
             <ScrollReveal variant="slideLeft" viewOptions={{ margin: "-80px" }} className="lg:col-span-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-indigo-600">
-                Contact
-              </p>
+<p className="text-xs font-semibold uppercase tracking-[0.18em] gradient-text">
+                  Contact
+                </p>
               <div className="mt-4">
                 <TextRevealMask
                   as="h2"
@@ -202,7 +337,7 @@ export default function Contact() {
                       href={userLinkedin}
                       target="_blank"
                       rel="noreferrer noopener"
-                      className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-6 py-3.5 text-sm font-medium text-slate-800 transition-all hover:border-slate-300 hover:bg-white hover:shadow-md"
+                      className="inline-flex items-center gap-2 rounded-2xl border border-white/80 bg-white/85 px-6 py-3.5 text-sm font-medium text-slate-800 shadow-lg shadow-indigo-500/5 transition-all hover:shadow-xl holo-border"
                     >
                       <Link2 size={16} />
                       LinkedIn
@@ -212,8 +347,12 @@ export default function Contact() {
               </motion.div>
             </ScrollReveal>
 
-            {/* Right — channel cards stagger scaleUp */}
+            {/* Right — message form + channel cards */}
             <div className="lg:col-span-7">
+              <ScrollReveal variant="fadeUp" delay={0.12} viewOptions={{ margin: "-80px" }}>
+                <ContactForm email={userEmail} />
+              </ScrollReveal>
+
               <StaggerReveal
                 stagger={0.1}
                 delay={0.2}
@@ -272,7 +411,7 @@ export default function Contact() {
               </StaggerReveal>
 
               <ScrollReveal variant="fadeUp" delay={0.45} viewOptions={{ margin: "-80px" }}>
-                <div className="mt-6 rounded-2xl border border-slate-200 bg-white/70 p-5 backdrop-blur">
+                <div className="mt-6 rounded-2xl border border-white/80 bg-white/75 p-5 shadow-lg shadow-indigo-500/10 backdrop-blur holo-border">
                   <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
                     Availability
                   </p>

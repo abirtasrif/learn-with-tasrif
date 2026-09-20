@@ -57,7 +57,7 @@ function DockIcon({ mouseX, item }) {
       style={{ width, height: width }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="relative flex items-center justify-center rounded-2xl bg-white/90 shadow-sm ring-1 ring-slate-200/80 transition-colors hover:bg-white hover:ring-indigo-300 dark:bg-slate-900/90 dark:ring-slate-800"
+      className="relative flex items-center justify-center rounded-2xl bg-white/80 backdrop-blur-md ring-1 ring-slate-200/70 shadow-sm transition-all hover:bg-white hover:ring-2 hover:ring-indigo-300 hover:shadow-[0_0_20px_-4px_rgba(99,102,241,0.5)]"
     >
       <AnimatePresence>
         {hovered && (
@@ -66,7 +66,7 @@ function DockIcon({ mouseX, item }) {
             animate={{ opacity: 1, y: -4, scale: 1 }}
             exit={{ opacity: 0, y: 4, scale: 0.9 }}
             transition={{ duration: 0.15 }}
-            className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-slate-900 px-2 py-1 text-[11px] font-medium text-white shadow-md ring-1 ring-white/10"
+            className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-white/95 px-2 py-1 text-[11px] font-semibold text-slate-700 shadow-lg ring-1 ring-slate-200 backdrop-blur"
           >
             {item.title}
           </motion.div>
@@ -114,7 +114,7 @@ export function FloatingDock({ className = "" }) {
           onMouseMove={(e) => mouseX.set(e.pageX)}
           onMouseLeave={() => mouseX.set(Infinity)}
           aria-label="Floating quick navigation"
-          className={`fixed bottom-6 left-1/2 z-40 hidden sm:flex items-end gap-2.5 rounded-3xl border border-slate-200/80 bg-white/70 px-3.5 py-2.5 shadow-xl backdrop-blur-xl ring-1 ring-black/5 ${className}`}
+          className={`fixed bottom-5 left-1/2 z-40 hidden md:flex lg:hidden items-end gap-2 rounded-2xl border border-white/70 bg-white/70 px-2.5 py-2 shadow-2xl shadow-indigo-500/10 backdrop-blur-2xl holo-border md:bottom-6 md:gap-2.5 md:px-3.5 md:py-2.5 md:rounded-3xl ${className}`}
         >
           {dockItems.map((item) => (
             <DockIcon key={item.title} mouseX={mouseX} item={item} />

@@ -40,5 +40,9 @@ export default async function BlogPostPage({ params }) {
     .filter((p) => p.slug !== post.slug && p.category === post.category)
     .slice(0, 3);
 
-  return <BlogArticle post={post} related={related} />;
+  return (
+    <div id="blog-root" className="relative overflow-hidden">
+      <BlogArticle post={post} related={related} />
+    </div>
+  );
 }
