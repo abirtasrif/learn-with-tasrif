@@ -11,7 +11,11 @@ import { ArrowUpRight, Layers } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
 import designs from "../data/designs.json";
 import { BorderBeam } from "./ui/BorderBeam";
-import { ScrollReveal, TRANSITIONS, VARIANTS } from "./ui/ScrollReveal";
+import { ScrollReveal, TRANSITIONS } from "./ui/ScrollReveal";
+import {
+  PerspectiveGroup,
+  ScrollProgressRail,
+} from "./ui/ScrollReveal3D";
 import { SpotlightCard } from "./ui/SpotlightCard";
 import { TextRevealMask } from "./ui/TextRevealMask";
 
@@ -29,11 +33,12 @@ const TAB_SPRING = { type: "spring", stiffness: 380, damping: 26, mass: 0.5 };
 export default function DesignShowcase() {
   const [active, setActive] = useState("All");
   const ref = useRef(null);
+  const sectionRef = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
   const reduceMotion = useReducedMotion();
-  const baseTransition = reduceMotion
+  const depthTransition = reduceMotion
     ? { duration: 0 }
-    : TRANSITIONS.default;
+    : TRANSITIONS.depth;
 
   const filtered = useMemo(() => {
     const list =
@@ -44,7 +49,14 @@ export default function DesignShowcase() {
   }, [active]);
 
   return (
-    <section id="designs" className="relative py-24 sm:py-32">
+    <section id="designs" ref={sectionRef} className="relative py-24 sm:py-32">
+      <ScrollProgressRail
+        targetRef={sectionRef}
+        side="left"
+        tone="violet"
+        className="hidden md:block"
+      />
+
       {/* Background */}
       <div
         aria-hidden="true"
@@ -61,14 +73,15 @@ export default function DesignShowcase() {
               Design Showcase
             </p>
             <div className="mt-4">
-              <TextRevealMask
-                as="h2"
-                splitBy="words"
-                className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl"
-                viewportMargin="0px 0px -15% 0px"
-              >
-                Selected work across fashion tech and technical design.
-              </TextRevealMask>
+            <TextRevealMask
+              as="h2"
+              splitBy="tilt"
+              className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl"
+              viewportMargin="0px 0px -15% 0px"
+            >
+              Selected work across fashion tech and technical design.
+            </TextRevealMask>
+
             </div>
             <ScrollReveal variant="blurIn" delay={0.2} viewOptions={{ margin: "-80px" }}>
               <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
@@ -128,22 +141,28 @@ export default function DesignShowcase() {
           </ScrollReveal>
         </div>
 
-        {/* Cards grid — stagger with scale+blur entrance */}
-        <motion.div layout className="mt-14">
-          <AnimatePresence mode="popLayout">
-            <motion.ul
-              key={active}
-              layout
-              initial="initial"
-              animate={inView ? "animate" : "initial"}
-              variants={{
-                initial: {},
-                animate: {
-                  transition: { staggerChildren: reduceMotion ? 0 : 0.06 },
-                },
-              }}
-              className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-12"
-            >
+        {/* Cards grid — scroll-linked 3D stage. Each tile is scrubbed against
+            its own scroll position: it rises tipped forward, snaps flat at
+            mid-viewport, then tips away on the way out. */}
+        <PerspectiveGroup className="mt-14" perspective={1700} lean={1}>
+          <motion.div layout className="h-full">
+            <AnimatePresence mode="popLayout">
+              <motion.ul
+                key={active}
+                layout
+                initial="initial"
+                animate={inView ? "animate" : "initial"}
+                variants={{
+                  initial: {},
+                  animate: {
+                    transition: {
+                      staggerChildren: reduceMotion ? 0 : 0.07,
+                    },
+                  },
+                }}
+                className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-12"
+                style={{ perspective: 1200 }}
+              >
               {filtered.map((design, i) => {
                 const spanCol =
                   design.size === "lg"
@@ -159,15 +178,28 @@ export default function DesignShowcase() {
                     key={design.id}
                     layout
                     variants={{
-                      initial: { opacity: 0, y: 28, scale: 0.96 },
-                      animate: { opacity: 1, y: 0, scale: 1 },
+                      initial: {
+                        opacity: 0,
+                        y: 34,
+                        z: -190,
+                        scale: 0.93,
+                        rotateX: 13,
+                      },
+                      animate: {
+                        opacity: 1,
+                        y: 0,
+                        z: 0,
+                        scale: 1,
+                        rotateX: 0,
+                      },
                       exit: {
                         opacity: 0,
                         scale: 0.97,
                         transition: { duration: 0.18 },
                       },
                     }}
-                    transition={baseTransition}
+                    transition={depthTransition}
+                    style={{ transformStyle: "preserve-3d" }}
                     className={`${spanCol} ${spanRow}`}
                   >
                     <SpotlightCard
@@ -267,9 +299,10 @@ export default function DesignShowcase() {
                   </motion.li>
                 );
               })}
-            </motion.ul>
-          </AnimatePresence>
-        </motion.div>
+              </motion.ul>
+            </AnimatePresence>
+          </motion.div>
+        </PerspectiveGroup>
       </div>
     </section>
   );

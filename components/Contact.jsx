@@ -8,6 +8,7 @@ import profile from "../data/profile.json";
 import { BorderBeam } from "./ui/BorderBeam";
 import { Magnetic } from "./ui/Magnetic";
 import { ScrollReveal, StaggerReveal, TRANSITIONS, VARIANTS } from "./ui/ScrollReveal";
+import { Reveal3D, ScrollProgressRail } from "./ui/ScrollReveal3D";
 import { SpotlightCard } from "./ui/SpotlightCard";
 import { TextRevealMask } from "./ui/TextRevealMask";
 
@@ -173,11 +174,9 @@ function ContactForm({ email }) {
 
 export default function Contact() {
   const ref = useRef(null);
+  const sectionRef = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
   const reduceMotion = useReducedMotion();
-  const baseTransition = reduceMotion
-    ? { duration: 0 }
-    : TRANSITIONS.default;
 
   const userEmail = profile?.email || "abirtasrif@engineer.com";
   const userLinkedin =
@@ -249,7 +248,13 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="relative py-24 sm:py-32">
+    <section id="contact" ref={sectionRef} className="relative py-24 sm:py-32">
+      <ScrollProgressRail
+        targetRef={sectionRef}
+        side="right"
+        tone="indigo"
+        className="hidden md:block"
+      />
       <div
         aria-hidden="true"
         className="absolute inset-0 -z-10 bg-[radial-gradient(1000px_400px_at_50%_-20%,rgba(99,102,241,0.12),transparent_60%)]"
@@ -277,7 +282,7 @@ export default function Contact() {
               <div className="mt-4">
                 <TextRevealMask
                   as="h2"
-                  splitBy="words"
+                  splitBy="flip"
                   className="text-3xl font-semibold leading-[1.1] tracking-tight text-slate-900 sm:text-4xl lg:text-5xl"
                   viewportMargin="0px 0px -15% 0px"
                 >
@@ -348,10 +353,21 @@ export default function Contact() {
             </ScrollReveal>
 
             {/* Right — message form + channel cards */}
-            <div className="lg:col-span-7">
-              <ScrollReveal variant="fadeUp" delay={0.12} viewOptions={{ margin: "-80px" }}>
+            <div className="lg:col-span-7" style={{ perspective: 1200 }}>
+              {/* The form is the heaviest element on the page, so it gets the
+                  full scrubbed 3D treatment rather than a one-shot fade. */}
+              <Reveal3D
+                distance={220}
+                tilt={18}
+                travel={40}
+                drift={5}
+                origin="right"
+                blur={reduceMotion ? 0 : 3}
+                brightness={reduceMotion ? null : 0.94}
+                perspective={0}
+              >
                 <ContactForm email={userEmail} />
-              </ScrollReveal>
+              </Reveal3D>
 
               <StaggerReveal
                 stagger={0.1}
@@ -366,8 +382,9 @@ export default function Contact() {
                   return (
                     <motion.div
                       key={ch.label}
-                      variants={VARIANTS.scaleUp}
-                      transition={TRANSITIONS.default}
+                      variants={VARIANTS.depthRise}
+                      transition={TRANSITIONS.depth}
+                      style={{ transformStyle: "preserve-3d" }}
                     >
                       <a
                         href={ch.href}

@@ -4,7 +4,11 @@ import { motion, useInView, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Clock, Play, PlayCircle, X } from "lucide-react";
 import { useRef, useState } from "react";
 import videos from "../data/videos.json";
-import { ScrollReveal, TRANSITIONS, VARIANTS } from "./ui/ScrollReveal";
+import { ScrollReveal, TRANSITIONS } from "./ui/ScrollReveal";
+import {
+  Reveal3D,
+  ScrollProgressRail,
+} from "./ui/ScrollReveal3D";
 import { TextRevealMask } from "./ui/TextRevealMask";
 
 function VideoThumb({ video, playing, onPlay }) {
@@ -85,18 +89,22 @@ function VideoThumb({ video, playing, onPlay }) {
 
 export default function VideoGrid() {
   const ref = useRef(null);
+  const sectionRef = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
   const reduceMotion = useReducedMotion();
-  const baseTransition = reduceMotion
-    ? { duration: 0 }
-    : TRANSITIONS.default;
   const [active, setActive] = useState(null);
 
   const featured = videos.find((v) => v.featured) || videos[0];
   const rest = videos.filter((v) => v.id !== featured.id).slice(0, 4);
 
   return (
-    <section id="videos" className="relative py-24 sm:py-32">
+    <section id="videos" ref={sectionRef} className="relative py-24 sm:py-32">
+      <ScrollProgressRail
+        targetRef={sectionRef}
+        side="right"
+        tone="emerald"
+        className="hidden md:block"
+      />
       <div
         aria-hidden="true"
         className="absolute inset-x-0 top-0 -z-10 mx-auto h-64 max-w-6xl bg-linear-to-b from-indigo-50/60 to-transparent blur-3xl animate-float-c"
@@ -109,14 +117,15 @@ export default function VideoGrid() {
               Video Learning
             </p>
             <div className="mt-4">
-              <TextRevealMask
-                as="h2"
-                splitBy="words"
-                className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl"
-                viewportMargin="0px 0px -15% 0px"
-              >
-                Practical tutorials on fashion tech and computer applications.
-              </TextRevealMask>
+            <TextRevealMask
+              as="h2"
+              splitBy="tilt"
+              className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl"
+              viewportMargin="0px 0px -15% 0px"
+            >
+              Practical tutorials on fashion tech and computer applications.
+            </TextRevealMask>
+
             </div>
             <ScrollReveal variant="blurIn" delay={0.2} viewOptions={{ margin: "-80px" }}>
               <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
@@ -139,14 +148,20 @@ export default function VideoGrid() {
         </div>
 
         <div className="mt-14 grid grid-cols-1 gap-6 lg:grid-cols-12">
-          {/* Featured video — slides from left */}
-          <motion.div
-            initial={{ opacity: 0, x: -24, scale: 0.98 }}
-            animate={inView ? { opacity: 1, x: 0, scale: 1 } : {}}
-            transition={{ ...baseTransition, delay: 0.1 }}
-            className="lg:col-span-7"
-          >
-            <div className="group relative overflow-hidden rounded-3xl border border-white/80 bg-white/85 shadow-lg shadow-indigo-500/10 glow-ring">
+          {/* Featured video — scrubbed 3D: tips forward as it enters, sits flat
+              at centre, tips back as it leaves. */}
+          <div className="lg:col-span-7">
+            <Reveal3D
+              distance={260}
+              tilt={20}
+              travel={46}
+              drift={4}
+              origin="left"
+              blur={reduceMotion ? 0 : 4}
+              brightness={reduceMotion ? null : 0.92}
+              perspective={1500}
+            >
+              <div className="group relative overflow-hidden rounded-3xl border border-white/80 bg-white/85 shadow-lg shadow-indigo-500/10 glow-ring">
               {active?.id === featured.id ? (
                 <div className="relative aspect-video w-full bg-black">
                   <button
@@ -197,17 +212,26 @@ export default function VideoGrid() {
                   <ArrowUpRight className="h-4 w-4" />
                 </a>
               </div>
-            </div>
-          </motion.div>
+              </div>
+            </Reveal3D>
+          </div>
 
-          {/* Sidebar videos — staggered from right */}
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:col-span-5">
+          {/* Sidebar videos — hinged in from the right. Perspective lives on
+              this grid so each tile's rotateY resolves against it. */}
+          <div
+            className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:col-span-5"
+            style={{ perspective: 1000 }}
+          >
             {rest.map((video, i) => (
               <motion.div
                 key={video.id}
-                initial={{ opacity: 0, x: 20, y: 12 }}
-                animate={inView ? { opacity: 1, x: 0, y: 0 } : {}}
-                transition={{ ...baseTransition, delay: 0.15 + i * 0.08 }}
+                initial={{ opacity: 0, x: 20, y: 12, z: -120, rotateY: 10 }}
+                animate={inView ? { opacity: 1, x: 0, y: 0, z: 0, rotateY: 0 } : {}}
+                transition={{
+                  ...(reduceMotion ? { duration: 0 } : TRANSITIONS.depth),
+                  delay: 0.15 + i * 0.08,
+                }}
+                style={{ transformStyle: "preserve-3d" }}
               >
                 {active?.id === video.id ? (
                   <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-slate-200 bg-black shadow-sm">

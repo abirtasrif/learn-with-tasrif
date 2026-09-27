@@ -45,7 +45,11 @@ export default function Hero() {
     reduceMotion ? { duration: 0 } : { ...TRANSITIONS.default, delay };
 
   return (
-    <section id="home" className="relative overflow-hidden pt-10 sm:pt-16">
+    <section
+      id="home"
+      className="relative overflow-hidden pt-10 sm:pt-16"
+      style={{ perspective: 1400 }}
+    >
       <div className="absolute inset-0 soft-gradient" aria-hidden="true" />
       <div className="absolute inset-0 noise-grid" aria-hidden="true" />
 
@@ -218,12 +222,17 @@ export default function Hero() {
               },
             }}
             className="mx-auto mt-10 grid max-w-3xl grid-cols-2 gap-4 rounded-3xl border border-white/70 bg-white/65 p-4 shadow-xl shadow-indigo-500/10 backdrop-blur-xl holo-border sm:grid-cols-4 sm:p-5"
+            style={{ perspective: 1100 }}
           >
             {statItems.map((stat, i) => (
               <motion.div
                 key={stat.label}
-                variants={VARIANTS.scaleUp}
-                transition={{ ...TRANSITIONS.spring, delay: i * 0.06 }}
+                variants={VARIANTS.depthInset}
+                transition={{
+                  ...(reduceMotion ? { duration: 0 } : TRANSITIONS.depth),
+                  delay: i * 0.06,
+                }}
+                style={{ transformStyle: "preserve-3d" }}
                 className={`flex flex-col items-center justify-center p-2 text-center${i > 0 ? " border-l border-slate-200/70" : ""}`}
               >
                 <div className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
@@ -240,12 +249,13 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        {/* Focus cards — staggered slideRight entrance */}
+        {/* Focus cards — rising out of the page in 3D */}
         <StaggerReveal
           stagger={0.1}
           delay={1.0}
           as="div"
           className="mx-auto mt-16 grid max-w-5xl grid-cols-1 gap-3 sm:grid-cols-3"
+          perspective={1200}
         >
           {labels.map(({ title, icon: Icon, tone }) => {
             const toneStyles = {
@@ -258,8 +268,9 @@ export default function Hero() {
             return (
               <motion.div
                 key={title}
-                variants={VARIANTS.slideRight}
-                transition={TRANSITIONS.default}
+                variants={VARIANTS.depthRise}
+                transition={reduceMotion ? { duration: 0 } : TRANSITIONS.depth}
+                style={{ transformStyle: "preserve-3d" }}
               >
                 <SpotlightCard
                   glowColor={

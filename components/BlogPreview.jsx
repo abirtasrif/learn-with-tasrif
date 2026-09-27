@@ -11,7 +11,11 @@ import { ArrowRight, CalendarDays, Clock } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useRef, useState } from "react";
 import posts from "../data/posts.json";
-import { ScrollReveal, TRANSITIONS, VARIANTS } from "./ui/ScrollReveal";
+import { ScrollReveal, TRANSITIONS } from "./ui/ScrollReveal";
+import {
+  PerspectiveGroup,
+  ScrollProgressRail,
+} from "./ui/ScrollReveal3D";
 import { TextRevealMask } from "./ui/TextRevealMask";
 
 const tabs = [
@@ -49,11 +53,12 @@ const TAB_SPRING = { type: "spring", stiffness: 380, damping: 26, mass: 0.5 };
 export default function BlogPreview() {
   const [active, setActive] = useState("All");
   const ref = useRef(null);
+  const sectionRef = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
   const reduceMotion = useReducedMotion();
-  const baseTransition = reduceMotion
+  const depthTransition = reduceMotion
     ? { duration: 0 }
-    : TRANSITIONS.default;
+    : TRANSITIONS.depth;
 
   const sorted = useMemo(
     () =>
@@ -71,7 +76,13 @@ export default function BlogPreview() {
   const [featured, ...rest] = filtered;
 
   return (
-    <section id="blog-preview" className="relative py-24 sm:py-32">
+    <section id="blog-preview" ref={sectionRef} className="relative py-24 sm:py-32">
+      <ScrollProgressRail
+        targetRef={sectionRef}
+        side="left"
+        tone="amber"
+        className="hidden md:block"
+      />
       {/* Background */}
       <div
         className="absolute inset-0 -z-10 bg-linear-to-b from-slate-50/60 via-white to-white"
@@ -89,7 +100,7 @@ export default function BlogPreview() {
               <div className="mt-4">
                 <TextRevealMask
                   as="h2"
-                  splitBy="words"
+                  splitBy="tilt"
                   className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl"
                   viewportMargin="0px 0px -15% 0px"
                 >
@@ -142,32 +153,48 @@ export default function BlogPreview() {
           </div>
         </ScrollReveal>
 
-        {/* Articles grid */}
-        <motion.div layout className="mt-14">
-          <AnimatePresence mode="popLayout">
-            {featured ? (
-              <motion.div
-                key={`grid-${active}`}
-                layout
-                initial="initial"
-                animate={inView ? "animate" : "initial"}
-                variants={{
-                  initial: {},
-                  animate: {
-                    transition: { staggerChildren: reduceMotion ? 0 : 0.07 },
-                  },
-                }}
-                className="grid grid-cols-1 gap-6 lg:grid-cols-12"
-              >
-                {/* Featured article — slides from left, scale */}
-                <motion.article
+        {/* Articles grid — 3D stage. Featured card hinges on its left edge,
+            secondary cards rise tipped forward. */}
+        <PerspectiveGroup className="mt-14" perspective={1600} lean={1}>
+          <motion.div layout className="h-full">
+            <AnimatePresence mode="popLayout">
+              {featured ? (
+                <motion.div
+                  key={`grid-${active}`}
+                  layout
+                  initial="initial"
+                  animate={inView ? "animate" : "initial"}
                   variants={{
-                    initial: { opacity: 0, x: -24, scale: 0.98 },
-                    animate: { opacity: 1, x: 0, scale: 1 },
+                    initial: {},
+                    animate: {
+                      transition: { staggerChildren: reduceMotion ? 0 : 0.07 },
+                    },
                   }}
-                  transition={baseTransition}
-                  className="lg:col-span-7"
+                  className="grid grid-cols-1 gap-6 lg:grid-cols-12"
+                  style={{ perspective: 1200 }}
                 >
+                  {/* Featured article — hinged open from the left */}
+                  <motion.article
+                    variants={{
+                      initial: {
+                        opacity: 0,
+                        x: -30,
+                        z: -200,
+                        scale: 0.94,
+                        rotateY: 16,
+                      },
+                      animate: {
+                        opacity: 1,
+                        x: 0,
+                        z: 0,
+                        scale: 1,
+                        rotateY: 0,
+                      },
+                    }}
+                    transition={depthTransition}
+                    style={{ transformOrigin: "left center", transformStyle: "preserve-3d" }}
+                    className="lg:col-span-7"
+                  >
 <div className="group relative h-full overflow-hidden rounded-3xl border border-white/80 bg-white/85 shadow-lg shadow-indigo-500/10 transition-all hover:-translate-y-1 hover:shadow-2xl gradient-border-glow">
                     <Link href={`/blog/${featured.slug}`} data-cursor-label="READ" className="block">
                       <div className="relative aspect-video w-full overflow-hidden bg-linear-to-br from-indigo-50 via-white to-sky-50 lg:aspect-16/10">
@@ -222,16 +249,34 @@ export default function BlogPreview() {
                   </div>
                 </motion.article>
 
-                {/* Secondary articles — staggered scaleUp */}
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:col-span-5">
-                  {rest.slice(0, 4).map((post) => (
+                {/* Secondary articles — rise tipped forward, alternating side */}
+                <div
+                  className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:col-span-5"
+                  style={{ perspective: 1000 }}
+                >
+                  {rest.slice(0, 4).map((post, i) => (
                     <motion.article
                       key={post.slug}
                       variants={{
-                        initial: { opacity: 0, y: 24, scale: 0.96 },
-                        animate: { opacity: 1, y: 0, scale: 1 },
+                        initial: {
+                          opacity: 0,
+                          y: 30,
+                          z: -150,
+                          scale: 0.93,
+                          rotateX: 14,
+                          rotateY: i % 2 === 0 ? -7 : 7,
+                        },
+                        animate: {
+                          opacity: 1,
+                          y: 0,
+                          z: 0,
+                          scale: 1,
+                          rotateX: 0,
+                          rotateY: 0,
+                        },
                       }}
-                      transition={baseTransition}
+                      transition={depthTransition}
+                      style={{ transformStyle: "preserve-3d" }}
                     >
                       <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/80 bg-white/85 shadow-lg shadow-indigo-500/10 transition-all hover:-translate-y-1 hover:shadow-xl gradient-border-glow">
                         <Link
@@ -301,8 +346,9 @@ export default function BlogPreview() {
                 No articles in this category yet.
               </motion.div>
             )}
-          </AnimatePresence>
-        </motion.div>
+            </AnimatePresence>
+          </motion.div>
+        </PerspectiveGroup>
 
         {/* CTA */}
         <ScrollReveal variant="fadeUp" delay={0.2} viewOptions={{ margin: "-80px" }} className="mt-14 flex justify-center">

@@ -22,7 +22,9 @@ import {
 } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
 import tools from "../data/tools.json";
-import { ScrollReveal, TRANSITIONS, VARIANTS } from "./ui/ScrollReveal";
+import SectionShell from "./SectionShell";
+import { ScrollReveal, TRANSITIONS } from "./ui/ScrollReveal";
+import { PerspectiveGroup } from "./ui/ScrollReveal3D";
 import { SpotlightCard } from "./ui/SpotlightCard";
 import { TextRevealMask } from "./ui/TextRevealMask";
 
@@ -56,9 +58,10 @@ export default function Skills() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
   const reduceMotion = useReducedMotion();
-  const baseTransition = reduceMotion
+  // 3D entrances get a softer spring so the depth settles instead of snapping.
+  const depthTransition = reduceMotion
     ? { duration: 0 }
-    : TRANSITIONS.default;
+    : TRANSITIONS.depth;
 
   const filtered = useMemo(
     () =>
@@ -69,7 +72,13 @@ export default function Skills() {
   );
 
   return (
-    <section id="skills" className="relative py-24 sm:py-32">
+    <SectionShell
+      id="skills"
+      rail="left"
+      tone="indigo"
+      className="py-24 sm:py-32"
+      contentClassName="[perspective:1500px]"
+    >
       <div
         className="absolute inset-0 -z-10 bg-linear-to-b from-white via-slate-50 to-white"
         aria-hidden="true"
@@ -92,7 +101,7 @@ export default function Skills() {
           <div className="mt-4">
             <TextRevealMask
               as="h2"
-              splitBy="words"
+              splitBy="tilt"
               className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl"
               viewportMargin="0px 0px -15% 0px"
             >
@@ -146,38 +155,62 @@ export default function Skills() {
           </div>
         </ScrollReveal>
 
-        {/* Cards grid — diagonal stagger wave */}
-        <motion.div layout className="mt-12">
-          <AnimatePresence mode="popLayout">
-            <motion.ul
-              key={active}
-              layout
-              initial="initial"
-              animate={inView ? "animate" : "initial"}
-              variants={{
-                initial: {},
-                animate: {
-                  transition: {
-                    staggerChildren: reduceMotion ? 0 : 0.05,
-                    delayChildren: 0.05,
+        {/* Cards grid — 3D depth wave, leaning as the section scrolls */}
+        <PerspectiveGroup className="mt-12" perspective={1600} lean={1.2}>
+          <motion.div layout className="h-full">
+            <AnimatePresence mode="popLayout">
+              <motion.ul
+                key={active}
+                layout
+                initial="initial"
+                animate={inView ? "animate" : "initial"}
+                variants={{
+                  initial: {},
+                  animate: {
+                    transition: {
+                      staggerChildren: reduceMotion ? 0 : 0.06,
+                      delayChildren: 0.05,
+                    },
                   },
-                },
-              }}
-              className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
-            >
-              {filtered.map((tool) => {
-                const Icon = iconMap[tool.icon] || Code2;
-                return (
-                  <motion.li
-                    key={tool.name}
-                    layout
-                    variants={{
-                      initial: { opacity: 0, y: 24, scale: 0.96 },
-                      animate: { opacity: 1, y: 0, scale: 1 },
-                      exit: { opacity: 0, scale: 0.96, transition: { duration: 0.18 } },
-                    }}
-                    transition={baseTransition}
-                  >
+                }}
+                className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+                style={{ perspective: 1100 }}
+              >
+                {filtered.map((tool, i) => {
+                  const Icon = iconMap[tool.icon] || Code2;
+                  // Alternate the entry axis per column so the grid resolves
+                  // as a wave rather than every card tipping the same way.
+                  const fromLeft = i % 2 === 0;
+                  return (
+                    <motion.li
+                      key={tool.name}
+                      layout
+                      variants={{
+                        initial: {
+                          opacity: 0,
+                          y: 30,
+                          z: -170,
+                          scale: 0.92,
+                          rotateX: 14,
+                          rotateY: fromLeft ? -8 : 8,
+                        },
+                        animate: {
+                          opacity: 1,
+                          y: 0,
+                          z: 0,
+                          scale: 1,
+                          rotateX: 0,
+                          rotateY: 0,
+                        },
+                        exit: {
+                          opacity: 0,
+                          scale: 0.96,
+                          transition: { duration: 0.18 },
+                        },
+                      }}
+                      transition={depthTransition}
+                      style={{ transformStyle: "preserve-3d" }}
+                    >
                     <SpotlightCard
                       className="group relative h-full overflow-hidden rounded-2xl border border-white/80 bg-white/85 p-6 shadow-lg shadow-indigo-500/10 transition-all hover:shadow-xl glow-ring"
                       tiltStrength={5}
@@ -210,10 +243,11 @@ export default function Skills() {
                   </motion.li>
                 );
               })}
-            </motion.ul>
-          </AnimatePresence>
-        </motion.div>
+              </motion.ul>
+            </AnimatePresence>
+          </motion.div>
+        </PerspectiveGroup>
       </div>
-    </section>
+    </SectionShell>
   );
 }

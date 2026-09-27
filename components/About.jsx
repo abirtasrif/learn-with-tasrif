@@ -1,30 +1,26 @@
 "use client";
 
-import {
-  motion,
-  useInView,
-  useReducedMotion,
-} from "framer-motion";
-import {
-  Award,
-  Briefcase,
-  Building2,
-  GraduationCap,
-} from "lucide-react";
+import { motion, useInView, useReducedMotion } from "framer-motion";
+import { Award, Briefcase, Building2, GraduationCap } from "lucide-react";
 import { useRef } from "react";
 import profile from "../data/profile.json";
-import { ScrollReveal, StaggerReveal, TRANSITIONS, VARIANTS } from "./ui/ScrollReveal";
+import {
+  ScrollReveal,
+  StaggerReveal,
+  TRANSITIONS,
+  VARIANTS,
+} from "./ui/ScrollReveal";
+import { ScrollProgressRail } from "./ui/ScrollReveal3D";
 import { SpotlightCard } from "./ui/SpotlightCard";
 import { TextRevealMask } from "./ui/TextRevealMask";
 
 export default function About() {
   const ref = useRef(null);
+  const sectionRef = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
   const reduceMotion = useReducedMotion();
 
-  const transition = reduceMotion
-    ? { duration: 0 }
-    : TRANSITIONS.default;
+  const transition = reduceMotion ? { duration: 0 } : TRANSITIONS.default;
 
   // Handle education data safely (supports array or legacy single string, capped at 3 items)
   const educationItems = Array.isArray(profile.education)
@@ -39,7 +35,14 @@ export default function About() {
   const certifications = profile.certifications || profile.trainings || [];
 
   return (
-    <section id="about" className="relative py-24 sm:py-32">
+    <section id="about" ref={sectionRef} className="relative py-24 sm:py-32">
+      <ScrollProgressRail
+        targetRef={sectionRef}
+        side="right"
+        tone="indigo"
+        className="hidden md:block"
+      />
+
       {/* Background blobs — with float animations */}
       <div
         aria-hidden="true"
@@ -63,21 +66,30 @@ export default function About() {
               <div className="mt-4">
                 <TextRevealMask
                   as="h2"
-                  splitBy="words"
+                  splitBy="flip"
                   className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl"
                   viewportMargin="0px 0px -15% 0px"
                 >
                   A professional journey from technology to textile.
                 </TextRevealMask>
               </div>
-              <ScrollReveal variant="fadeUp" delay={0.3} viewOptions={{ margin: "-80px" }}>
+              <ScrollReveal
+                variant="fadeUp"
+                delay={0.3}
+                viewOptions={{ margin: "-80px" }}
+              >
                 <p className="mt-5 text-base leading-relaxed text-slate-600 sm:text-lg">
                   {profile.bio}
                 </p>
               </ScrollReveal>
 
               {/* Education & Roles Spotlight Card */}
-              <ScrollReveal variant="scaleUp" delay={0.45} viewOptions={{ margin: "-80px" }}>
+              <ScrollReveal
+                variant="depthRise"
+                delay={0.45}
+                perspective={1100}
+                viewOptions={{ margin: "-80px" }}
+              >
                 <SpotlightCard
                   className="group mt-8 rounded-2xl border border-white/80 bg-white/85 p-6 shadow-lg shadow-indigo-500/10 glow-ring"
                   tiltStrength={4}
@@ -96,7 +108,12 @@ export default function About() {
                   </div>
 
                   {/* Education Items List — staggered */}
-                  <StaggerReveal stagger={0.08} delay={0.55} className="mt-4 space-y-3" viewOptions={{ margin: "-40px" }}>
+                  <StaggerReveal
+                    stagger={0.08}
+                    delay={0.55}
+                    className="mt-4 space-y-3"
+                    viewOptions={{ margin: "-40px" }}
+                  >
                     {educationItems.map((edu, idx) => (
                       <motion.div
                         key={idx}
@@ -129,7 +146,12 @@ export default function About() {
                   </div>
 
                   {/* Experience Roles List — staggered */}
-                  <StaggerReveal stagger={0.09} delay={0.7} className="mt-4 flex flex-col gap-3" viewOptions={{ margin: "-40px" }}>
+                  <StaggerReveal
+                    stagger={0.09}
+                    delay={0.7}
+                    className="mt-4 flex flex-col gap-3"
+                    viewOptions={{ margin: "-40px" }}
+                  >
                     {profile.experience.map((role) => (
                       <motion.div
                         key={role.company}
@@ -156,7 +178,12 @@ export default function About() {
               </ScrollReveal>
 
               {/* Training & Certifications */}
-              <ScrollReveal variant="scaleUp" delay={0.6} viewOptions={{ margin: "-80px" }}>
+              <ScrollReveal
+                variant="cardPush"
+                delay={0.6}
+                perspective={1100}
+                viewOptions={{ margin: "-80px" }}
+              >
                 <SpotlightCard
                   className="group mt-6 rounded-2xl border border-white/80 bg-white/85 p-6 shadow-lg shadow-indigo-500/10 glow-ring"
                   tiltStrength={4}
@@ -173,7 +200,12 @@ export default function About() {
                     </div>
                   </div>
 
-                  <StaggerReveal stagger={0.07} delay={0.7} className="mt-4 flex flex-col gap-3" viewOptions={{ margin: "-40px" }}>
+                  <StaggerReveal
+                    stagger={0.07}
+                    delay={0.7}
+                    className="mt-4 flex flex-col gap-3"
+                    viewOptions={{ margin: "-40px" }}
+                  >
                     {certifications.map((item, idx) => (
                       <motion.div
                         key={idx}
@@ -199,7 +231,11 @@ export default function About() {
 
           {/* Right col — timeline & specialties, slides from right */}
           <div className="lg:col-span-7">
-            <ScrollReveal variant="slideRight" delay={0.1} viewOptions={{ margin: "-80px" }}>
+            <ScrollReveal
+              variant="slideRight"
+              delay={0.1}
+              viewOptions={{ margin: "-80px" }}
+            >
               <div className="sticky top-24 space-y-8">
                 <div>
                   <div className="flex items-center gap-2">

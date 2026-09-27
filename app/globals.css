@@ -538,6 +538,32 @@ body {
     radial-gradient(560px 400px at 55% 45%, rgba(168, 85, 247, 0.06), transparent 62%);
 }
 
+/* ─── 3D reveal helpers ───────────────────────────────────────── */
+/* Sections that host 3D variants set `perspective` inline (a hard-coded px
+   value) rather than in CSS, so it stays next to the transform it serves. */
+
+[style*="perspective"] {
+  perspective-origin: 50% 50%;
+}
+
+/* Grid items carrying a 3D entrance. Set once here rather than repeating the
+   utility on every list item. */
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+/* ─── Scroll progress rail ───────────────────────────────────────── */
+.rail-track {
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.04);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rail-track,
+  .rail-head {
+    display: none;
+  }
+}
+
 /* ─── Reduce-motion: disable all custom animations ───────────── */
 @media (prefers-reduced-motion: reduce) {
   .animate-float-a,

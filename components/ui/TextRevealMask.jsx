@@ -20,6 +20,9 @@ const SPLIT_DEFAULTS = {
   lines: { duration: 0.8, stagger: 0.1 },
   words: { duration: 0.6, stagger: 0.07 },
   chars: { duration: 0.4, stagger: 0.015 },
+  // 3D variants — slower, since rotation reads slower than a mask slide.
+  flip: { duration: 0.9, stagger: 0.09 },
+  tilt: { duration: 0.85, stagger: 0.08 },
 };
 
 const EXPO_OUT = [0.19, 1, 0.22, 1];
@@ -78,12 +81,44 @@ function RevealTarget({
   display = "inline-block",
   duration,
   yPercent,
+  // 3D extras
+  rotateX,
+  rotateY,
+  scaleFrom,
+  perspective,
+  transformOrigin,
 }) {
+  const has3D = rotateX != null || rotateY != null || scaleFrom != null;
+
+  const from = has3D
+    ? {
+        rotateX: rotateX ?? 0,
+        rotateY: rotateY ?? 0,
+        scale: scaleFrom ?? 1,
+        opacity: 0,
+      }
+    : { y: `${yPercent}%` };
+
+  const to = has3D
+    ? { rotateX: 0, rotateY: 0, scale: 1, opacity: 1 }
+    : { y: "0%" };
+
+  const style = has3D
+    ? {
+        transformStyle: "preserve-3d",
+        transformOrigin,
+        // A per-element perspective avoids needing one on every ancestor.
+        // `perspective` (not `perspective()`) so the browser can composite it.
+        ...(perspective ? { perspective } : null),
+      }
+    : undefined;
+
   return (
     <motion.span
-      animate={animate ? { y: "0%" } : { y: `${yPercent}%` }}
+      initial={from}
+      animate={animate ? to : from}
       className={`will-change-transform [backface-visibility:hidden] ${display === "block" ? "block" : "inline-block"} ${className}`.trim()}
-      initial={{ y: `${yPercent}%` }}
+      style={style}
       transition={{ duration, delay, ease: EXPO_OUT }}
     >
       {children}
@@ -103,6 +138,9 @@ export function TextRevealMask({
   once = true,
   viewportMargin = "0px 0px -20% 0px",
   className = "",
+  // 3D knobs, only used by splitBy="flip" / "tilt".
+  perspective = 700,
+  tiltAngle = 62,
 }) {
   const rootRef = useRef(null);
   const measureRef = useRef(null);
@@ -114,7 +152,7 @@ export function TextRevealMask({
   const words = useMemo(() => collectWords(content), [content]);
   const wordsKey = useMemo(() => words.map((w) => w.text).join(""), [words]);
 
-  const defaults = SPLIT_DEFAULTS[splitBy];
+  const defaults = SPLIT_DEFAULTS[splitBy] ?? SPLIT_DEFAULTS.lines;
   const resolvedDuration = duration ?? defaults.duration;
   const resolvedStagger = stagger ?? defaults.stagger;
 
@@ -220,6 +258,66 @@ export function TextRevealMask({
               yPercent={yPercent}
             >
               {word.emphasized ? <strong>{word.text}</strong> : word.text}
+            </RevealTarget>
+          );
+        })}
+      </SplitLine>
+    ));
+  } else if (isReady && splitBy === "flip") {
+    // Whole line hinges up from its baseline, like a card being flipped
+    // toward you. Keeps the per-line mask so the depth reads against a hard
+    // edge instead of floating in place.
+    splitContent = lineGroups.map((group, li) => (
+      <SplitLine key={li}>
+        <RevealTarget
+          animate={shouldAnimate}
+          delay={delay + li * resolvedStagger}
+          display="block"
+          duration={resolvedDuration}
+          perspective={perspective}
+          rotateX={-tiltAngle}
+          scaleFrom={0.94}
+          transformOrigin="50% 100%"
+        >
+          {group.map((wi) => {
+            const word = words[wi];
+            if (!word) return null;
+            return (
+              <span
+                key={wi}
+                className={`inline-block${wi < words.length - 1 ? " me-[0.25em]" : ""}${word.emphasized ? " font-semibold" : ""}`}
+              >
+                {word.text}
+              </span>
+            );
+          })}
+        </RevealTarget>
+      </SplitLine>
+    ));
+  } else if (isReady && splitBy === "tilt") {
+    // Per-word Y swing, alternating side so neighbouring words don't move as
+    // one slab. Beats tilting a whole line — the alternating rhythm is what
+    // makes it read as individual pieces of type rotating into place.
+    splitContent = lineGroups.map((group, li) => (
+      <SplitLine key={li}>
+        {group.map((wi, gi) => {
+          const word = words[wi];
+          if (!word) return null;
+          const dir = gi % 2 === 0 ? -1 : 1;
+          return (
+            <RevealTarget
+              animate={shouldAnimate}
+              className={`${wi < words.length - 1 ? "me-[0.25em] " : ""}${word.emphasized ? "font-semibold" : ""}`}
+              delay={delay + (wordStaggerMap.get(wi) ?? 0) * resolvedStagger}
+              duration={resolvedDuration}
+              key={wi}
+              perspective={perspective}
+              rotateY={dir * tiltAngle * 0.6}
+              rotateX={-tiltAngle * 0.25}
+              scaleFrom={0.82}
+              transformOrigin="50% 50%"
+            >
+              {word.text}
             </RevealTarget>
           );
         })}
