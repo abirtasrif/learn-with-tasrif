@@ -76,7 +76,7 @@ export default function BlogPreview() {
   const [featured, ...rest] = filtered;
 
   return (
-    <section id="blog-preview" ref={sectionRef} className="relative py-24 sm:py-32">
+    <section id="blog-preview" ref={sectionRef} className="relative overflow-x-clip py-24 sm:py-32">
       <ScrollProgressRail
         targetRef={sectionRef}
         side="left"

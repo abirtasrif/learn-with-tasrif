@@ -49,7 +49,7 @@ export default function DesignShowcase() {
   }, [active]);
 
   return (
-    <section id="designs" ref={sectionRef} className="relative py-24 sm:py-32">
+    <section id="designs" ref={sectionRef} className="relative overflow-x-clip py-24 sm:py-32">
       <ScrollProgressRail
         targetRef={sectionRef}
         side="left"
@@ -204,7 +204,6 @@ export default function DesignShowcase() {
                   >
                     <SpotlightCard
                       glowColor="rgba(99, 102, 241, 0.14)"
-                      tiltStrength={6}
                       cursorLabel="VIEW"
                       className={`group relative h-full overflow-hidden rounded-3xl border border-white/80 bg-white/85 shadow-lg shadow-indigo-500/10 transition-shadow hover:shadow-2xl glow-ring ${
                         isFeatured ? "ring-1 ring-indigo-200" : ""

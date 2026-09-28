@@ -7,27 +7,21 @@
 // 0 → 1 progress value, so the motion is continuous and scrubbable rather
 // than "played once and forgotten".
 //
-// Everything here is transform/opacity by default. `blur` is opt-in because a
-// live CSS filter on several elements at once is the fastest way to drop
-// frames on a mid-range laptop.
+// Scope note: this only ever *leans* a stage and *fills* a rail. Do not add a
+// scrubbed opacity or Z transform for content the user has to read — a
+// scrubbed reveal that fades back out means a form or article disappears
+// while it is being read. For entrance animation use ScrollReveal instead.
 
 "use client";
 
 import {
-  cubicBezier,
   motion,
-  useMotionTemplate,
   useReducedMotion,
   useScroll,
   useSpring,
   useTransform,
 } from "framer-motion";
 import { useRef } from "react";
-
-/** Rise-and-settle easing, mirrored on the way out. */
-const EASE_INTO = cubicBezier(0.22, 1, 0.36, 1);
-const EASE_OUT = cubicBezier(0, 0, 0.58, 1);
-const FOCUS_EASE = [EASE_INTO, EASE_OUT];
 
 /**
  * Track an element's progress across the viewport.
@@ -41,141 +35,6 @@ export function useScrollProgress(
 ) {
   const { scrollYProgress } = useScroll({ target: ref, offset });
   return scrollYProgress;
-}
-
-// ─── Reveal3D ────────────────────────────────────────────────────────────────
-/**
- * Reveal3D — an element that flies in from below while tipped forward,
- * snaps flat into focus at mid-viewport, then tips back as it exits.
- *
- * Unlike ScrollReveal this never "finishes" — scrub it and the card follows.
- *
- * @example
- * <Reveal3D distance={240} tilt={26} blur={5}>
- *   <DesignCard />
- * </Reveal3D>
- */
-export function Reveal3D({
-  children,
-  className = "",
-  as = "div",
-  // Depth pushed away from the viewer at the entry/exit extremes.
-  distance = 220,
-  // Peak rotateX, in degrees.
-  tilt = 22,
-  // Vertical travel as a percentage of the element's own height.
-  travel = 55,
-  // Horizontal drift in percent, signed by `origin`.
-  drift = 0,
-  origin = "left",
-  // Optional focus pull: blurs and dims at the extremes.
-  blur = 0,
-  brightness = null,
-  scaleFrom = 1,
-  perspective = 1200,
-  offset = ["start end", "end start"],
-  spring,
-  style,
-}) {
-  const ref = useRef(null);
-  const progress = useScrollProgress(ref, offset);
-  const reduce = useReducedMotion();
-
-  const sign = origin === "right" ? 1 : origin === "center" ? 0 : -1;
-
-  // Lenis already smooths the scroll signal, so this spring only needs to
-  // remove jitter — keep it stiff or the reveal visibly trails the cursor.
-  const springCfg = spring ?? { stiffness: 400, damping: 50, mass: 0.4 };
-  const p = useSpring(progress, springCfg);
-
-  const y = useTransform(p, [0, 0.5, 1], [`${travel}%`, "0%", `${-travel * 0.5}%`], {
-    ease: FOCUS_EASE,
-  });
-  const x = useTransform(
-    p,
-    [0, 0.5, 1],
-    [`${sign * drift}%`, "0%", `${sign * drift}%`],
-    { ease: FOCUS_EASE },
-  );
-  const z = useTransform(p, [0, 0.5, 1], [distance, 0, -distance * 0.6], {
-    ease: FOCUS_EASE,
-  });
-  const rotateX = useTransform(p, [0, 0.5, 1], [tilt, 0, -tilt * 0.55], {
-    ease: FOCUS_EASE,
-  });
-  const rotateY = useTransform(
-    p,
-    [0, 0.5, 1],
-    [sign * tilt * 0.4, 0, -sign * tilt * 0.3],
-    { ease: FOCUS_EASE },
-  );
-  const scale = useTransform(p, [0, 0.5, 1], [scaleFrom, 1, scaleFrom], {
-    ease: FOCUS_EASE,
-  });
-  const opacity = useTransform(p, [0, 0.18, 0.82, 1], [0, 1, 1, 0], {
-    // One easing, not the FOCUS_EASE pair — that array is sized for three
-    // keyframes and this mapping has four.
-    ease: EASE_INTO,
-  });
-  const blurValue = useTransform(
-    p,
-    [0, 0.5, 1],
-    [blur, 0, blur],
-    { ease: FOCUS_EASE },
-  );
-  const brightnessValue = useTransform(
-    p,
-    [0, 0.5, 1],
-    [brightness ?? 1, 1, brightness ?? 1],
-    { ease: FOCUS_EASE },
-  );
-  // Compose the filter through useMotionTemplate — string-concatenating a
-  // MotionValue into a style object re-runs reconciliation every frame.
-  const filter = useMotionTemplate`blur(${blurValue}px) brightness(${brightnessValue})`;
-
-  if (reduce) {
-    return (
-      <div className={className} style={style}>
-        {children}
-      </div>
-    );
-  }
-
-  const MotionTag = motion[as] ?? motion.div;
-
-  return (
-    <div
-      className="relative"
-      style={{
-        // 0 is falsy on purpose — callers whose parent already establishes
-        // perspective pass 0 to avoid a nested (and flattening) context.
-        ...(perspective ? { perspective, perspectiveOrigin: "50% 50%" } : null),
-      }}
-    >
-      <MotionTag
-        ref={ref}
-        className={className}
-        style={{
-          y,
-          x,
-          z,
-          rotateX,
-          rotateY,
-          scale,
-          opacity,
-          filter:
-            blur > 0 || brightness !== null
-              ? filter
-              : undefined,
-          transformStyle: "preserve-3d",
-          willChange: "transform, opacity",
-          ...style,
-        }}
-      >
-        {children}
-      </MotionTag>
-    </div>
-  );
 }
 
 // ─── PerspectiveGroup ────────────────────────────────────────────────────────
@@ -264,8 +123,12 @@ export function ScrollProgressRail({
   tone = "indigo",
 }) {
   const fallbackRef = useRef(null);
-  const ref = targetRef ?? fallbackRef;
-  const progress = useScrollProgress(ref, offset);
+  // Track `targetRef` when given, otherwise the rail's own node. The DOM ref
+  // must stay on `fallbackRef` in *both* cases: assigning the caller's ref to
+  // the rail element would overwrite targetRef.current after mount and the
+  // rail would end up tracking itself.
+  const trackRef = targetRef ?? fallbackRef;
+  const progress = useScrollProgress(trackRef, offset);
   const reduce = useReducedMotion();
 
   // The head overshoots the raw value slightly, so it leads on scroll-down and
@@ -299,7 +162,7 @@ export function ScrollProgressRail({
   if (reduce) {
     return (
       <div
-        ref={ref}
+        ref={fallbackRef}
         aria-hidden="true"
         className={railClasses}
       />
@@ -308,10 +171,9 @@ export function ScrollProgressRail({
 
   return (
     <div
-      ref={ref}
+      ref={fallbackRef}
       aria-hidden="true"
       className={railClasses}
-      style={{ perspective: 400 }}
     >
       {/* Track */}
       <div className="rail-track absolute inset-0 rounded-full bg-slate-200/70" />
@@ -333,4 +195,4 @@ export function ScrollProgressRail({
   );
 }
 
-export default Reveal3D;
+export default PerspectiveGroup;

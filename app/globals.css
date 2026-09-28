@@ -56,6 +56,17 @@ body {
   color: var(--color-text);
   font-feature-settings: "rlig" 1, "calt" 1;
   -webkit-font-smoothing: antialiased;
+
+  /* Several full-bleed decorative layers legitimately extend past the
+     viewport: `animate-float-c` rotates 4deg (which widens the bounding box of
+     an `inset-x-0` element) and ScrollReveal's slideLeft/slideRight start at
+     x: +/-40px. Together they made the document ~9px wider than the screen and
+     produced horizontal scrolling on phones.
+     `clip` rather than `hidden` on purpose: `hidden` would turn body into a
+     scroll container and break `position: sticky` on the Navbar. `clip`
+     establishes no scrollport, so sticky and Lenis (which scrolls the window
+     natively) are both unaffected. */
+  overflow-x: clip;
 }
 
 /* ─── Aurora backdrop (light) ─────────────────────────────────── */

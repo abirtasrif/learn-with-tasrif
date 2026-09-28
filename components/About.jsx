@@ -35,7 +35,7 @@ export default function About() {
   const certifications = profile.certifications || profile.trainings || [];
 
   return (
-    <section id="about" ref={sectionRef} className="relative py-24 sm:py-32">
+    <section id="about" ref={sectionRef} className="relative overflow-x-clip py-24 sm:py-32">
       <ScrollProgressRail
         targetRef={sectionRef}
         side="right"
@@ -92,7 +92,6 @@ export default function About() {
               >
                 <SpotlightCard
                   className="group mt-8 rounded-2xl border border-white/80 bg-white/85 p-6 shadow-lg shadow-indigo-500/10 glow-ring"
-                  tiltStrength={4}
                   glowColor="rgba(99, 102, 241, 0.10)"
                 >
                   {/* Education Header */}
@@ -186,7 +185,6 @@ export default function About() {
               >
                 <SpotlightCard
                   className="group mt-6 rounded-2xl border border-white/80 bg-white/85 p-6 shadow-lg shadow-indigo-500/10 glow-ring"
-                  tiltStrength={4}
                   glowColor="rgba(99, 102, 241, 0.10)"
                 >
                   <div className="flex items-center gap-3">
@@ -288,7 +286,6 @@ export default function About() {
 
                         <SpotlightCard
                           className="rounded-2xl border border-white/80 bg-white/80 p-5 shadow-sm transition-all hover:border-indigo-200 hover:bg-white glow-ring"
-                          tiltStrength={3}
                           glowColor="rgba(99, 102, 241, 0.08)"
                         >
                           <div className="flex flex-wrap items-center gap-2.5">

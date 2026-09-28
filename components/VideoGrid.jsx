@@ -5,10 +5,7 @@ import { ArrowUpRight, Clock, Play, PlayCircle, X } from "lucide-react";
 import { useRef, useState } from "react";
 import videos from "../data/videos.json";
 import { ScrollReveal, TRANSITIONS } from "./ui/ScrollReveal";
-import {
-  Reveal3D,
-  ScrollProgressRail,
-} from "./ui/ScrollReveal3D";
+import { ScrollProgressRail } from "./ui/ScrollReveal3D";
 import { TextRevealMask } from "./ui/TextRevealMask";
 
 function VideoThumb({ video, playing, onPlay }) {
@@ -98,7 +95,7 @@ export default function VideoGrid() {
   const rest = videos.filter((v) => v.id !== featured.id).slice(0, 4);
 
   return (
-    <section id="videos" ref={sectionRef} className="relative py-24 sm:py-32">
+    <section id="videos" ref={sectionRef} className="relative overflow-x-clip py-24 sm:py-32">
       <ScrollProgressRail
         targetRef={sectionRef}
         side="right"
@@ -148,20 +145,11 @@ export default function VideoGrid() {
         </div>
 
         <div className="mt-14 grid grid-cols-1 gap-6 lg:grid-cols-12">
-          {/* Featured video — scrubbed 3D: tips forward as it enters, sits flat
-              at centre, tips back as it leaves. */}
-          <div className="lg:col-span-7">
-            <Reveal3D
-              distance={260}
-              tilt={20}
-              travel={46}
-              drift={4}
-              origin="left"
-              blur={reduceMotion ? 0 : 4}
-              brightness={reduceMotion ? null : 0.92}
-              perspective={1500}
-            >
-              <div className="group relative overflow-hidden rounded-3xl border border-white/80 bg-white/85 shadow-lg shadow-indigo-500/10 glow-ring">
+          {/* Featured video — one-shot depth entrance. Deliberately NOT
+              scroll-scrubbed: a scrubbed opacity/Z transform made the card
+              fade out and recede again as it left the viewport. */}
+          <ScrollReveal variant="depthRise" viewOptions={{ margin: "-80px" }} className="lg:col-span-7">
+            <div className="group relative overflow-hidden rounded-3xl border border-white/80 bg-white/85 shadow-lg shadow-indigo-500/10 glow-ring">
               {active?.id === featured.id ? (
                 <div className="relative aspect-video w-full bg-black">
                   <button
@@ -212,9 +200,8 @@ export default function VideoGrid() {
                   <ArrowUpRight className="h-4 w-4" />
                 </a>
               </div>
-              </div>
-            </Reveal3D>
-          </div>
+            </div>
+          </ScrollReveal>
 
           {/* Sidebar videos — hinged in from the right. Perspective lives on
               this grid so each tile's rotateY resolves against it. */}

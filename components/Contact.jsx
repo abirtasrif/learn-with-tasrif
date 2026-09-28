@@ -8,7 +8,7 @@ import profile from "../data/profile.json";
 import { BorderBeam } from "./ui/BorderBeam";
 import { Magnetic } from "./ui/Magnetic";
 import { ScrollReveal, StaggerReveal, TRANSITIONS, VARIANTS } from "./ui/ScrollReveal";
-import { Reveal3D, ScrollProgressRail } from "./ui/ScrollReveal3D";
+import { ScrollProgressRail } from "./ui/ScrollReveal3D";
 import { SpotlightCard } from "./ui/SpotlightCard";
 import { TextRevealMask } from "./ui/TextRevealMask";
 
@@ -248,7 +248,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" ref={sectionRef} className="relative py-24 sm:py-32">
+    <section id="contact" ref={sectionRef} className="relative overflow-x-clip py-24 sm:py-32">
       <ScrollProgressRail
         targetRef={sectionRef}
         side="right"
@@ -353,27 +353,26 @@ export default function Contact() {
             </ScrollReveal>
 
             {/* Right — message form + channel cards */}
-            <div className="lg:col-span-7" style={{ perspective: 1200 }}>
-              {/* The form is the heaviest element on the page, so it gets the
-                  full scrubbed 3D treatment rather than a one-shot fade. */}
-              <Reveal3D
-                distance={220}
-                tilt={18}
-                travel={40}
-                drift={5}
-                origin="right"
-                blur={reduceMotion ? 0 : 3}
-                brightness={reduceMotion ? null : 0.94}
-                perspective={0}
+            <div className="lg:col-span-7">
+              {/* One-shot depth entrance. Not scroll-scrubbed: the form
+                  must never fade or recede while the user is reading it. */}
+              <ScrollReveal
+                variant="depthRise"
+                viewOptions={{ margin: "-80px" }}
+                perspective={1100}
               >
                 <ContactForm email={userEmail} />
-              </Reveal3D>
+              </ScrollReveal>
 
               <StaggerReveal
                 stagger={0.1}
                 delay={0.2}
                 className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 md:mt-6 md:gap-5"
                 viewOptions={{ margin: "-80px" }}
+                /* perspective goes on the grid via `style`, not via the
+                   `perspective` prop: the prop wraps the grid in an extra div,
+                   and CSS `perspective` only applies to direct children. */
+                style={{ perspective: 900 }}
               >
                 {channels.map((ch) => {
                   const Icon = ch.IconComponent;
@@ -394,7 +393,6 @@ export default function Contact() {
                       >
                         <SpotlightCard
                           glowColor={tone.glow}
-                          tiltStrength={5}
                           className={`group relative h-full overflow-hidden rounded-2xl border bg-linear-to-br p-6 shadow-sm transition-all hover:shadow-xl glow-ring ${tone.card}`}
                         >
                           <div className="flex items-start justify-between gap-4">

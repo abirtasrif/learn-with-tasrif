@@ -280,7 +280,6 @@ export default function Hero() {
                         ? "rgba(14, 165, 233, 0.10)"
                         : "rgba(100, 116, 139, 0.10)"
                   }
-                  tiltStrength={6}
                   className={`group relative overflow-hidden rounded-2xl border border-white/70 bg-white/60 p-5 shadow-lg shadow-indigo-500/5 backdrop-blur-xl transition-all hover:-translate-y-1 hover:shadow-xl glow-ring ${toneStyles}`}
                 >
                   <div className="flex items-center gap-3">

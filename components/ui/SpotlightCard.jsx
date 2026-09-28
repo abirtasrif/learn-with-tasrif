@@ -4,17 +4,24 @@ import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useRef } from "react";
 
 /**
- * SpotlightCard – holographic 3D tilt + cursor-tracked spotlight.
+ * SpotlightCard – cursor-tracked spotlight with an optional 3D tilt.
  * Styled after 21st.dev's HolographicInterface: adds a rotating
  * aurora gradient border (`.holo-border`) and a hover light-sheen
  * (`.holo-sheen`), all light-theme safe.
+ *
+ * The 3D tilt is opt-in (`tilt`). By default the card stays perfectly
+ * flat and hovers with a plain lift + shadow + border tint — perspective
+ * rotation on a list of cards reads as gimmicky and can push the card
+ * past the viewport edge on narrow screens.
+ *
  * Usage: <SpotlightCard className="..." cursorLabel="VIEW">...</SpotlightCard>
  */
 export function SpotlightCard({
   children,
   className = "",
   glowColor = "rgba(99, 102, 241, 0.15)",
-  tiltStrength = 8, // max degrees
+  tiltStrength = 8, // max degrees, only used when `tilt` is true
+  tilt = false,
   cursorLabel,
   holo = true, // aurora border + sheen
   ...props
@@ -56,14 +63,20 @@ export function SpotlightCard({
     ),
   };
 
+  // Flat card: no transform at all, so it can never contribute to
+  // horizontal overflow or flatten a parent's 3D context.
+  const cardStyle = tilt
+    ? { rotateX, rotateY, transformStyle: "preserve-3d", transformPerspective: "800px" }
+    : undefined;
+
   return (
     <motion.div
       ref={cardRef}
-      className={`relative overflow-hidden ${holo ? "holo-border holo-sheen" : ""} ${className}`}
+      className={`relative overflow-hidden ${holo ? "holo-border holo-sheen" : ""} ${tilt ? "" : "transition-transform duration-300 hover:-translate-y-1 hover:shadow-xl"} ${className}`}
       data-cursor-label={cursorLabel}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={{ rotateX, rotateY, transformStyle: "preserve-3d", transformPerspective: "800px" }}
+      style={cardStyle}
       {...props}
     >
       {/* Spotlight overlay */}

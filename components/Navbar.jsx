@@ -7,13 +7,17 @@ import { useEffect, useState } from "react";
 import profile from "../data/profile.json";
 import { Magnetic } from "./ui/Magnetic";
 
+// Hrefs are root-relative (`/#id`) rather than bare hashes so they still
+// resolve on non-home routes like /blog, where a bare `#id` has no target.
+// On the homepage SmoothScroll intercepts these and drives Lenis, so the
+// smooth-scroll behaviour is preserved.
 const navItems = [
-  { label: "About", href: "#about", id: "about" },
-  { label: "Skills", href: "#skills", id: "skills" },
-  { label: "Designs", href: "#designs", id: "designs" },
-  { label: "Videos", href: "#videos", id: "videos" },
-  { label: "Blog", href: "/blog", id: "" },
-  { label: "Contact", href: "#contact", id: "contact" },
+  { label: "About", href: "/#about", id: "about" },
+  { label: "Skills", href: "/#skills", id: "skills" },
+  { label: "Designs", href: "/#designs", id: "designs" },
+  { label: "Videos", href: "/#videos", id: "videos" },
+  { label: "Blog", href: "/#blog-preview", id: "blog-preview" },
+  { label: "Contact", href: "/#contact", id: "contact" },
 ];
 
 export default function Navbar() {
@@ -108,7 +112,6 @@ export default function Navbar() {
         >
           {navItems.map((item) => {
             const isActive = item.id && item.id === activeId;
-            const isExternal = item.href === "/blog";
             const link = (
               <Link
                 href={item.href}
@@ -142,7 +145,7 @@ export default function Navbar() {
         <div className="hidden items-center gap-3 lg:flex">
           <Magnetic intensity={0.35} range={75}>
             <Link
-              href="#contact"
+              href="/#contact"
               className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-slate-900 px-4 py-2 text-sm font-medium text-white shadow-lg shadow-slate-900/10 transition-all hover:bg-slate-800 hover:shadow-indigo-500/30 focus-visible:ring-2 focus-visible:ring-indigo-500"
             >
               <span className="absolute inset-0 bg-linear-to-r from-indigo-600 via-violet-500 to-sky-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true" />
@@ -196,7 +199,7 @@ export default function Navbar() {
                   </Link>
                 ))}
                 <Link
-                  href="#contact"
+                  href="/#contact"
                   onClick={() => setMobileOpen(false)}
                   className="mt-2 inline-flex items-center justify-center gap-2 rounded-xl bg-linear-to-r from-indigo-600 via-violet-500 to-sky-500 px-4 py-3 text-base font-medium text-white shadow-lg shadow-indigo-500/25"
                 >

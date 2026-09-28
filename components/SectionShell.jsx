@@ -47,7 +47,7 @@ export default function SectionShell({
     <section
       id={id}
       ref={sectionRef}
-      className={`relative ${className}`}
+      className={`relative overflow-x-clip ${className}`}
       style={perspective ? { perspective } : undefined}
       {...props}
     >

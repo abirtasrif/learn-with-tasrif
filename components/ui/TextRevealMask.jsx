@@ -195,11 +195,16 @@ export function TextRevealMask({
     );
   }
 
-  // Measure layer (invisible, for line detection)
+  // Measure layer (invisible, for line detection).
+  // Positioned absolutely inside the root rather than `fixed` at a large
+  // negative offset: the root is already `relative w-full`, so this gets the
+  // exact content width (identical line breaks) while staying inside the
+  // section's box. A `fixed left-[-9999px]` probe can extend the document's
+  // scrollable area and is a common cause of horizontal scroll on mobile.
   const measureLayer = (
     <div
       aria-hidden
-      className="pointer-events-none invisible fixed top-0 left-[-9999px] block"
+      className="pointer-events-none invisible absolute top-0 left-0 block w-full"
       ref={measureRef}
     >
       {words.map((word, i) => (

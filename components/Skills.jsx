@@ -213,7 +213,6 @@ export default function Skills() {
                     >
                     <SpotlightCard
                       className="group relative h-full overflow-hidden rounded-2xl border border-white/80 bg-white/85 p-6 shadow-lg shadow-indigo-500/10 transition-all hover:shadow-xl glow-ring"
-                      tiltStrength={5}
                       glowColor="rgba(99, 102, 241, 0.12)"
                     >
                       <div className="flex items-start justify-between gap-4">
