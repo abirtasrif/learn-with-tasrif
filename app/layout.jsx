@@ -1,3 +1,5 @@
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
@@ -69,6 +71,8 @@ export default function RootLayout({ children }) {
             {children}
           </main>
           <FloatingDock />
+          <Analytics />
+          <SpeedInsights />
           <Footer />
         </SmoothScroll>
       </body>

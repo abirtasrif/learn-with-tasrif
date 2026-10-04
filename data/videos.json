@@ -1,8 +1,8 @@
 [
   {
     "id": "v1",
-    "title": "CLO 3D for Beginners: First Garment in 30 Minutes",
-    "category": "Boke CAD",
+    "title": "BokeCAD: Basic Garments CAD for Beginners",
+    "category": "Garments CAD",
     "categoryGroup": "Pattern Making",
     "youtubeId": "cn2Cy_c-Tt8",
     "youtubeUrl": "https://youtu.be/cn2Cy_c-Tt8",
@@ -13,14 +13,14 @@
   },
   {
     "id": "v2",
-    "title": "SMV Calculation in Garment Manufacturing",
-    "category": "Industrial Engineering",
+    "title": "Smoking machine",
+    "category": "Knowledge",
     "categoryGroup": "Textile",
-    "youtubeId": "#",
-    "youtubeUrl": "#",
-    "description": "Learn how to calculate Standard Minute Value using time study data and improve factory productivity.",
-    "thumbnail": "/videos/smv-calculation.jpg",
-    "duration": "24 min",
+    "youtubeId": "1HDmu5XJ6MM",
+    "youtubeUrl": "https://youtu.be/1HDmu5XJ6MM",
+    "description": "Smoking machine",
+    "thumbnail": "#",
+    "duration": "0.7 min",
     "featured": false
   },
 

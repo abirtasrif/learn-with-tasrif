@@ -8,12 +8,31 @@ import { ScrollReveal, TRANSITIONS } from "./ui/ScrollReveal";
 import { ScrollProgressRail } from "./ui/ScrollReveal3D";
 import { TextRevealMask } from "./ui/TextRevealMask";
 
+const YT_THUMB_QUALITY = {
+  maxresdefault: "maxresdefault",
+  sddefault: "sddefault",
+  hqdefault: "hqdefault",
+  mqdefault: "mqdefault",
+  default: "default",
+};
+
+function getYouTubeThumbnail(youtubeId, quality = "hqdefault") {
+  if (!youtubeId || youtubeId === "#") return null;
+  const q = YT_THUMB_QUALITY[quality] || "hqdefault";
+  return `https://img.youtube.com/vi/${youtubeId}/${q}.jpg`;
+}
+
 function VideoThumb({ video, playing, onPlay }) {
   const handleMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
     e.currentTarget.style.setProperty("--mx", `${e.clientX - rect.left}px`);
     e.currentTarget.style.setProperty("--my", `${e.clientY - rect.top}px`);
   };
+
+  const thumbSrc =
+    video.thumbnail && video.thumbnail !== "" && video.thumbnail !== "#"
+      ? video.thumbnail
+      : getYouTubeThumbnail(video.youtubeId);
 
   return (
     <button
@@ -24,11 +43,26 @@ function VideoThumb({ video, playing, onPlay }) {
       data-cursor-label="PLAY"
       className="group relative block w-full overflow-hidden rounded-2xl border border-white/80 bg-white/85 text-left shadow-lg shadow-indigo-500/5 backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:shadow-xl"
     >
-      <div className="relative aspect-video w-full bg-linear-to-br from-indigo-200/50 via-slate-100 to-sky-200/50">
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(99,102,241,0.18),transparent_55%),radial-gradient(circle_at_80%_80%,rgba(15,23,42,0.14),transparent_55%)]"
-        />
+       <div className="relative aspect-video w-full overflow-hidden bg-linear-to-br from-indigo-200/50 via-slate-100 to-sky-200/50">
+         {thumbSrc && (
+           <img
+             src={thumbSrc}
+             alt={video.title}
+             className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+             loading="lazy"
+             onError={(e) => {
+               e.currentTarget.style.display = "none";
+             }}
+           />
+         )}
+         <div
+           aria-hidden="true"
+           className="absolute inset-0 bg-gradient-to-t from-slate-950/30 via-slate-950/5 to-transparent"
+         />
+         <div
+           aria-hidden="true"
+           className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(99,102,241,0.12),transparent_55%),radial-gradient(circle_at_80%_80%,rgba(15,23,42,0.1),transparent_55%)]"
+         />
         {/* Cursor-follow spotlight (21st "Spotlight Card" effect) */}
         <div
           aria-hidden="true"

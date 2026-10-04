@@ -1,11 +1,11 @@
 [
   {
     "id": "d1",
-    "title": "Woven Cotton Shirt — 3D Simulation",
+    "title": "Drop Waist Mini Dress — 3D Simulation",
     "category": "CLO 3D",
     "categoryGroup": "CLO 3D",
-    "description": "Realistic 3D simulation of a woven button-down shirt with proper fabric drape, seam construction, and layered trim details.",
-    "image": "/designs/clo-shirt-1.jpg",
+    "description": "Realistic 3D simulation of a polyester drop waist mini dress with proper fabric drape, seam construction, and layered trim details.",
+    "image": "https://res.cloudinary.com/dd68fmrvx/image/upload/v1790882091/mySite/Girl_With_Skirt_Default_Colorway_ubd4vk.png",
     "tools": ["CLO 3D", "Lectra Modaris", "Photoshop"],
     "year": "2025",
     "featured": true,

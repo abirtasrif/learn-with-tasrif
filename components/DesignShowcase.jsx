@@ -30,8 +30,14 @@ const tabs = [
 // Spring for tab pill
 const TAB_SPRING = { type: "spring", stiffness: 380, damping: 26, mass: 0.5 };
 
+const CARD_IMAGE_VARIANTS = {
+  rest: { scale: 1, transition: { duration: 0.6, ease: "easeOut" } },
+  hover: { scale: 1.08, transition: { duration: 0.8, ease: "easeOut" } },
+};
+
 export default function DesignShowcase() {
   const [active, setActive] = useState("All");
+  const [hoveredId, setHoveredId] = useState(null);
   const ref = useRef(null);
   const sectionRef = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
@@ -208,6 +214,10 @@ export default function DesignShowcase() {
                       className={`group relative h-full overflow-hidden rounded-3xl border border-white/80 bg-white/85 shadow-lg shadow-indigo-500/10 transition-shadow hover:shadow-2xl glow-ring ${
                         isFeatured ? "ring-1 ring-indigo-200" : ""
                       }`}
+                      onMouseEnter={() => setHoveredId(design.id)}
+                      onMouseLeave={() => setHoveredId(null)}
+                      onFocus={() => setHoveredId(design.id)}
+                      onBlur={() => setHoveredId(null)}
                     >
                       {isFeatured && (
                         <BorderBeam
@@ -218,32 +228,68 @@ export default function DesignShowcase() {
                           borderWidth={1.5}
                         />
                       )}
-                      {/* Image placeholder — subtle zoom-settle on enter */}
+                       {/* Image — populate from JSON with smooth hover zoom */}
                       <motion.div
                         className="relative aspect-4/3 w-full overflow-hidden bg-linear-to-br from-indigo-50 via-white to-sky-50 sm:aspect-16/10 lg:aspect-auto lg:h-full lg:min-h-65"
                         initial={{ scale: 1.04 }}
                         animate={inView ? { scale: 1 } : { scale: 1.04 }}
                         transition={{ ...TRANSITIONS.slow, delay: 0.1 + i * 0.05 }}
+                        onMouseEnter={() => setHoveredId(design.id)}
+                        onMouseLeave={() => setHoveredId(null)}
                       >
-                        <div
-                          role="img"
-                          aria-label={design.title}
-                          className="absolute inset-0 bg-linear-to-br from-indigo-200/70 via-slate-100 to-sky-200/60 shadow-[inset_0_0_40px_rgba(255,255,255,0.6)]"
-                        />
-                        <div className="absolute inset-0 flex items-center justify-center bg-[radial-gradient(circle_at_30%_20%,rgba(99,102,241,0.14),transparent_55%),radial-gradient(circle_at_80%_80%,rgba(148,163,184,0.25),transparent_55%)]">
-                          <div className="flex flex-col items-center gap-2 text-slate-400">
-                            <Layers className="h-10 w-10" />
-                            <span className="text-xs font-medium uppercase tracking-[0.24em]">
-                              {design.category}
-                            </span>
+                        {design.image ? (
+                          <motion.img
+                            src={design.image}
+                            alt={design.title}
+                            className="absolute inset-0 h-full w-full object-cover object-center"
+                            variants={CARD_IMAGE_VARIANTS}
+                            initial="rest"
+                            animate={reduceMotion ? "rest" : hoveredId === design.id ? "hover" : "rest"}
+                            loading="lazy"
+                            draggable="false"
+                          />
+                        ) : (
+                          <div
+                            role="img"
+                            aria-label={design.title}
+                            className="absolute inset-0 bg-linear-to-br from-indigo-200/70 via-slate-100 to-sky-200/60 shadow-[inset_0_0_40px_rgba(255,255,255,0.6)]"
+                          />
+                        )}
+                        {!design.image && (
+                          <div className="absolute inset-0 flex items-center justify-center bg-[radial-gradient(circle_at_30%_20%,rgba(99,102,241,0.14),transparent_55%),radial-gradient(circle_at_80%_80%,rgba(148,163,184,0.25),transparent_55%)]">
+                            <div className="flex flex-col items-center gap-2 text-slate-400">
+                              <Layers className="h-10 w-10" />
+                              <span className="text-xs font-medium uppercase tracking-[0.24em]">
+                                {design.category}
+                              </span>
+                            </div>
                           </div>
-                        </div>
+                        )}
 
                         {/* Hover overlay */}
                         <motion.div
                           aria-hidden="true"
-                          className="absolute inset-0 bg-slate-900/0 transition-all duration-500 group-hover:bg-slate-900/40"
+                          className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100"
+                          animate={reduceMotion ? { opacity: 0 } : hoveredId === design.id ? { opacity: 1 } : { opacity: 0 }}
+                          initial={{ opacity: 0 }}
                         />
+
+                        {/* Title & description overlay on image for desktop */}
+                        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 p-6">
+                          <motion.div
+                            initial={{ y: 12, opacity: 0 }}
+                            animate={reduceMotion ? { y: 0, opacity: 1 } : hoveredId === design.id ? { y: 0, opacity: 1 } : { y: 8, opacity: 0 }}
+                            transition={{ duration: 0.45, ease: "easeOut" }}
+                            className="hidden lg:block"
+                          >
+                            <h3 className="text-xl font-semibold tracking-tight text-white drop-shadow-[0_10px_40px_rgba(15,23,42,0.5)] sm:text-2xl">
+                              {design.title}
+                            </h3>
+                            <p className="mt-2 max-w-lg text-sm leading-relaxed text-white/90 drop-shadow-[0_8px_30px_rgba(15,23,42,0.6)]">
+                              {design.description}
+                            </p>
+                          </motion.div>
+                        </div>
 
                         {/* Badges */}
                         <div className="absolute inset-x-0 top-0 flex items-start justify-between p-5">
@@ -258,13 +304,13 @@ export default function DesignShowcase() {
                         </div>
                       </motion.div>
 
-                      <div className="p-6">
+                       <div className="p-6">
                         <div className="flex items-start justify-between gap-4">
                           <div>
-                            <h3 className="text-lg font-semibold tracking-tight text-slate-900 sm:text-xl">
+                            <h3 className="text-lg font-semibold tracking-tight text-slate-900 sm:text-xl lg:hidden">
                               {design.title}
                             </h3>
-                            <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                            <p className="mt-2 text-sm leading-relaxed text-slate-600 lg:hidden">
                               {design.description}
                             </p>
                           </div>
@@ -289,9 +335,6 @@ export default function DesignShowcase() {
                               </span>
                             ))}
                           </div>
-                          <span className="text-xs font-medium text-slate-500">
-                            {design.year}
-                          </span>
                         </div>
                       </div>
                     </SpotlightCard>
