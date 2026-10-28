@@ -12,10 +12,7 @@ import { useMemo, useRef, useState } from "react";
 import designs from "../data/designs.json";
 import { BorderBeam } from "./ui/BorderBeam";
 import { ScrollReveal, TRANSITIONS } from "./ui/ScrollReveal";
-import {
-  PerspectiveGroup,
-  ScrollProgressRail,
-} from "./ui/ScrollReveal3D";
+import { PerspectiveGroup, ScrollProgressRail } from "./ui/ScrollReveal3D";
 import { SpotlightCard } from "./ui/SpotlightCard";
 import { TextRevealMask } from "./ui/TextRevealMask";
 
@@ -42,9 +39,7 @@ export default function DesignShowcase() {
   const sectionRef = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
   const reduceMotion = useReducedMotion();
-  const depthTransition = reduceMotion
-    ? { duration: 0 }
-    : TRANSITIONS.depth;
+  const depthTransition = reduceMotion ? { duration: 0 } : TRANSITIONS.depth;
 
   const filtered = useMemo(() => {
     const list =
@@ -55,7 +50,11 @@ export default function DesignShowcase() {
   }, [active]);
 
   return (
-    <section id="designs" ref={sectionRef} className="relative overflow-x-clip py-24 sm:py-32">
+    <section
+      id="designs"
+      ref={sectionRef}
+      className="relative overflow-x-clip py-24 sm:py-32"
+    >
       <ScrollProgressRail
         targetRef={sectionRef}
         side="left"
@@ -74,25 +73,33 @@ export default function DesignShowcase() {
       <div ref={ref} className="mx-auto max-w-7xl px-5 sm:px-8">
         <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           {/* Section title — slides from left */}
-          <ScrollReveal variant="slideLeft" viewOptions={{ margin: "-80px" }} className="max-w-2xl">
+          <ScrollReveal
+            variant="slideLeft"
+            viewOptions={{ margin: "-80px" }}
+            className="max-w-2xl"
+          >
             <p className="text-xs font-semibold uppercase tracking-[0.18em] gradient-text">
               Design Showcase
             </p>
             <div className="mt-4">
-            <TextRevealMask
-              as="h2"
-              splitBy="tilt"
-              className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl"
-              viewportMargin="0px 0px -15% 0px"
-            >
-              Selected work across fashion tech and technical design.
-            </TextRevealMask>
-
+              <TextRevealMask
+                as="h2"
+                splitBy="tilt"
+                className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl"
+                viewportMargin="0px 0px -15% 0px"
+              >
+                Selected work across fashion tech and technical design.
+              </TextRevealMask>
             </div>
-            <ScrollReveal variant="blurIn" delay={0.2} viewOptions={{ margin: "-80px" }}>
+            <ScrollReveal
+              variant="blurIn"
+              delay={0.2}
+              viewOptions={{ margin: "-80px" }}
+            >
               <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
-                A mix of virtual garment simulations, production-ready tech packs,
-                and technical drawings from real product development workflows.
+                A mix of virtual garment simulations, production-ready tech
+                packs, and technical drawings from real product development
+                workflows.
               </p>
             </ScrollReveal>
           </ScrollReveal>
@@ -169,178 +176,199 @@ export default function DesignShowcase() {
                 className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-12"
                 style={{ perspective: 1200 }}
               >
-              {filtered.map((design, i) => {
-                const spanCol =
-                  design.size === "lg"
-                    ? "lg:col-span-8"
-                    : design.size === "md"
-                      ? "lg:col-span-6"
-                      : "lg:col-span-4";
-                const spanRow =
-                  design.size === "lg" ? "lg:row-span-2" : "lg:row-span-1";
-                const isFeatured = i === 0 && design.featured;
-                return (
-                  <motion.li
-                    key={design.id}
-                    layout
-                    variants={{
-                      initial: {
-                        opacity: 0,
-                        y: 34,
-                        z: -190,
-                        scale: 0.93,
-                        rotateX: 13,
-                      },
-                      animate: {
-                        opacity: 1,
-                        y: 0,
-                        z: 0,
-                        scale: 1,
-                        rotateX: 0,
-                      },
-                      exit: {
-                        opacity: 0,
-                        scale: 0.97,
-                        transition: { duration: 0.18 },
-                      },
-                    }}
-                    transition={depthTransition}
-                    style={{ transformStyle: "preserve-3d" }}
-                    className={`${spanCol} ${spanRow}`}
-                  >
-                    <SpotlightCard
-                      glowColor="rgba(99, 102, 241, 0.14)"
-                      cursorLabel="VIEW"
-                      className={`group relative h-full overflow-hidden rounded-3xl border border-white/80 bg-white/85 shadow-lg shadow-indigo-500/10 transition-shadow hover:shadow-2xl glow-ring ${
-                        isFeatured ? "ring-1 ring-indigo-200" : ""
-                      }`}
-                      onMouseEnter={() => setHoveredId(design.id)}
-                      onMouseLeave={() => setHoveredId(null)}
-                      onFocus={() => setHoveredId(design.id)}
-                      onBlur={() => setHoveredId(null)}
+                {filtered.map((design, i) => {
+                  const spanCol =
+                    design.size === "lg"
+                      ? "lg:col-span-8"
+                      : design.size === "md"
+                        ? "lg:col-span-6"
+                        : "lg:col-span-4";
+                  const spanRow =
+                    design.size === "lg" ? "lg:row-span-2" : "lg:row-span-1";
+                  const isFeatured = i === 0 && design.featured;
+                  return (
+                    <motion.li
+                      key={design.id}
+                      layout
+                      variants={{
+                        initial: {
+                          opacity: 0,
+                          y: 34,
+                          z: -190,
+                          scale: 0.93,
+                          rotateX: 13,
+                        },
+                        animate: {
+                          opacity: 1,
+                          y: 0,
+                          z: 0,
+                          scale: 1,
+                          rotateX: 0,
+                        },
+                        exit: {
+                          opacity: 0,
+                          scale: 0.97,
+                          transition: { duration: 0.18 },
+                        },
+                      }}
+                      transition={depthTransition}
+                      style={{ transformStyle: "preserve-3d" }}
+                      className={`${spanCol} ${spanRow}`}
                     >
-                      {isFeatured && (
-                        <BorderBeam
-                          size={240}
-                          duration={14}
-                          colorFrom="#6366f1"
-                          colorTo="#a855f7"
-                          borderWidth={1.5}
-                        />
-                      )}
-                       {/* Image — populate from JSON with smooth hover zoom */}
-                      <motion.div
-                        className="relative aspect-4/3 w-full overflow-hidden bg-linear-to-br from-indigo-50 via-white to-sky-50 sm:aspect-16/10 lg:aspect-auto lg:h-full lg:min-h-65"
-                        initial={{ scale: 1.04 }}
-                        animate={inView ? { scale: 1 } : { scale: 1.04 }}
-                        transition={{ ...TRANSITIONS.slow, delay: 0.1 + i * 0.05 }}
+                      <SpotlightCard
+                        glowColor="rgba(99, 102, 241, 0.14)"
+                        cursorLabel="VIEW"
+                        className={`group relative h-full overflow-hidden rounded-3xl border border-white/80 bg-white/85 shadow-lg shadow-indigo-500/10 transition-shadow hover:shadow-2xl glow-ring ${
+                          isFeatured ? "ring-1 ring-indigo-200" : ""
+                        }`}
                         onMouseEnter={() => setHoveredId(design.id)}
                         onMouseLeave={() => setHoveredId(null)}
+                        onFocus={() => setHoveredId(design.id)}
+                        onBlur={() => setHoveredId(null)}
                       >
-                        {design.image ? (
-                          <motion.img
-                            src={design.image}
-                            alt={design.title}
-                            className="absolute inset-0 h-full w-full object-cover object-center"
-                            variants={CARD_IMAGE_VARIANTS}
-                            initial="rest"
-                            animate={reduceMotion ? "rest" : hoveredId === design.id ? "hover" : "rest"}
-                            loading="lazy"
-                            draggable="false"
-                          />
-                        ) : (
-                          <div
-                            role="img"
-                            aria-label={design.title}
-                            className="absolute inset-0 bg-linear-to-br from-indigo-200/70 via-slate-100 to-sky-200/60 shadow-[inset_0_0_40px_rgba(255,255,255,0.6)]"
+                        {isFeatured && (
+                          <BorderBeam
+                            size={240}
+                            duration={14}
+                            colorFrom="#6366f1"
+                            colorTo="#a855f7"
+                            borderWidth={1.5}
                           />
                         )}
-                        {!design.image && (
-                          <div className="absolute inset-0 flex items-center justify-center bg-[radial-gradient(circle_at_30%_20%,rgba(99,102,241,0.14),transparent_55%),radial-gradient(circle_at_80%_80%,rgba(148,163,184,0.25),transparent_55%)]">
-                            <div className="flex flex-col items-center gap-2 text-slate-400">
-                              <Layers className="h-10 w-10" />
-                              <span className="text-xs font-medium uppercase tracking-[0.24em]">
-                                {design.category}
+                        {/* Image — populate from JSON with smooth hover zoom */}
+                        <motion.div
+                          className="relative aspect-4/3 w-full overflow-hidden bg-linear-to-br from-indigo-50 via-white to-sky-50 sm:aspect-16/10 lg:aspect-auto lg:h-full lg:min-h-65"
+                          initial={{ scale: 1.04 }}
+                          animate={inView ? { scale: 1 } : { scale: 1.04 }}
+                          transition={{
+                            ...TRANSITIONS.slow,
+                            delay: 0.1 + i * 0.05,
+                          }}
+                          onMouseEnter={() => setHoveredId(design.id)}
+                          onMouseLeave={() => setHoveredId(null)}
+                        >
+                          {design.image ? (
+                            <motion.img
+                              src={design.image}
+                              alt={design.title}
+                              className="absolute inset-0 h-full w-full object-cover object-center"
+                              variants={CARD_IMAGE_VARIANTS}
+                              initial="rest"
+                              animate={
+                                reduceMotion
+                                  ? "rest"
+                                  : hoveredId === design.id
+                                    ? "hover"
+                                    : "rest"
+                              }
+                              loading="lazy"
+                              draggable="false"
+                            />
+                          ) : (
+                            <div
+                              role="img"
+                              aria-label={design.title}
+                              className="absolute inset-0 bg-linear-to-br from-indigo-200/70 via-slate-100 to-sky-200/60 shadow-[inset_0_0_40px_rgba(255,255,255,0.6)]"
+                            />
+                          )}
+                          {!design.image && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-[radial-gradient(circle_at_30%_20%,rgba(99,102,241,0.14),transparent_55%),radial-gradient(circle_at_80%_80%,rgba(148,163,184,0.25),transparent_55%)]">
+                              <div className="flex flex-col items-center gap-2 text-slate-400">
+                                <Layers className="h-10 w-10" />
+                                <span className="text-xs font-medium uppercase tracking-[0.24em]">
+                                  {design.category}
+                                </span>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Hover overlay */}
+                          <motion.div
+                            aria-hidden="true"
+                            className="absolute inset-0 bg-linear-to-t from-slate-950/80 via-slate-950/20 to-transparent opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100"
+                            animate={
+                              reduceMotion
+                                ? { opacity: 0 }
+                                : hoveredId === design.id
+                                  ? { opacity: 1 }
+                                  : { opacity: 0 }
+                            }
+                            initial={{ opacity: 0 }}
+                          />
+
+                          {/* Title & description overlay on image for desktop */}
+                          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 p-6">
+                            <motion.div
+                              initial={{ y: 12, opacity: 0 }}
+                              animate={
+                                reduceMotion
+                                  ? { y: 0, opacity: 1 }
+                                  : hoveredId === design.id
+                                    ? { y: 0, opacity: 1 }
+                                    : { y: 8, opacity: 0 }
+                              }
+                              transition={{ duration: 0.45, ease: "easeOut" }}
+                              className="hidden lg:block"
+                            >
+                              <h3 className="text-xl font-semibold tracking-tight text-white drop-shadow-[0_10px_40px_rgba(15,23,42,0.5)] sm:text-2xl">
+                                {design.title}
+                              </h3>
+                              <p className="mt-2 max-w-lg text-sm leading-relaxed text-white/90 drop-shadow-[0_8px_30px_rgba(15,23,42,0.6)]">
+                                {design.description}
+                              </p>
+                            </motion.div>
+                          </div>
+
+                          {/* Badges */}
+                          <div className="absolute inset-x-0 top-0 flex items-start justify-between p-5">
+                            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-700 backdrop-blur ring-1 ring-slate-200">
+                              {design.category}
+                            </span>
+                            {design.featured && (
+                              <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-600/95 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-white backdrop-blur">
+                                Featured
                               </span>
+                            )}
+                          </div>
+                        </motion.div>
+
+                        <div className="p-6">
+                          <div className="flex items-start justify-between gap-4">
+                            <div>
+                              <h3 className="text-lg font-semibold tracking-tight text-slate-900 sm:text-xl lg:hidden">
+                                {design.title}
+                              </h3>
+                              <p className="mt-2 text-sm leading-relaxed text-slate-600 lg:hidden">
+                                {design.description}
+                              </p>
+                            </div>
+                            <a
+                              href="#"
+                              aria-label={`Open case study for ${design.title}`}
+                              onClick={(e) => e.preventDefault()}
+                              className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-white/90 bg-white text-slate-600 shadow-sm transition-all hover:border-indigo-200 hover:bg-linear-to-br hover:from-indigo-50 hover:to-sky-50 hover:text-indigo-700"
+                            >
+                              <ArrowUpRight className="h-4 w-4" />
+                            </a>
+                          </div>
+
+                          <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-4">
+                            <div className="flex flex-wrap gap-1.5">
+                              {design.tools.map((t) => (
+                                <span
+                                  key={t}
+                                  className="rounded-full border border-white/70 bg-linear-to-r from-indigo-50/70 to-sky-50/70 px-2.5 py-1 text-[11px] font-medium text-indigo-600 backdrop-blur-sm"
+                                >
+                                  {t}
+                                </span>
+                              ))}
                             </div>
                           </div>
-                        )}
-
-                        {/* Hover overlay */}
-                        <motion.div
-                          aria-hidden="true"
-                          className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100"
-                          animate={reduceMotion ? { opacity: 0 } : hoveredId === design.id ? { opacity: 1 } : { opacity: 0 }}
-                          initial={{ opacity: 0 }}
-                        />
-
-                        {/* Title & description overlay on image for desktop */}
-                        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 p-6">
-                          <motion.div
-                            initial={{ y: 12, opacity: 0 }}
-                            animate={reduceMotion ? { y: 0, opacity: 1 } : hoveredId === design.id ? { y: 0, opacity: 1 } : { y: 8, opacity: 0 }}
-                            transition={{ duration: 0.45, ease: "easeOut" }}
-                            className="hidden lg:block"
-                          >
-                            <h3 className="text-xl font-semibold tracking-tight text-white drop-shadow-[0_10px_40px_rgba(15,23,42,0.5)] sm:text-2xl">
-                              {design.title}
-                            </h3>
-                            <p className="mt-2 max-w-lg text-sm leading-relaxed text-white/90 drop-shadow-[0_8px_30px_rgba(15,23,42,0.6)]">
-                              {design.description}
-                            </p>
-                          </motion.div>
                         </div>
-
-                        {/* Badges */}
-                        <div className="absolute inset-x-0 top-0 flex items-start justify-between p-5">
-                          <span className="inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-700 backdrop-blur ring-1 ring-slate-200">
-                            {design.category}
-                          </span>
-                          {design.featured && (
-                            <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-600/95 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-white backdrop-blur">
-                              Featured
-                            </span>
-                          )}
-                        </div>
-                      </motion.div>
-
-                       <div className="p-6">
-                        <div className="flex items-start justify-between gap-4">
-                          <div>
-                            <h3 className="text-lg font-semibold tracking-tight text-slate-900 sm:text-xl lg:hidden">
-                              {design.title}
-                            </h3>
-                            <p className="mt-2 text-sm leading-relaxed text-slate-600 lg:hidden">
-                              {design.description}
-                            </p>
-                          </div>
-                          <a
-                            href="#"
-                            aria-label={`Open case study for ${design.title}`}
-                            onClick={(e) => e.preventDefault()}
-                            className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-white/90 bg-white text-slate-600 shadow-sm transition-all hover:border-indigo-200 hover:bg-linear-to-br hover:from-indigo-50 hover:to-sky-50 hover:text-indigo-700"
-                          >
-                            <ArrowUpRight className="h-4 w-4" />
-                          </a>
-                        </div>
-
-                        <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-4">
-                          <div className="flex flex-wrap gap-1.5">
-                            {design.tools.map((t) => (
-                              <span
-                                key={t}
-                                className="rounded-full border border-white/70 bg-linear-to-r from-indigo-50/70 to-sky-50/70 px-2.5 py-1 text-[11px] font-medium text-indigo-600 backdrop-blur-sm"
-                              >
-                                {t}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </SpotlightCard>
-                  </motion.li>
-                );
-              })}
+                      </SpotlightCard>
+                    </motion.li>
+                  );
+                })}
               </motion.ul>
             </AnimatePresence>
           </motion.div>

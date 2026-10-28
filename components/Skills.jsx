@@ -59,9 +59,7 @@ export default function Skills() {
   const inView = useInView(ref, { once: true, margin: "-80px" });
   const reduceMotion = useReducedMotion();
   // 3D entrances get a softer spring so the depth settles instead of snapping.
-  const depthTransition = reduceMotion
-    ? { duration: 0 }
-    : TRANSITIONS.depth;
+  const depthTransition = reduceMotion ? { duration: 0 } : TRANSITIONS.depth;
 
   const filtered = useMemo(
     () =>
@@ -94,7 +92,11 @@ export default function Skills() {
 
       <div ref={ref} className="mx-auto max-w-7xl px-5 sm:px-8">
         {/* Section heading */}
-        <ScrollReveal variant="fadeUp" viewOptions={{ margin: "-80px" }} className="mx-auto max-w-3xl text-center">
+        <ScrollReveal
+          variant="fadeUp"
+          viewOptions={{ margin: "-80px" }}
+          className="mx-auto max-w-3xl text-center"
+        >
           <p className="text-xs font-semibold uppercase tracking-[0.18em] gradient-text">
             Skills & Tools
           </p>
@@ -105,19 +107,28 @@ export default function Skills() {
               className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl"
               viewportMargin="0px 0px -15% 0px"
             >
-              A toolkit built across the factory floor and the codebase.
+              Application & tools that I am comfortable with.
             </TextRevealMask>
           </div>
-          <ScrollReveal variant="blurIn" delay={0.25} viewOptions={{ margin: "-80px" }}>
+          <ScrollReveal
+            variant="blurIn"
+            delay={0.25}
+            viewOptions={{ margin: "-80px" }}
+          >
             <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
-              From 3D garment simulation to component-driven interfaces — a
-              curated set of tools I rely on every day.
+              From data management to graphical representation — a curated set
+              of tools I rely on every day.
             </p>
           </ScrollReveal>
         </ScrollReveal>
 
         {/* Filter tabs */}
-        <ScrollReveal variant="fadeUp" delay={0.15} viewOptions={{ margin: "-80px" }} className="mx-auto mt-12 flex max-w-3xl flex-wrap items-center justify-center gap-2">
+        <ScrollReveal
+          variant="fadeUp"
+          delay={0.15}
+          viewOptions={{ margin: "-80px" }}
+          className="mx-auto mt-12 flex max-w-3xl flex-wrap items-center justify-center gap-2"
+        >
           <div
             role="tablist"
             aria-label="Filter tools by category"
@@ -211,37 +222,37 @@ export default function Skills() {
                       transition={depthTransition}
                       style={{ transformStyle: "preserve-3d" }}
                     >
-                    <SpotlightCard
-                      className="group relative h-full overflow-hidden rounded-2xl border border-white/80 bg-white/85 p-6 shadow-lg shadow-indigo-500/10 transition-all hover:shadow-xl glow-ring"
-                      glowColor="rgba(99, 102, 241, 0.12)"
-                    >
-                      <div className="flex items-start justify-between gap-4">
-                        <div className="flex items-center gap-3">
-                          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-linear-to-br from-indigo-50 via-white to-sky-50 text-indigo-600 ring-1 ring-indigo-100 shadow-sm shadow-indigo-500/10">
-                            <Icon className="h-6 w-6" />
-                          </span>
-                          <div>
-                            <h3 className="text-base font-semibold text-slate-900">
-                              {tool.name}
-                            </h3>
-                            <p className="text-xs font-medium uppercase tracking-[0.14em] text-slate-500">
-                              {tool.category}
-                            </p>
+                      <SpotlightCard
+                        className="group relative h-full overflow-hidden rounded-2xl border border-white/80 bg-white/85 p-6 shadow-lg shadow-indigo-500/10 transition-all hover:shadow-xl glow-ring"
+                        glowColor="rgba(99, 102, 241, 0.12)"
+                      >
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="flex items-center gap-3">
+                            <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-linear-to-br from-indigo-50 via-white to-sky-50 text-indigo-600 ring-1 ring-indigo-100 shadow-sm shadow-indigo-500/10">
+                              <Icon className="h-6 w-6" />
+                            </span>
+                            <div>
+                              <h3 className="text-base font-semibold text-slate-900">
+                                {tool.name}
+                              </h3>
+                              <p className="text-xs font-medium uppercase tracking-[0.14em] text-slate-500">
+                                {tool.category}
+                              </p>
+                            </div>
                           </div>
+                          <span className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2.5 py-1 text-[11px] font-medium text-indigo-700 ring-1 ring-inset ring-indigo-100">
+                            <Check className="h-3 w-3" />
+                            {tool.label}
+                          </span>
                         </div>
-                        <span className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2.5 py-1 text-[11px] font-medium text-indigo-700 ring-1 ring-inset ring-indigo-100">
-                          <Check className="h-3 w-3" />
-                          {tool.label}
-                        </span>
-                      </div>
 
-                      <p className="mt-4 text-sm leading-relaxed text-slate-600">
-                        {tool.description}
-                      </p>
-                    </SpotlightCard>
-                  </motion.li>
-                );
-              })}
+                        <p className="mt-4 text-sm leading-relaxed text-slate-600">
+                          {tool.description}
+                        </p>
+                      </SpotlightCard>
+                    </motion.li>
+                  );
+                })}
               </motion.ul>
             </AnimatePresence>
           </motion.div>
