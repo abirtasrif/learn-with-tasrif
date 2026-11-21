@@ -4,7 +4,12 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import profile from "../data/profile.json";
 import { Magnetic } from "./ui/Magnetic";
-import { ScrollReveal, StaggerReveal, TRANSITIONS, VARIANTS } from "./ui/ScrollReveal";
+import {
+  ScrollReveal,
+  StaggerReveal,
+  TRANSITIONS,
+  VARIANTS,
+} from "./ui/ScrollReveal";
 
 function GitHubIcon(props) {
   return (
@@ -76,7 +81,11 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-5 pt-14 pb-14 md:pb-44 lg:pb-14 sm:px-8">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
           {/* Brand column — slide from left */}
-          <ScrollReveal variant="slideLeft" viewOptions={{ margin: "-40px" }} className="lg:col-span-5">
+          <ScrollReveal
+            variant="slideLeft"
+            viewOptions={{ margin: "-40px" }}
+            className="lg:col-span-5"
+          >
             <Link href="/" className="flex items-center gap-2.5">
               <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-linear-to-br from-indigo-600 via-violet-500 to-sky-500 text-sm font-semibold text-white shadow-lg shadow-indigo-500/30">
                 {profile.name
@@ -106,7 +115,11 @@ export default function Footer() {
               viewOptions={{ margin: "-40px" }}
             >
               {socials.map(({ label, href, icon: Icon }) => (
-                <motion.div key={label} variants={VARIANTS.springPop} transition={TRANSITIONS.springLight}>
+                <motion.div
+                  key={label}
+                  variants={VARIANTS.springPop}
+                  transition={TRANSITIONS.springLight}
+                >
                   <Magnetic intensity={0.4} range={60}>
                     <a
                       href={href}
@@ -165,15 +178,18 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <ScrollReveal variant="fadeIn" delay={0.3} viewOptions={{ margin: "-40px" }}>
+        <ScrollReveal
+          variant="fadeIn"
+          delay={0.3}
+          viewOptions={{ margin: "-40px" }}
+        >
           <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-slate-200 pt-6 sm:flex-row sm:items-center">
             <p className="text-xs text-slate-500">
               © {year} {profile.name}. All rights reserved.
             </p>
-            <p className="text-xs text-slate-500">
-              Designed & built with Next.js, Tailwind CSS, and a lot of strong
-              coffee.
-            </p>
+            <a className="text-xs text-slate-500" href="https://jarvan-it.top">
+              Designed & developed by Jarvan IT
+            </a>
           </div>
         </ScrollReveal>
       </div>

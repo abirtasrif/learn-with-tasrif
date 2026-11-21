@@ -8,7 +8,9 @@ import {
   useReducedMotion,
 } from "framer-motion";
 import { ArrowUpRight, Layers } from "lucide-react";
-import { useMemo, useRef, useState } from "react";
+import Image from "next/image";
+import { createPortal } from "react-dom";
+import { useEffect, useMemo, useRef, useState } from "react";
 import designs from "../data/designs.json";
 import { BorderBeam } from "./ui/BorderBeam";
 import { ScrollReveal, TRANSITIONS } from "./ui/ScrollReveal";
@@ -21,6 +23,7 @@ const tabs = [
   { key: "CLO 3D", label: "CLO 3D" },
   { key: "Tech Packs", label: "Tech Packs" },
   { key: "Garment Design", label: "Garment Design" },
+  { key: "Technical Drawing", label: "Technical Drawing" },
   { key: "Technical", label: "Technical" },
 ];
 
@@ -35,11 +38,32 @@ const CARD_IMAGE_VARIANTS = {
 export default function DesignShowcase() {
   const [active, setActive] = useState("All");
   const [hoveredId, setHoveredId] = useState(null);
+  const [selectedProject, setSelectedProject] = useState(null);
+  const closeButtonRef = useRef(null);
+  const previousFocusRef = useRef(null);
   const ref = useRef(null);
   const sectionRef = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
   const reduceMotion = useReducedMotion();
   const depthTransition = reduceMotion ? { duration: 0 } : TRANSITIONS.depth;
+
+  useEffect(() => {
+    if (!selectedProject) return undefined;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    closeButtonRef.current?.focus();
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      previousFocusRef.current?.focus();
+    };
+  }, [selectedProject]);
+
+  const openProject = (project) => {
+    previousFocusRef.current = document.activeElement;
+    setSelectedProject(project);
+  };
 
   const filtered = useMemo(() => {
     const list =
@@ -237,7 +261,19 @@ export default function DesignShowcase() {
                         )}
                         {/* Image — populate from JSON with smooth hover zoom */}
                         <motion.div
-                          className="relative aspect-4/3 w-full overflow-hidden bg-linear-to-br from-indigo-50 via-white to-sky-50 sm:aspect-16/10 lg:aspect-auto lg:h-full lg:min-h-65"
+                          className="relative aspect-4/3 w-full cursor-zoom-in overflow-hidden bg-linear-to-br from-indigo-50 via-white to-sky-50 sm:aspect-16/10 lg:aspect-auto lg:h-full lg:min-h-65"
+                          role="button"
+                          tabIndex={0}
+                          aria-haspopup="dialog"
+                          aria-label={`View full image for ${design.title}`}
+                          onClick={() => openProject(design)}
+                          onKeyDown={(event) => {
+                            if (event.key === "Enter" || event.key === " ") {
+                              event.preventDefault();
+                              openProject(design);
+                            }
+                          }}
+                          onContextMenu={(event) => event.preventDefault()}
                           initial={{ scale: 1.04 }}
                           animate={inView ? { scale: 1 } : { scale: 1.04 }}
                           transition={{
@@ -251,7 +287,7 @@ export default function DesignShowcase() {
                             <motion.img
                               src={design.image}
                               alt={design.title}
-                              className="absolute inset-0 h-full w-full object-cover object-center"
+                              className="absolute inset-0 h-full w-full cursor-zoom-in object-cover object-center"
                               variants={CARD_IMAGE_VARIANTS}
                               initial="rest"
                               animate={
@@ -342,14 +378,17 @@ export default function DesignShowcase() {
                                 {design.description}
                               </p>
                             </div>
-                            <a
-                              href="#"
-                              aria-label={`Open case study for ${design.title}`}
-                              onClick={(e) => e.preventDefault()}
+                            <button
+                              type="button"
+                              aria-label={`View full image for ${design.title}`}
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                openProject(design);
+                              }}
                               className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-white/90 bg-white text-slate-600 shadow-sm transition-all hover:border-indigo-200 hover:bg-linear-to-br hover:from-indigo-50 hover:to-sky-50 hover:text-indigo-700"
                             >
                               <ArrowUpRight className="h-4 w-4" />
-                            </a>
+                            </button>
                           </div>
 
                           <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-4">
@@ -374,6 +413,102 @@ export default function DesignShowcase() {
           </motion.div>
         </PerspectiveGroup>
       </div>
+      {selectedProject &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <motion.div
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/85 p-4 backdrop-blur-md sm:p-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: reduceMotion ? 0 : 0.2 }}
+            onMouseDown={(event) => {
+              if (event.target === event.currentTarget) {
+                setSelectedProject(null);
+              }
+            }}
+            onContextMenu={(event) => event.preventDefault()}
+            onKeyDown={(event) => {
+              if (event.key === "Escape") {
+                event.stopPropagation();
+                setSelectedProject(null);
+              } else if (event.key === "Tab") {
+                event.preventDefault();
+                closeButtonRef.current?.focus();
+              }
+            }}
+          >
+            <motion.section
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="project-viewer-title"
+              data-lenis-prevent
+              className="relative flex max-h-[94dvh] w-full max-w-6xl flex-col overflow-hidden rounded-3xl border border-white/15 bg-slate-900 shadow-2xl shadow-black/50"
+              initial={{ opacity: 0, y: 18, scale: reduceMotion ? 1 : 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: reduceMotion ? 0 : 0.25, ease: "easeOut" }}
+            >
+              <header className="flex items-center justify-between gap-4 border-b border-white/10 px-5 py-4 sm:px-7">
+                <div className="min-w-0">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-indigo-300">
+                    {selectedProject.category} · {selectedProject.year}
+                  </p>
+                  <h2
+                    id="project-viewer-title"
+                    className="mt-1 truncate text-base font-semibold text-white sm:text-lg"
+                  >
+                    {selectedProject.title}
+                  </h2>
+                </div>
+                <button
+                  ref={closeButtonRef}
+                  type="button"
+                  aria-label="Close image viewer"
+                  onClick={() => setSelectedProject(null)}
+                  className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white transition-colors hover:bg-white/20 focus-visible:outline-white"
+                >
+                  <span aria-hidden="true" className="text-2xl leading-none">
+                    ×
+                  </span>
+                </button>
+              </header>
+
+              <div className="relative flex min-h-0 flex-1 items-center justify-center overflow-hidden bg-slate-950 p-2 sm:p-5">
+                {selectedProject.image ? (
+                  <div className="relative h-[calc(94dvh-10rem)] w-full max-w-full">
+                    <Image
+                      src={selectedProject.image}
+                      alt={selectedProject.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 1152px"
+                      unoptimized
+                      draggable="false"
+                      onContextMenu={(event) => event.preventDefault()}
+                      className="select-none object-contain"
+                    />
+                    <div
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-0 grid grid-cols-3 grid-rows-3 place-items-center overflow-hidden"
+                    >
+                      {Array.from({ length: 9 }, (_, index) => (
+                        <span
+                          key={index}
+                          className="-rotate-25 whitespace-nowrap text-sm font-bold tracking-[0.2em] text-white/55 [text-shadow:0_1px_4px_rgba(0,0,0,0.9)] sm:text-base"
+                        >
+                          abirtasrif
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <p className="p-8 text-center text-slate-300">
+                    No preview image is available for this project.
+                  </p>
+                )}
+              </div>
+            </motion.section>
+          </motion.div>,
+          document.body,
+        )}
     </section>
   );
 }
